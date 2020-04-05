@@ -1,6 +1,8 @@
 <script>
   import { onMount } from 'svelte';
 
+  export let src;
+
   onMount(() => {
     const filmstripInterval = setInterval(() => {
 
@@ -25,12 +27,12 @@
   }
 
   .filmstrip .image {
-    animation: play-frames 1500ms steps(10, end) infinite;
+    animation: play-frames 1500ms steps(20, end) infinite;
     width: 100%;
     image-rendering: crisp-edges;
   }
 </style>
 
 <div class="filmstrip">
-  <img class="image" src="/images/8-color-filmstrip-test.png" alt="" />
+  <img class="image" src={src} alt="" />
 </div>

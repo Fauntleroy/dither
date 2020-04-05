@@ -1,5 +1,5 @@
 {
-  "name": "TODO",
+  "name": "not-meatspace",
   "description": "TODO",
   "version": "0.0.1",
   "scripts": {
@@ -12,8 +12,12 @@
     "test": "run-p --race dev cy:run"
   },
   "dependencies": {
+    "attachmediastream": "^2.1.0",
+    "canvas-dither": "^1.0.0",
     "compression": "^1.7.1",
+    "getusermedia": "^2.0.1",
     "hashids": "^2.2.1",
+    "just-throttle": "^1.1.0",
     "polka": "next",
     "sirv": "^0.4.0"
   },

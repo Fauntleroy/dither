@@ -7,7 +7,7 @@
 </script>
 
 <script>
-  import Filmstrip from '../../components/filmstrip.svelte';
+  import NewMessage from '../../components/new-message.svelte';
 
   export let params;
 </script>
@@ -21,5 +21,5 @@
 <div class='content'>
 	This is room {params.id}.
 
-  <Filmstrip />
+  <NewMessage />
 </div>

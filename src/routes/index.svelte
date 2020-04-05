@@ -1,8 +1,5 @@
 <script>
 	import { goto } from '@sapper/app';
-	import Hashids from 'hashids';
-
-	const hashids = new Hashids();
 
 	function handleNewRoomClick () {
 		const roomId = 1;
