@@ -1,5 +1,5 @@
-import * as sapper from '@sapper/app';
+import App from './app.svelte';
 
-sapper.start({
-	target: document.querySelector('#sapper')
+const app = new App({
+	target: document.body
 });

@@ -1,5 +1,9 @@
 <script>
+	import { Route } from 'svelte-router-spa';
+
 	import Nav from '../components/nav.svelte';
+
+	export let currentRoute;
 </script>
 
 <style>
@@ -14,5 +18,5 @@
 <Nav />
 
 <main>
-	<slot></slot>
+	<Route {currentRoute} />
 </main>

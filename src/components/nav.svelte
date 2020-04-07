@@ -6,5 +6,5 @@
 </style>
 
 <nav>
-	<a href="/">Index</a>
+	<a href="/">Not Meatspace</a>
 </nav>

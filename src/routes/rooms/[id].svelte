@@ -1,27 +1,20 @@
-<script context="module">
-  export function preload (page) {
-    const { params } = page;
-
-    return { params };
-  }
-</script>
-
 <script>
   import { onMount } from 'svelte';
+  
+  import { firestore, firestoreDb } from '../../firebase.js';
 
   import Message from '../../components/message.svelte';
+  import NewMessage from '../../components/new-message.svelte';
 
-  let firestore;
-  let firestoreDb;
+  export let currentRoute;
+  const { namedParams } = currentRoute;
+  const { id } = namedParams;
+
   let messages = [];
 
 	onMount(async () => {
-    const firebase = await import('../../firebase.js');
-    firestoreDb = firebase.firestoreDb;
-    firestore = firebase.firestore;
-
-    firestoreDb.collection(`rooms/${params.id}/messages`)
-      .limit(5)
+    firestoreDb.collection(`rooms/${id}/messages`)
+      .limit(10)
       .orderBy('createdAt', 'desc')
       .onSnapshot(function(collection) {
           console.log("Current data: ", collection.docs);
@@ -35,19 +28,15 @@
           messages = docsData;
       });
   });
-  
-  import NewMessage from '../../components/new-message.svelte';
 
 	async function handleCreateMessage (event) {
     const { text, imageDataURL } = event.detail;
-		const newMessage = await firestoreDb.collection(`rooms/${params.id}/messages`).add({
+		const newMessage = await firestoreDb.collection(`rooms/${id}/messages`).add({
       createdAt: firestore.FieldValue.serverTimestamp(),
       imageBlob: imageDataURL,
       text
     });
 	}
-
-  export let params;
 </script>
 
 <style>
@@ -58,12 +47,10 @@
 </style>
 
 <svelte:head>
-	<title>Room {params.id}</title>
+	<title>Room {id}</title>
 </svelte:head>
 
 <div class="content">
-	This is room {params.id}.
-
   <NewMessage on:createMessage={handleCreateMessage} />
 
   {#each messages as { id, text, imageBlob }, i (id)}

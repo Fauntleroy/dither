@@ -9,16 +9,17 @@
   .message {
     display: flex;
     align-items: center;
+    flex-direction: column;
+    margin-bottom: 10px;
   }
 
   .text {
-    padding: 30px;
-    font-size: 150%;
-    background: white;
+    margin-top: -10px;
+    padding: 15px 20px;
+    background: black;
+    color: white;
     border-radius: 3px;
-    margin: 0 0 0 -30px;
     z-index: 2;
-    border: 2px black dotted;
   }
 </style>
 

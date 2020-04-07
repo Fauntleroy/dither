@@ -1,0 +1,8 @@
+@media(prefers-color-scheme: dark){body{background:#1a1a1a;color:#eee}}
+.content.svelte-des7z6{width:720px;margin:0 auto}
+.message.svelte-hplvme{display:flex;align-items:center;flex-direction:column;margin-bottom:10px}.text.svelte-hplvme{margin-top:-10px;padding:15px 20px;background:black;color:white;border-radius:3px;z-index:2}
+.form.svelte-wmb0ww{display:flex;align-items:center;margin-bottom:15px;justify-content:center}.fake-input.svelte-wmb0ww{display:flex;background:white;color:black;border:black 4px solid;border-radius:3px}.input.svelte-wmb0ww{display:block;border:none;margin:0;padding:10px 15px;font-size:inherit}.submit.svelte-wmb0ww{padding:10px;margin:0;color:black;background:none;border:none;font-size:40px;line-height:40px;border-radius:3px}.recording-booth.svelte-wmb0ww{position:relative}.recording-indicator.svelte-wmb0ww{position:absolute;bottom:10px;right:10px;display:block;border-radius:50%;background:red;width:10px;height:10px}
+@keyframes svelte-a9qazi-play-frames{from{transform:translateY(0%)}to{transform:translateY(-100%)}}.filmstrip.svelte-a9qazi.svelte-a9qazi{width:300px;height:225px;overflow:hidden;background:black}.filmstrip.svelte-a9qazi .image.svelte-a9qazi{animation:svelte-a9qazi-play-frames 2000ms steps(20, end) infinite;width:100%;image-rendering:crisp-edges}
+.raw-webcam.svelte-17s9fx8{position:fixed;top:-9999px;visibility:hidden}.raw-webcam.svelte-17s9fx8,.processed-webcam.svelte-17s9fx8{display:block;width:200px;height:150px;image-rendering:crisp-edges;image-rendering:pixelated}.processed-webcam.svelte-17s9fx8{background:black}
+
+/*# sourceMappingURL=client.css.map */

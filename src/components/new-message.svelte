@@ -9,9 +9,12 @@
   const dispatch = createEventDispatcher();
   let webcamFeed;
   let inputMessage = '';
+  let recording = false;
 
   async function handleSubmit () {
+    recording = true;
     const imageDataURL = await generateImage(webcamFeed.canvasElement);
+    recording = false;
 
     dispatch('createMessage', {
       text: inputMessage,
@@ -27,32 +30,61 @@
     display: flex;
     align-items: center;
     margin-bottom: 15px;
+    justify-content: center;
   }
 
-  .input {
+  .fake-input {
+    display: flex;
     background: white;
     color: black;
     border: black 4px solid;
     border-radius: 3px;
-    padding: 15px 20px;
+  }
+
+  .input {
+    display: block;
+    border: none;
+    margin: 0;
+    padding: 10px 15px;
     font-size: inherit;
-    margin: 0 5px 0 -30px;
   }
 
   .submit {
-    background: black;
-    border: 4px black solid;
-    color: white;
-    font-size: inherit;
-    padding: 15px 20px;
+    padding: 10px;
+    margin: 0;
+    color: black;
+    background: none;
+    border: none;
+    font-size: 40px;
+    line-height: 40px;
     border-radius: 3px;
+  }
+
+  .recording-booth {
+    position: relative;
+  }
+
+  .recording-indicator {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: block;
+    border-radius: 50%;
+    background: red;
+    width: 10px;
+    height: 10px;
   }
 </style>
 
 <div class="new-message">
   <form class="form" on:submit|preventDefault={handleSubmit}>
-    <StylizedWebcamFeed bind:this={webcamFeed} />
-    <input class="input" type="text" bind:value={inputMessage} placeholder="Type to GIF" />
-    <button class="submit" type="submit">Send GIF</button>
+    <div class="recording-booth">
+      <StylizedWebcamFeed bind:this={webcamFeed} />
+      {#if recording}<span class="recording-indicator" />{/if}
+    </div>
+    <div class="fake-input">
+      <input class="input" type="text" bind:value={inputMessage} placeholder="Type to GIF" disabled={recording} />
+      <button class="submit" type="submit" disabled={recording}>➭</button>
+    </div>
   </form>
 </div>

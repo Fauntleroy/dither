@@ -2,12 +2,6 @@
   import { onMount } from 'svelte';
 
   export let src;
-
-  onMount(() => {
-    const filmstripInterval = setInterval(() => {
-
-    }, );
-  })
 </script>
 
 <style>
@@ -21,8 +15,8 @@
   }
 
   .filmstrip {
-    width: 400px;
-    height: 300px;
+    width: 300px;
+    height: 225px;
     overflow: hidden;
     background: black;
   }

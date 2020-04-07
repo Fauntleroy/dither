@@ -1,17 +1,12 @@
 <script>
-	import { goto } from '@sapper/app';
-	import { onMount } from 'svelte';
+	import { navigateTo } from 'svelte-router-spa';
 
-	let firestoreDb;
-
-	onMount(async () => {
-		firestoreDb = await import('../firebase.js').firestoreDb;
-	});
+	import { firestoreDb } from '../firebase.js';
 
 	async function handleNewRoomClick () {
 		const newRoom = await firestoreDb.collection('rooms').add({});
 
-		goto(`rooms/${newRoom.id}`);
+		navigateTo(`rooms/${newRoom.id}`);
 	}
 </script>
 
