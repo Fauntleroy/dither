@@ -24,10 +24,11 @@
     width: 400px;
     height: 300px;
     overflow: hidden;
+    background: black;
   }
 
   .filmstrip .image {
-    animation: play-frames 1500ms steps(20, end) infinite;
+    animation: play-frames 2000ms steps(20, end) infinite;
     width: 100%;
     image-rendering: crisp-edges;
   }

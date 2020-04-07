@@ -1,14 +1,22 @@
 <script>
 	import { goto } from '@sapper/app';
+	import { onMount } from 'svelte';
 
-	function handleNewRoomClick () {
-		const roomId = 1;
+	let firestoreDb;
 
-		goto(`rooms/${roomId}`);
+	onMount(async () => {
+		firestoreDb = await import('../firebase.js').firestoreDb;
+	});
+
+	async function handleNewRoomClick () {
+		const newRoom = await firestoreDb.collection('rooms').add({});
+
+		goto(`rooms/${newRoom.id}`);
 	}
 </script>
 
 <style>
+
 </style>
 
 <svelte:head>

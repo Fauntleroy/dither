@@ -58,12 +58,18 @@
   .raw-webcam,
   .processed-webcam {
     display: block;
-    width: 400px;
-    height: 300px;
+    width: 200px;
+    height: 150px;
     image-rendering: crisp-edges;
     image-rendering: pixelated;
   }
+
+  .processed-webcam {
+    background: black;
+  }
 </style>
 
-<video class="raw-webcam" width="200" height="150" bind:this={videoElement} />
-<canvas class="processed-webcam" width="200" height="150" bind:this={canvasElement} />
+<div class="stylized-webcam-feed">
+  <video class="raw-webcam" width="200" height="150" bind:this={videoElement} />
+  <canvas class="processed-webcam" width="200" height="150" bind:this={canvasElement} />
+</div>

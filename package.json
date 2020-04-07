@@ -15,10 +15,13 @@
     "attachmediastream": "^2.1.0",
     "canvas-dither": "^1.0.0",
     "compression": "^1.7.1",
+    "firebase": "^7.13.2",
     "getusermedia": "^2.0.1",
     "hashids": "^2.2.1",
     "just-throttle": "^1.1.0",
     "polka": "next",
+    "rxfire": "^3.11.2",
+    "rxjs": "^6.5.5",
     "sirv": "^0.4.0"
   },
   "devDependencies": {
