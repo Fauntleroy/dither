@@ -63,6 +63,7 @@
     padding: 10px 50px 10px 15px;
     font-size: inherit;
     font-style: italic;
+    max-width: 100%;
   }
 
   .fake-input:focus-within {
