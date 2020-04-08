@@ -33,10 +33,10 @@
           ideal: 10
         },
         width: {
-          ideal: 400
+          ideal: 320
         },
         height: {
-          ideal: 300
+          ideal: 240
         }
       }
     }).then((mediaStream) => {

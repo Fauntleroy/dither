@@ -44,22 +44,35 @@
   }
 
   .fake-input {
+    position: relative;
     display: flex;
     background: white;
     color: black;
-    border-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    overflow: hidden;
+    border: white 1px solid;
   }
 
   .input {
     display: block;
     border: none;
     margin: 0;
-    padding: 10px 15px;
+    border: 2px white solid;
+    padding: 10px 50px 10px 15px;
     font-size: inherit;
     font-style: italic;
   }
 
+  .input:focus {
+    border: 2px black dotted;
+  }
+
   .submit {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
     padding: 10px;
     margin: 0;
     color: black;
@@ -67,7 +80,6 @@
     border: none;
     font-size: 40px;
     line-height: 40px;
-    border-radius: 3px;
   }
 
   .recording-booth {
@@ -76,6 +88,7 @@
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     overflow: hidden;
+    flex-shrink: 0;
   }
 
   .recording-indicator {
