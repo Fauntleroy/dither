@@ -17,15 +17,13 @@
       .limit(10)
       .orderBy('createdAt', 'desc')
       .onSnapshot(function(collection) {
-          console.log("Current data: ", collection.docs);
-          const docsData = collection.docs.map((doc) => {
-            return {
-              id: doc.id,
-              ...doc.data()
-            }
-          });
-          console.log('docsData', docsData);
-          messages = docsData;
+        const docsData = collection.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data()
+          }
+        });
+        messages = docsData;
       });
   });
 
@@ -41,8 +39,7 @@
 
 <style>
   .content {
-    width: 720px;
-    margin: 0 auto;
+    width: 100%;
   }
 </style>
 

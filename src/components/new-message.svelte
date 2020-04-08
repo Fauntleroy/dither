@@ -23,12 +23,22 @@
 
     inputMessage = '';
   }
+
+  function handleInputKeydown (event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      handleSubmit();
+    }
+  }
 </script>
 
 <style>
+  .new-message {
+    margin: 25px 0;
+  }
+
   .form {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     margin-bottom: 15px;
     justify-content: center;
   }
@@ -37,8 +47,7 @@
     display: flex;
     background: white;
     color: black;
-    border: black 4px solid;
-    border-radius: 3px;
+    border-radius: 5px;
   }
 
   .input {
@@ -47,6 +56,7 @@
     margin: 0;
     padding: 10px 15px;
     font-size: inherit;
+    font-style: italic;
   }
 
   .submit {
@@ -62,6 +72,10 @@
 
   .recording-booth {
     position: relative;
+    border: white 1px solid;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    overflow: hidden;
   }
 
   .recording-indicator {
@@ -83,7 +97,13 @@
       {#if recording}<span class="recording-indicator" />{/if}
     </div>
     <div class="fake-input">
-      <input class="input" type="text" bind:value={inputMessage} placeholder="Type to GIF" disabled={recording} />
+      <textarea
+        class="input"
+        type="text"
+        bind:value={inputMessage}
+        on:keydown={handleInputKeydown}
+        placeholder="Type to GIF"
+        disabled={recording} />
       <button class="submit" type="submit" disabled={recording}>➭</button>
     </div>
   </form>

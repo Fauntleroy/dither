@@ -10,7 +10,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 25px;
   }
 
   .text {
@@ -18,7 +18,8 @@
     padding: 15px 20px;
     background: black;
     color: white;
-    border-radius: 3px;
+    border: white 1px solid;
+    border-radius: 5px;
     z-index: 2;
   }
 </style>

@@ -19,6 +19,8 @@
     height: 225px;
     overflow: hidden;
     background: black;
+    border: white 1px solid;
+    border-radius: 5px;
   }
 
   .filmstrip .image {
