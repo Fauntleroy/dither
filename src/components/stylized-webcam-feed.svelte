@@ -33,10 +33,10 @@
           ideal: 10
         },
         width: {
-          ideal: 320
+          ideal: 640
         },
         height: {
-          ideal: 240
+          ideal: 480
         }
       }
     }).then((mediaStream) => {
@@ -72,6 +72,14 @@
 
   .processed-webcam {
     background: black;
+  }
+
+  @media (max-width: 480px) {
+    .raw-webcam,
+    .processed-webcam {
+      width: 100px;
+      height: 75px;
+    }
   }
 </style>
 

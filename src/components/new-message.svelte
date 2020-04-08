@@ -33,7 +33,7 @@
 
 <style>
   .new-message {
-    margin: 25px 0 35px 0;
+    margin: 25px 10px 35px 10px;
   }
 
   .form {
@@ -52,6 +52,7 @@
     border-bottom-right-radius: 5px;
     overflow: hidden;
     border: white 1px solid;
+    transition: transform 200ms;
   }
 
   .input {
@@ -64,8 +65,8 @@
     font-style: italic;
   }
 
-  .input:focus {
-    border: 2px black dotted;
+  .fake-input:focus-within {
+    transform: scale(1.05);
   }
 
   .submit {
