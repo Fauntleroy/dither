@@ -29,6 +29,9 @@
     navigator.mediaDevices.getUserMedia({
       audio: false,
       video: {
+        aspectRatio: {
+          ideal: 4 / 3
+        },
         frameRate: {
           ideal: 10
         },

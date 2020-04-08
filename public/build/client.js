@@ -30767,13 +30767,13 @@
     			attr_dev(video, "class", "raw-webcam svelte-cc5mg6");
     			attr_dev(video, "width", "200");
     			attr_dev(video, "height", "150");
-    			add_location(video, file$4, 86, 2, 1962);
+    			add_location(video, file$4, 89, 2, 2019);
     			attr_dev(canvas, "class", "processed-webcam svelte-cc5mg6");
     			attr_dev(canvas, "width", "200");
     			attr_dev(canvas, "height", "150");
-    			add_location(canvas, file$4, 87, 2, 2043);
+    			add_location(canvas, file$4, 90, 2, 2100);
     			attr_dev(div, "class", "stylized-webcam-feed");
-    			add_location(div, file$4, 85, 0, 1925);
+    			add_location(div, file$4, 88, 0, 1982);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -30831,6 +30831,7 @@
     		navigator.mediaDevices.getUserMedia({
     			audio: false,
     			video: {
+    				aspectRatio: { ideal: 4 / 3 },
     				frameRate: { ideal: 10 },
     				width: { ideal: 640 },
     				height: { ideal: 480 }
