@@ -1,5 +1,8 @@
 <script>
   import { onMount } from 'svelte';
+  import { quintOut } from 'svelte/easing';
+  import { crossfade } from 'svelte/transition';
+  import { flip } from 'svelte/animate';
   
   import { firestore, firestoreDb } from '../../firebase.js';
 
@@ -11,6 +14,24 @@
   const { id } = namedParams;
 
   let messages = [];
+
+  const [send, receive] = crossfade({
+		duration: d => Math.sqrt(d * 100),
+
+		fallback(node, params) {
+			const style = getComputedStyle(node);
+			const transform = style.transform === 'none' ? '' : style.transform;
+
+			return {
+				duration: 125,
+				easing: quintOut,
+				css: t => `
+					transform: ${transform} scale(${t});
+					opacity: ${t}
+				`
+			};
+		}
+	});
 
 	onMount(async () => {
     firestoreDb.collection(`rooms/${id}/messages`)
@@ -51,6 +72,8 @@
   <NewMessage on:createMessage={handleCreateMessage} />
 
   {#each messages as { id, text, imageBlob }, i (id)}
+    <div animate:flip="{{duration: 200}}" in:receive="{{key: id}}" out:send="{{key: id}}">
     <Message text={text} imageBlob={imageBlob} />
+    </div>
   {/each}
 </div>
