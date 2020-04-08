@@ -30327,15 +30327,15 @@
     			t0 = space();
     			button = element("button");
     			button.textContent = "Save  ▿";
-    			attr_dev(img, "class", "image svelte-1dldkvr");
+    			attr_dev(img, "class", "image svelte-1gno42h");
     			if (img.src !== (img_src_value = /*src*/ ctx[0])) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "");
-    			add_location(img, file$2, 56, 2, 986);
-    			attr_dev(button, "class", "download svelte-1dldkvr");
+    			add_location(img, file$2, 56, 2, 993);
+    			attr_dev(button, "class", "download svelte-1gno42h");
     			attr_dev(button, "type", "button");
-    			add_location(button, file$2, 57, 2, 1052);
-    			attr_dev(div, "class", "filmstrip svelte-1dldkvr");
-    			add_location(div, file$2, 55, 0, 960);
+    			add_location(button, file$2, 57, 2, 1059);
+    			attr_dev(div, "class", "filmstrip svelte-1gno42h");
+    			add_location(div, file$2, 55, 0, 967);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -30473,10 +30473,10 @@
     			t0 = space();
     			div0 = element("div");
     			t1 = text(/*text*/ ctx[1]);
-    			attr_dev(div0, "class", "text svelte-1vty4f2");
-    			add_location(div0, file$3, 28, 2, 470);
-    			attr_dev(div1, "class", "message svelte-1vty4f2");
-    			add_location(div1, file$3, 26, 0, 414);
+    			attr_dev(div0, "class", "text svelte-1u5kxsa");
+    			add_location(div0, file$3, 28, 2, 491);
+    			attr_dev(div1, "class", "message svelte-1u5kxsa");
+    			add_location(div1, file$3, 26, 0, 435);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -30764,16 +30764,16 @@
     			video = element("video");
     			t = space();
     			canvas = element("canvas");
-    			attr_dev(video, "class", "raw-webcam svelte-cc5mg6");
+    			attr_dev(video, "class", "raw-webcam svelte-x2fdkm");
     			attr_dev(video, "width", "200");
     			attr_dev(video, "height", "150");
-    			add_location(video, file$4, 89, 2, 2019);
-    			attr_dev(canvas, "class", "processed-webcam svelte-cc5mg6");
+    			add_location(video, file$4, 89, 2, 2026);
+    			attr_dev(canvas, "class", "processed-webcam svelte-x2fdkm");
     			attr_dev(canvas, "width", "200");
     			attr_dev(canvas, "height", "150");
-    			add_location(canvas, file$4, 90, 2, 2100);
+    			add_location(canvas, file$4, 90, 2, 2107);
     			attr_dev(div, "class", "stylized-webcam-feed");
-    			add_location(div, file$4, 88, 0, 1982);
+    			add_location(div, file$4, 88, 0, 1989);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -30963,8 +30963,8 @@
     	const block = {
     		c: function create() {
     			span = element("span");
-    			attr_dev(span, "class", "recording-indicator svelte-nx46tc");
-    			add_location(span, file$5, 111, 21, 2267);
+    			attr_dev(span, "class", "recording-indicator svelte-1p7u5c8");
+    			add_location(span, file$5, 111, 21, 2309);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -31022,23 +31022,23 @@
     			t2 = space();
     			button = element("button");
     			t3 = text("➪");
-    			attr_dev(div0, "class", "recording-booth svelte-nx46tc");
-    			add_location(div0, file$5, 109, 4, 2164);
-    			attr_dev(textarea, "class", "input svelte-nx46tc");
+    			attr_dev(div0, "class", "recording-booth svelte-1p7u5c8");
+    			add_location(div0, file$5, 109, 4, 2206);
+    			attr_dev(textarea, "class", "input svelte-1p7u5c8");
     			attr_dev(textarea, "type", "text");
     			attr_dev(textarea, "placeholder", "Type to GIF");
     			textarea.disabled = /*recording*/ ctx[2];
-    			add_location(textarea, file$5, 114, 6, 2355);
-    			attr_dev(button, "class", "submit svelte-nx46tc");
+    			add_location(textarea, file$5, 114, 6, 2397);
+    			attr_dev(button, "class", "submit svelte-1p7u5c8");
     			attr_dev(button, "type", "submit");
     			button.disabled = /*recording*/ ctx[2];
-    			add_location(button, file$5, 121, 6, 2553);
-    			attr_dev(div1, "class", "fake-input svelte-nx46tc");
-    			add_location(div1, file$5, 113, 4, 2324);
-    			attr_dev(form, "class", "form svelte-nx46tc");
-    			add_location(form, file$5, 108, 2, 2100);
-    			attr_dev(div2, "class", "new-message svelte-nx46tc");
-    			add_location(div2, file$5, 107, 0, 2072);
+    			add_location(button, file$5, 121, 6, 2595);
+    			attr_dev(div1, "class", "fake-input svelte-1p7u5c8");
+    			add_location(div1, file$5, 113, 4, 2366);
+    			attr_dev(form, "class", "form svelte-1p7u5c8");
+    			add_location(form, file$5, 108, 2, 2142);
+    			attr_dev(div2, "class", "new-message svelte-1p7u5c8");
+    			add_location(div2, file$5, 107, 0, 2114);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -31551,13 +31551,13 @@
     			t0 = text("Dither ");
     			span = element("span");
     			span.textContent = "alpha";
-    			attr_dev(span, "class", "alpha-tag svelte-om0f9x");
-    			add_location(span, file$7, 26, 37, 328);
+    			attr_dev(span, "class", "alpha-tag svelte-61hoxx");
+    			add_location(span, file$7, 26, 37, 335);
     			attr_dev(a, "href", "/");
-    			attr_dev(a, "class", "app-name svelte-om0f9x");
-    			add_location(a, file$7, 26, 1, 292);
-    			attr_dev(nav, "class", "nav svelte-om0f9x");
-    			add_location(nav, file$7, 25, 0, 273);
+    			attr_dev(a, "class", "app-name svelte-61hoxx");
+    			add_location(a, file$7, 26, 1, 299);
+    			attr_dev(nav, "class", "nav svelte-61hoxx");
+    			add_location(nav, file$7, 25, 0, 280);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");

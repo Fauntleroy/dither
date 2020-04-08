@@ -9,7 +9,7 @@
 		left: 0;
 		padding: 0 10px;
 		z-index: 5;
-		background: black;
+		background: var(--black);
 	}
 
 	.app-name {

@@ -74,7 +74,7 @@
   }
 
   .processed-webcam {
-    background: black;
+    background: var(--black);
   }
 
   @media (max-width: 480px) {

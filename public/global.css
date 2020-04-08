@@ -1,3 +1,8 @@
+:root {
+	--black: black;
+	--white: white;
+}
+
 html, body {
 	position: relative;
 	width: 100%;
@@ -5,8 +10,8 @@ html, body {
 }
 
 body {
-	color: white;
-	background: black;
+	color: var(--white);
+	background: var(--black);
 	margin: 0;
 	padding: 8px;
 	box-sizing: border-box;
@@ -16,7 +21,7 @@ body {
 }
 
 a {
-	color: white;
+	color: var(--white);
 	text-decoration: underline;
 }
 
@@ -25,7 +30,7 @@ a:hover {
 }
 
 a:visited {
-	color: white;
+	color: var(--white);
 }
 
 label {
@@ -37,7 +42,7 @@ input, button, select, textarea {
 	font-size: inherit;
 	padding: 5px 10px;
 	box-sizing: border-box;
-	border: 1px solid #ccc;
+	border: none;
 	border-radius: 5px;
 }
 
@@ -50,8 +55,8 @@ input[type="range"] {
 }
 
 button {
-	color: black;
-	background-color: white;
+	color: var(--black);
+	background-color: var(--white);
 	outline: none;
 	cursor: pointer;
 }

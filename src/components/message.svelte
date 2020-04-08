@@ -16,9 +16,9 @@
   .text {
     margin-top: -10px;
     padding: 15px 20px;
-    background: black;
-    color: white;
-    border: white 1px solid;
+    background: var(--black);
+    color: var(--white);
+    border: var(--white) 1px solid;
     border-radius: 5px;
     z-index: 2;
   }
