@@ -33,7 +33,7 @@
 
 <style>
   .new-message {
-    margin: 25px 0;
+    margin: 25px 0 35px 0;
   }
 
   .form {

@@ -24447,8 +24447,8 @@
     	const block = {
     		c: function create() {
     			span = element("span");
-    			attr_dev(span, "class", "recording-indicator svelte-1eb71ts");
-    			add_location(span, file$5, 96, 21, 1896);
+    			attr_dev(span, "class", "recording-indicator svelte-1408hcw");
+    			add_location(span, file$5, 96, 21, 1903);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -24506,23 +24506,23 @@
     			t2 = space();
     			button = element("button");
     			t3 = text("➭");
-    			attr_dev(div0, "class", "recording-booth svelte-1eb71ts");
-    			add_location(div0, file$5, 94, 4, 1793);
-    			attr_dev(textarea, "class", "input svelte-1eb71ts");
+    			attr_dev(div0, "class", "recording-booth svelte-1408hcw");
+    			add_location(div0, file$5, 94, 4, 1800);
+    			attr_dev(textarea, "class", "input svelte-1408hcw");
     			attr_dev(textarea, "type", "text");
     			attr_dev(textarea, "placeholder", "Type to GIF");
     			textarea.disabled = /*recording*/ ctx[2];
-    			add_location(textarea, file$5, 99, 6, 1984);
-    			attr_dev(button, "class", "submit svelte-1eb71ts");
+    			add_location(textarea, file$5, 99, 6, 1991);
+    			attr_dev(button, "class", "submit svelte-1408hcw");
     			attr_dev(button, "type", "submit");
     			button.disabled = /*recording*/ ctx[2];
-    			add_location(button, file$5, 106, 6, 2182);
-    			attr_dev(div1, "class", "fake-input svelte-1eb71ts");
-    			add_location(div1, file$5, 98, 4, 1953);
-    			attr_dev(form, "class", "form svelte-1eb71ts");
-    			add_location(form, file$5, 93, 2, 1729);
-    			attr_dev(div2, "class", "new-message svelte-1eb71ts");
-    			add_location(div2, file$5, 92, 0, 1701);
+    			add_location(button, file$5, 106, 6, 2189);
+    			attr_dev(div1, "class", "fake-input svelte-1408hcw");
+    			add_location(div1, file$5, 98, 4, 1960);
+    			attr_dev(form, "class", "form svelte-1408hcw");
+    			add_location(form, file$5, 93, 2, 1736);
+    			attr_dev(div2, "class", "new-message svelte-1408hcw");
+    			add_location(div2, file$5, 92, 0, 1708);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -24978,11 +24978,11 @@
     		c: function create() {
     			nav = element("nav");
     			a = element("a");
-    			t0 = text("Not Meatspace ");
+    			t0 = text("Dither ");
     			span = element("span");
     			span.textContent = "alpha";
     			attr_dev(span, "class", "alpha-tag svelte-om0f9x");
-    			add_location(span, file$7, 26, 44, 335);
+    			add_location(span, file$7, 26, 37, 328);
     			attr_dev(a, "href", "/");
     			attr_dev(a, "class", "app-name svelte-om0f9x");
     			add_location(a, file$7, 26, 1, 292);

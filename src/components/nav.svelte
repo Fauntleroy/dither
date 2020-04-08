@@ -24,5 +24,5 @@
 </style>
 
 <nav class="nav">
-	<a href="/" class="app-name">Not Meatspace <span class="alpha-tag">alpha</span></a>
+	<a href="/" class="app-name">Dither <span class="alpha-tag">alpha</span></a>
 </nav>
