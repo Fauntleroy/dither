@@ -10,10 +10,10 @@
 		padding: 0 10px;
 		z-index: 5;
 		background: var(--black);
+		font-size: 10px;
 	}
 
 	.app-name {
-		font-size: 10px;
 		text-transform: uppercase;
 	}
 

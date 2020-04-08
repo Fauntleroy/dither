@@ -31551,12 +31551,12 @@
     			t0 = text("Dither ");
     			span = element("span");
     			span.textContent = "alpha";
-    			attr_dev(span, "class", "alpha-tag svelte-61hoxx");
+    			attr_dev(span, "class", "alpha-tag svelte-9cwu85");
     			add_location(span, file$7, 26, 37, 335);
     			attr_dev(a, "href", "/");
-    			attr_dev(a, "class", "app-name svelte-61hoxx");
+    			attr_dev(a, "class", "app-name svelte-9cwu85");
     			add_location(a, file$7, 26, 1, 299);
-    			attr_dev(nav, "class", "nav svelte-61hoxx");
+    			attr_dev(nav, "class", "nav svelte-9cwu85");
     			add_location(nav, file$7, 25, 0, 280);
     		},
     		l: function claim(nodes) {
