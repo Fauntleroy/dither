@@ -1,7 +1,7 @@
 import Index from './routes/index.svelte'
 import Room from './routes/rooms/[id].svelte';
 import Layout from './routes/_layout.svelte';
-console.log('layout', Layout);
+
 const routes = [
   {
     name: '/',

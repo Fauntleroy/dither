@@ -1,8 +1,6 @@
 <svelte:options accessors={true} />
 
 <script>
-  import getUserMedia from 'getusermedia';
-  import attachMediaStream from 'attachmediastream';
   import Dither from 'canvas-dither';
   import throttle from 'just-throttle';
   import { onMount } from 'svelte';
@@ -12,7 +10,6 @@
   let processedImageDrawRequestId;
 
   function drawProcessedImage () {
-    console.log('drawProcessedImage')
     const canvas2dContext = canvasElement.getContext('2d');
     canvas2dContext.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
     const canvasImageData = canvas2dContext.getImageData(0, 0, canvasElement.width, canvasElement.height);
@@ -29,15 +26,24 @@
   }
 
   onMount(() => {
-    getUserMedia({
-      video: true,
-      audio: false
-    }, (error, userMediaStream) => {
-      if (error) {
-        alert(error);
-      } else {
-        attachMediaStream(userMediaStream, videoElement);
+    navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: {
+        frameRate: {
+          ideal: 10
+        },
+        width: {
+          ideal: 400
+        },
+        height: {
+          ideal: 300
+        }
       }
+    }).then((mediaStream) => {
+      videoElement.srcObject = mediaStream;
+      videoElement.play();
+    }).catch((error) => {
+      alert(error);
     });
 
     processedImageDrawRequestId = requestAnimationFrame(tryToDraw);
