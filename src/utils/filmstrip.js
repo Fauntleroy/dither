@@ -44,6 +44,8 @@ export function generateGIF (targetFilmstripElement) {
       highWaterMark: 128 * 1000
     });
     gif.writeHeader();
+    gif.setDelay(100);
+    gif.setRepeat(0);
 
     for (let i = 0; i < FRAME_TOTAL; i++) {
       bufferContext.drawImage(
