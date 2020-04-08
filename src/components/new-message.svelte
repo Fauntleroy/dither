@@ -118,7 +118,7 @@
         on:keydown={handleInputKeydown}
         placeholder="Type to GIF"
         disabled={recording} />
-      <button class="submit" type="submit" disabled={recording}>➭</button>
+      <button class="submit" type="submit" disabled={recording}>➪</button>
     </div>
   </form>
 </div>
