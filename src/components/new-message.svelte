@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher } from 'svelte';
+  import clsx from 'clsx';
 
   import { generateImage } from '../utils/filmstrip.js';
 
@@ -125,9 +126,15 @@
     position: absolute;
     bottom: 0;
     left: 0;
+    width: 0;
     height: 3px;
     background: white;
-    transition: width 2s linear;
+    transition: width 200ms;
+  }
+
+  .new-message.recording .recording-progress {
+    width: 100%;
+    transition: width 2000ms linear;
   }
 
   @media (max-width: 480px) {
@@ -138,7 +145,7 @@
   }
 </style>
 
-<div class="new-message">
+<div class="new-message" class:recording>
   <form class="form" on:submit|preventDefault={handleSubmit}>
     <div class="recording-booth">
       <StylizedWebcamFeed bind:this={webcamFeed} />

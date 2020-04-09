@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "canvas-dither": "^1.0.0",
+    "clsx": "^1.1.0",
     "firebase": "^7.13.2",
     "gif-encoder": "^0.7.2",
     "just-throttle": "^1.1.0",
