@@ -3,8 +3,10 @@
   import { quintOut } from 'svelte/easing';
   import { crossfade } from 'svelte/transition';
   import { flip } from 'svelte/animate';
+  import { derived } from 'svelte/store';
   
   import { firestore, firestoreDb } from '../../firebase.js';
+  import { pageVisible } from '../../store.js';
 
   import Message from '../../components/message.svelte';
   import NewMessage from '../../components/new-message.svelte';
@@ -12,6 +14,7 @@
   export let currentRoute;
   const { namedParams } = currentRoute;
   const { id } = namedParams;
+  let unreadCount = 0;
 
   let messages = [];
 
@@ -45,7 +48,15 @@
           }
         });
         messages = docsData;
+
+        if (!$pageVisible) {
+          unreadCount++;
+        }
       });
+  });
+
+  pageVisible.subscribe(() => {
+    unreadCount = 0;
   });
 
 	async function handleCreateMessage (event) {
@@ -72,7 +83,9 @@
 </style>
 
 <svelte:head>
-	<title>Room {id}</title>
+	<title>{unreadCount
+      ? `[${unreadCount}] Dither: ${id}`
+      : `Dither: ${id}`}</title>
 </svelte:head>
 
 <div class="content">
