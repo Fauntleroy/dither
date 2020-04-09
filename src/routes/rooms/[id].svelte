@@ -62,6 +62,13 @@
   .content {
     width: 100%;
   }
+
+  .messages {
+    list-style-type: none;
+    margin: 25px 0 0 0;
+    padding: 0;
+    text-align: center;
+  }
 </style>
 
 <svelte:head>
@@ -71,9 +78,15 @@
 <div class="content">
   <NewMessage on:createMessage={handleCreateMessage} />
 
-  {#each messages as { id, text, imageBlob }, i (id)}
-    <div animate:flip="{{duration: 200}}" in:receive="{{key: id}}" out:send="{{key: id}}">
-    <Message text={text} imageBlob={imageBlob} />
-    </div>
-  {/each}
+  <ul class="messages">
+    {#if messages.length === 0}
+      <p>Nothing has been said.</p>
+      <p>Click ➪ to say something</p>
+    {/if}
+    {#each messages as { id, text, imageBlob }, i (id)}
+      <li animate:flip="{{duration: 200}}" in:receive="{{key: id}}" out:send="{{key: id}}">
+        <Message text={text} imageBlob={imageBlob} />
+      </li>
+    {/each}
+  </ul>
 </div>

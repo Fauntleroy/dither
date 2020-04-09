@@ -9,12 +9,15 @@
   .message {
     display: flex;
     align-items: center;
-    flex-direction: column;
     margin-bottom: 25px;
   }
 
+  .image {
+    flex-shrink: 0;
+  }
+
   .text {
-    margin-top: -10px;
+    margin-left: -10px;
     padding: 15px 20px;
     background: var(--black);
     color: var(--white);
@@ -25,6 +28,8 @@
 </style>
 
 <div class="message">
-  <Filmstrip src={imageBlob} />
+  <div class="image">
+    <Filmstrip src={imageBlob} />
+  </div>
   <div class="text">{text}</div>
 </div>

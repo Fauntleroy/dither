@@ -7,16 +7,15 @@
 </script>
 
 <style>
-	/* @media (prefers-color-scheme: dark) {
-		:global(body) {
-			background: #1a1a1a;
-			color: #eee;
-		}
-	} */
+	.layout {
+		max-width: 640px;
+		margin: 0 auto;
+		padding: 25px 10px 20px 10px;
+	}
 </style>
 
 <Nav />
 
-<main>
+<main class="layout">
 	<Route {currentRoute} />
 </main>

@@ -67,22 +67,12 @@
   .raw-webcam,
   .processed-webcam {
     display: block;
-    width: 200px;
-    height: 150px;
-    image-rendering: crisp-edges;
-    image-rendering: pixelated;
+    width: 100%;
+    height: 100%;
   }
 
   .processed-webcam {
     background: var(--black);
-  }
-
-  @media (max-width: 480px) {
-    .raw-webcam,
-    .processed-webcam {
-      width: 100px;
-      height: 75px;
-    }
   }
 </style>
 

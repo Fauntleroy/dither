@@ -26,6 +26,7 @@
     position: relative;
     width: 300px;
     height: 225px;
+    max-width: 100%;
     overflow: hidden;
     background: var(--black);
     border: white 1px solid;
@@ -50,6 +51,13 @@
   .filmstrip:hover .download {
     opacity: 1;
     transform: scale(1);
+  }
+
+  @media (max-width: 600px) {
+    .filmstrip {
+      width: 200px;
+      height: 150px;
+    }
   }
 </style>
 

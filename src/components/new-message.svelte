@@ -32,20 +32,31 @@
 </script>
 
 <style>
+  @keyframes indicatorGlow {
+    from {
+      background: rgba(255, 0, 0, 0.5);
+    }
+    to {
+      background: red;
+    }
+  }
+
   .new-message {
-    margin: 25px 10px 35px 10px;
+    max-width: 540px;
+    margin: 0 auto;
   }
 
   .form {
     display: flex;
     align-items: stretch;
-    margin-bottom: 15px;
+    margin: 0;
     justify-content: center;
   }
 
   .fake-input {
-    position: relative;
     display: flex;
+    flex-grow: 1;
+    position: relative;
     background: var(--white);
     color: var(--black);
     border-top-right-radius: 5px;
@@ -63,18 +74,21 @@
     padding: 10px 50px 10px 15px;
     font-size: inherit;
     font-style: italic;
-    max-width: 100%;
+    width: 100%;
   }
 
   .fake-input:focus-within {
     transform: scale(1.05);
   }
 
-  .submit {
+  .fake-input__action {
     position: absolute;
     top: 50%;
     right: 0;
     transform: translateY(-50%);
+  }
+
+  .submit {
     padding: 10px;
     margin: 0;
     color: var(--black);
@@ -91,17 +105,36 @@
     border-bottom-left-radius: 5px;
     overflow: hidden;
     flex-shrink: 0;
+    width: 150px;
+    height: 113px;
   }
 
   .recording-indicator {
     position: absolute;
     bottom: 10px;
-    right: 10px;
+    left: 10px;
     display: block;
     border-radius: 50%;
     background: red;
     width: 10px;
     height: 10px;
+    animation: indicatorGlow 500ms linear alternate infinite;
+  }
+
+  .recording-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: white;
+    transition: width 2s linear;
+  }
+
+  @media (max-width: 480px) {
+    .recording-booth {
+      width: 100px;
+      height: 75px;
+    }
   }
 </style>
 
@@ -110,6 +143,7 @@
     <div class="recording-booth">
       <StylizedWebcamFeed bind:this={webcamFeed} />
       {#if recording}<span class="recording-indicator" />{/if}
+      <div class="recording-progress" />
     </div>
     <div class="fake-input">
       <textarea
@@ -119,7 +153,9 @@
         on:keydown={handleInputKeydown}
         placeholder="Type to GIF"
         disabled={recording} />
-      <button class="submit" type="submit" disabled={recording}>➪</button>
+      <span class="fake-input__action">
+        <button class="submit" type="submit" disabled={recording}>➪</button>
+      </span>
     </div>
   </form>
 </div>
