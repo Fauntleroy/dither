@@ -83,9 +83,11 @@
 </style>
 
 <svelte:head>
-	<title>{unreadCount
+	<title>{
+    unreadCount
       ? `[${unreadCount}] Dither: ${id}`
-      : `Dither: ${id}`}</title>
+      : `Dither: ${id}`
+  }</title>
 </svelte:head>
 
 <div class="content">

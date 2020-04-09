@@ -5,6 +5,10 @@
   import throttle from 'just-throttle';
   import { onMount } from 'svelte';
 
+  import { mediaDeviceId, mediaStream } from '../store.js';
+
+  import WebcamSelector from './webcam-selector.svelte';
+
   export let canvasElement;
   export let videoElement;
   let processedImageDrawRequestId;
@@ -26,35 +30,31 @@
   }
 
   onMount(() => {
-    navigator.mediaDevices.getUserMedia({
-      audio: false,
-      video: {
-        aspectRatio: {
-          ideal: 4 / 3
-        },
-        frameRate: {
-          ideal: 10
-        },
-        width: {
-          ideal: 640
-        },
-        height: {
-          ideal: 480
-        }
-      }
-    }).then((mediaStream) => {
-      videoElement.srcObject = mediaStream;
+    const mediaStreamUnsubscribe = mediaStream.subscribe((mediaStreamValue) => {
+      videoElement.srcObject = null;
+      videoElement.srcObject = mediaStreamValue;
       videoElement.play();
-    }).catch((error) => {
-      alert(error);
-    });
 
-    processedImageDrawRequestId = requestAnimationFrame(tryToDraw);
+      cancelAnimationFrame(processedImageDrawRequestId);
+      processedImageDrawRequestId = requestAnimationFrame(tryToDraw);
+    });
 
     return function onUnMount () {
       cancelAnimationFrame(processedImageDrawRequestId);
+      mediaStreamUnsubscribe();
     }
   });
+
+  let showWebcamSelector = false;
+  function handleFeedClick () {
+    showWebcamSelector = !showWebcamSelector;
+  }
+
+  function handleWebcamSelect (event) {
+    const deviceId = event.detail;
+    mediaDeviceId.set(deviceId);
+    showWebcamSelector = false;
+  }
 </script>
 
 <style>
@@ -78,5 +78,6 @@
 
 <div class="stylized-webcam-feed">
   <video class="raw-webcam" width="200" height="150" bind:this={videoElement} />
-  <canvas class="processed-webcam" width="200" height="150" bind:this={canvasElement} />
+  <canvas class="processed-webcam" width="200" height="150" bind:this={canvasElement} on:click={handleFeedClick} />
+  {#if showWebcamSelector}<WebcamSelector on:select={handleWebcamSelect} />{/if}
 </div>

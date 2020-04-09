@@ -1,6 +1,5 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import clsx from 'clsx';
 
   import { generateImage } from '../utils/filmstrip.js';
 
@@ -93,8 +92,6 @@
     padding: 10px;
     margin: 0;
     color: var(--black);
-    background: none;
-    border: none;
     font-size: 40px;
     line-height: 40px;
   }
@@ -104,7 +101,6 @@
     border: var(--white) 1px solid;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
-    overflow: hidden;
     flex-shrink: 0;
     width: 150px;
     height: 113px;

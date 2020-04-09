@@ -55,14 +55,17 @@ input[type="range"] {
 }
 
 button {
+	border: var(--white) 1px solid;
 	color: var(--black);
 	background-color: var(--white);
 	outline: none;
 	cursor: pointer;
+	transition: background-color 500ms, border-color 150ms;
 }
 
 button:hover {
 	transform: translateY(-1px);
+	border-color: var(--black);
 }
 
 button:hover:active {
@@ -75,6 +78,7 @@ button:disabled {
 
 button:not(:disabled):active {
 	background-color: #ddd;
+	transition: background-color 0ms;
 }
 
 button:focus {
