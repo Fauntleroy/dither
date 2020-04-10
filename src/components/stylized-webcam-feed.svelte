@@ -9,14 +9,44 @@
 
   import WebcamSelector from './webcam-selector.svelte';
 
+  const TARGET_WIDTH = 200;
+  const TARGET_HEIGHT = 150;
+  const TARGET_ASPECT = TARGET_WIDTH / TARGET_HEIGHT;
+
   export let canvasElement;
   export let videoElement;
+  let canvasWidth = TARGET_WIDTH;
+  let canvasHeight = TARGET_HEIGHT;
   let processedImageDrawRequestId;
+
+  function getCrop () {
+    const { videoWidth, videoHeight } = videoElement;
+    const webcamVideoAspect = videoWidth / videoHeight;
+    let width, height;
+
+    if (webcamVideoAspect > TARGET_ASPECT) {
+      height = videoHeight;
+      width = height * TARGET_ASPECT;
+    } else {
+      width = videoWidth;
+      height = width / TARGET_ASPECT;
+    }
+
+    const x = (videoWidth / 2) - (width / 2);
+    const y = (videoHeight / 2) - (height / 2);
+
+    return { x, y, width, height };
+  }
 
   function drawProcessedImage () {
     const canvas2dContext = canvasElement.getContext('2d');
-    canvas2dContext.drawImage(videoElement, 0, 0, videoElement.width, videoElement.height);
-    const canvasImageData = canvas2dContext.getImageData(0, 0, canvasElement.width, canvasElement.height);
+    const { x, y, width, height } = getCrop();
+    canvas2dContext.drawImage(
+      videoElement,
+      x, y, width, height, // source (webcam)
+      0, 0, canvasWidth, canvasHeight // destination (canvas)
+    );
+    const canvasImageData = canvas2dContext.getImageData(0, 0, canvasWidth, canvasHeight);
     const filteredImageData = Dither.atkinson(canvasImageData);
     canvas2dContext.putImageData(filteredImageData, 0, 0);
   }
@@ -58,13 +88,17 @@
 </script>
 
 <style>
+.stylized-webcam-feed {
+  position: relative;
+}
   .raw-webcam {
     position: fixed;
+    z-index: 9999;
     top: -9999px;
     visibility: hidden;
+    max-width: 300px;
   }
 
-  .raw-webcam,
   .processed-webcam {
     display: block;
     width: 100%;
@@ -77,7 +111,7 @@
 </style>
 
 <div class="stylized-webcam-feed">
-  <video class="raw-webcam" width="200" height="150" bind:this={videoElement} />
-  <canvas class="processed-webcam" width="200" height="150" bind:this={canvasElement} on:click={handleFeedClick} />
+  <video class="raw-webcam" bind:this={videoElement} />
+  <canvas class="processed-webcam" width={TARGET_WIDTH} height={TARGET_HEIGHT} bind:this={canvasElement} on:click={handleFeedClick} />
   {#if showWebcamSelector}<WebcamSelector on:select={handleWebcamSelect} />{/if}
 </div>
