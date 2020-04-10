@@ -17,6 +17,7 @@
   }
 
   .text {
+    flex-grow: 1;
     margin-left: -10px;
     padding: 15px 20px;
     background: var(--black);
@@ -31,5 +32,5 @@
   <div class="image">
     <Filmstrip src={imageBlob} />
   </div>
-  <div class="text">{text}</div>
+  <div class="text">{text || '…'}</div>
 </div>
