@@ -1,10 +1,32 @@
 <script>
   import { onMount } from 'svelte';
+  import hexRgb from 'hex-rgb';
 
   import { generateGIF } from '../utils/filmstrip.js';
+  import { convertImageDataToColorPalette } from '../utils/canvas.js';
+  import { colorPalette } from '../store.js';
 
   export let src;
   let imageElement;
+  let canvasElement;
+
+  onMount(() => {
+    drawDataURIOnCanvas(src);
+
+    colorPalette.subscribe(() => drawDataURIOnCanvas(src));
+  });
+
+  function drawDataURIOnCanvas (strDataURI) {
+    const tempImage = new Image();
+    tempImage.addEventListener('load', () => {
+      const canvasContext = canvasElement.getContext('2d');
+      canvasContext.drawImage(tempImage, 0, 0);
+      const imageData = canvasContext.getImageData(0, 0, canvasElement.width, canvasElement.height);
+      const convertedImageData = convertImageDataToColorPalette(imageData, $colorPalette);
+      canvasContext.putImageData(convertedImageData, 0, 0);
+    });
+    tempImage.setAttribute("src", strDataURI);
+  }
 
   function handleDownloadClick () {
     console.log('handleDownloadClick()')
@@ -29,11 +51,11 @@
     max-width: 100%;
     overflow: hidden;
     background: var(--black);
-    border: white 1px solid;
+    border: var(--white) 1px solid;
     border-radius: 5px;
   }
 
-  .image {
+  .canvas {
     animation: play-frames 2000ms steps(20, end) infinite;
     width: 100%;
     image-rendering: crisp-edges;
@@ -62,6 +84,6 @@
 </style>
 
 <div class="filmstrip">
-  <img class="image" src={src} alt="" bind:this={imageElement} />
+  <canvas class="canvas" width="200" height="3000" bind:this={canvasElement} />
   <button class="download" type="button" on:click={handleDownloadClick}>Save  ▿</button>
 </div>

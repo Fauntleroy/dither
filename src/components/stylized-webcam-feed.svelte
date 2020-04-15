@@ -5,7 +5,8 @@
   import throttle from 'just-throttle';
   import { onMount } from 'svelte';
 
-  import { mediaDeviceId, mediaStream } from '../store.js';
+  import { colorPalette, mediaDeviceId, mediaStream } from '../store.js';
+  import { convertImageDataToColorPalette } from '../utils/canvas.js';
 
   import WebcamSelector from './webcam-selector.svelte';
 
@@ -13,7 +14,8 @@
   const TARGET_HEIGHT = 150;
   const TARGET_ASPECT = TARGET_WIDTH / TARGET_HEIGHT;
 
-  export let canvasElement;
+  export let displayCanvasElement;
+  export let recordingCanvasElement;
   export let videoElement;
   let canvasWidth = TARGET_WIDTH;
   let canvasHeight = TARGET_HEIGHT;
@@ -39,16 +41,19 @@
   }
 
   function drawProcessedImage () {
-    const canvas2dContext = canvasElement.getContext('2d');
+    const displayCanvas2dContext = displayCanvasElement.getContext('2d');
+    const recordingCanvas2dContext = recordingCanvasElement.getContext('2d');
     const { x, y, width, height } = getCrop();
-    canvas2dContext.drawImage(
+    displayCanvas2dContext.drawImage(
       videoElement,
       x, y, width, height, // source (webcam)
       0, 0, canvasWidth, canvasHeight // destination (canvas)
     );
-    const canvasImageData = canvas2dContext.getImageData(0, 0, canvasWidth, canvasHeight);
+    const canvasImageData = displayCanvas2dContext.getImageData(0, 0, canvasWidth, canvasHeight);
     const filteredImageData = Dither.atkinson(canvasImageData);
-    canvas2dContext.putImageData(filteredImageData, 0, 0);
+    recordingCanvas2dContext.putImageData(filteredImageData, 0, 0);
+    const colorChangedImageData = convertImageDataToColorPalette(filteredImageData, $colorPalette);
+    displayCanvas2dContext.putImageData(colorChangedImageData, 0, 0);
   }
 
   const throttledDrawProcessedImage = throttle(drawProcessedImage, 100, true);
@@ -92,26 +97,30 @@
   position: relative;
 }
   .raw-webcam {
-    position: fixed;
-    z-index: 9999;
-    top: -9999px;
-    visibility: hidden;
     max-width: 300px;
   }
 
-  .processed-webcam {
+  .display-webcam {
     display: block;
     width: 100%;
     height: 100%;
   }
 
-  .processed-webcam {
+  .display-webcam {
     background: var(--black);
+  }
+
+  .sekrit {
+    position: fixed;
+    z-index: 9999;
+    top: -9999px;
+    visibility: hidden;
   }
 </style>
 
-<div class="stylized-webcam-feed">
-  <video class="raw-webcam" bind:this={videoElement} />
-  <canvas class="processed-webcam" width={TARGET_WIDTH} height={TARGET_HEIGHT} bind:this={canvasElement} on:click={handleFeedClick} />
+<div class="stylized-webcam-feed" on:click={handleFeedClick}>
+  <video class="raw-webcam sekrit" bind:this={videoElement} />
+  <canvas class="recording-webcam sekrit" width={TARGET_WIDTH} height={TARGET_HEIGHT} bind:this={recordingCanvasElement} />
+  <canvas class="display-webcam" width={TARGET_WIDTH} height={TARGET_HEIGHT} bind:this={displayCanvasElement} />
   {#if showWebcamSelector}<WebcamSelector on:select={handleWebcamSelect} />{/if}
 </div>

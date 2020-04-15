@@ -1,6 +1,9 @@
 import { derived, readable, writable } from 'svelte/store';
+import store from 'store';
 
-const pageVisible = readable(!document.hidden, (set) => {
+import { COLOR_PALETTES, STORE_COLOR_PALETTE_ID } from './constants.js';
+
+export const pageVisible = readable(!document.hidden, (set) => {
   function handleVisibilityChange () {
     set(!document.hidden);
   }
@@ -75,7 +78,7 @@ async function getCameras () {
   return cameras;
 }
 
-const cameras = derived([mediaStream], async ([$mediaStream], set) => {
+export const cameras = derived([mediaStream], async ([$mediaStream], set) => {
   const cameras = await getCameras();
   set(cameras);
 
@@ -91,4 +94,10 @@ const cameras = derived([mediaStream], async ([$mediaStream], set) => {
   }
 }, []);
 
-export { cameras, pageVisible };
+export const colorPaletteId = writable(store.get(STORE_COLOR_PALETTE_ID) || 'Black & White');
+
+colorPaletteId.subscribe((newColorPaletteId) => store.set(STORE_COLOR_PALETTE_ID, newColorPaletteId));
+
+export const colorPalette = derived([colorPaletteId], ([$colorPaletteId], set) => {
+  set(COLOR_PALETTES[$colorPaletteId]);
+});

@@ -13,7 +13,7 @@
 
   async function handleSubmit () {
     recording = true;
-    const imageDataURL = await generateImage(webcamFeed.canvasElement);
+    const imageDataURL = await generateImage(webcamFeed.recordingCanvasElement);
     recording = false;
 
     dispatch('createMessage', {

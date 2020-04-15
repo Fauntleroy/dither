@@ -54,6 +54,11 @@ input[type="range"] {
 	height: 0;
 }
 
+input, textarea {
+	background: var(--white);
+	color: var(--black);
+}
+
 button {
 	border: var(--white) 1px solid;
 	color: var(--black);

@@ -8,6 +8,7 @@ import { terser } from 'rollup-plugin-terser';
 import visualizer from 'rollup-plugin-visualizer';
 
 const production = !process.env.ROLLUP_WATCH;
+const VISUALIZE_BUNDLE = process.env.VISUALIZE_BUNDLE;
 
 export default {
 	input: 'src/client.js',
@@ -35,7 +36,8 @@ export default {
 		// https://github.com/rollup/plugins/tree/master/packages/commonjs
 		resolve({
 			browser: true,
-			dedupe: ['svelte']
+			dedupe: ['svelte'],
+			preferBuiltins: true,
 		}),
 		commonjs(),
 		globals(),
@@ -49,7 +51,7 @@ export default {
 		// browser on changes when not in production
 		!production && livereload('public'),
 
-		visualizer({
+		VISUALIZE_BUNDLE && visualizer({
 			filename: 'rollup-stats.html'
 		}),
 
