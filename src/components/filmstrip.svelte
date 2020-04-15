@@ -7,7 +7,6 @@
   import { colorPalette } from '../store.js';
 
   export let src;
-  let imageElement;
   let canvasElement;
 
   onMount(() => {
@@ -30,7 +29,7 @@
 
   function handleDownloadClick () {
     console.log('handleDownloadClick()')
-    generateGIF(imageElement);
+    generateGIF(canvasElement);
   }
 </script>
 
