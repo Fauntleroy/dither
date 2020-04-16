@@ -7,4 +7,4 @@ yarn-error.log
 /.firebase/
 firestore-debug.log
 rollup-stats.html
-/public/build
+/public/build/

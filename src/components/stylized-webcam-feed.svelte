@@ -64,6 +64,10 @@
 
   onMount(() => {
     const mediaStreamUnsubscribe = mediaStream.subscribe((mediaStreamValue) => {
+      if (!mediaStreamValue) {
+        return;
+      }
+
       videoElement.srcObject = null;
       videoElement.srcObject = mediaStreamValue;
       videoElement.play();
