@@ -5,4 +5,5 @@ yarn-error.log
 /cypress/screenshots/
 /__sapper__/
 /.firebase/
+firestore-debug.log
 rollup-stats.html

@@ -71,6 +71,7 @@ async function getCameras () {
     const mediaDevices = await navigator.mediaDevices.enumerateDevices();
     const videoDevices = mediaDevices.filter(mediaDevice => mediaDevice.kind === 'videoinput');
     cameras = videoDevices;
+    mediaDeviceId.set(cameras[0].deviceId);
   } catch (error) {
     console.log('could not get the devices', error);
   }

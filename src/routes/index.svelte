@@ -1,12 +1,22 @@
 <script>
+	import humanId from 'human-id';
 	import { navigateTo } from 'svelte-router-spa';
 
-	import { firestoreDb } from '../firebase.js';
+	import { firestore, firestoreDb } from '../firebase.js';
 
 	async function handleNewRoomClick () {
-		const newRoom = await firestoreDb.collection('rooms').add({});
+		try {
+			const name = humanId(' ');
+			const newRoom = await firestoreDb.collection('rooms').add({
+				createdAt: firestore.FieldValue.serverTimestamp(),
+				name
+			});
 
-		navigateTo(`rooms/${newRoom.id}`);
+			navigateTo(`rooms/${newRoom.id}`);
+		} catch (error) {
+			console.log('Error creating room!', error);
+			alert('Error creating room!');
+		}
 	}
 </script>
 

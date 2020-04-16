@@ -16,7 +16,11 @@
   const { id } = namedParams;
   let unreadCount = 0;
 
+  // firestore data
+  let room;
   let messages = [];
+
+  $: roomName = room ? room.name : id;
 
   const [send, receive] = crossfade({
 		duration: d => Math.sqrt(d * 100),
@@ -37,10 +41,15 @@
 	});
 
 	onMount(async () => {
+    firestoreDb.collection('rooms').doc(id)
+      .onSnapshot((doc) => {
+        room = doc.data();
+        console.log('room', room)
+      });
     firestoreDb.collection(`rooms/${id}/messages`)
       .limit(10)
       .orderBy('createdAt', 'desc')
-      .onSnapshot(function(collection) {
+      .onSnapshot((collection) => {
         const docsData = collection.docs.map((doc) => {
           return {
             id: doc.id,
@@ -74,6 +83,24 @@
     width: 100%;
   }
 
+  .room-name {
+    font-size: 75%;
+    /* font-style: italic; */
+    text-transform: uppercase;
+    text-align: center;
+    margin: 0 0 10px 0;
+  }
+
+  .room-name:before {
+    content: '—';
+    margin-right: 5px;
+  }
+
+  .room-name:after {
+    content: '—';
+    margin-left: 5px;
+  }
+
   .messages {
     list-style-type: none;
     margin: 25px 0 0 0;
@@ -85,12 +112,13 @@
 <svelte:head>
 	<title>{
     unreadCount
-      ? `[${unreadCount}] Dither: ${id}`
-      : `Dither: ${id}`
+      ? `[${unreadCount}] ${roomName} - Dither`
+      : `${roomName} - Dither`
   }</title>
 </svelte:head>
 
 <div class="content">
+  <h1 class="room-name">{roomName}</h1>
   <NewMessage on:createMessage={handleCreateMessage} />
 
   <ul class="messages">

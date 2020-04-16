@@ -78,6 +78,7 @@
     }
   });
 
+<<<<<<< HEAD
   let showWebcamSelector = false;
   function handleFeedClick () {
     const currentCameraIndex = $cameras.findIndex((camera) => camera.deviceId === $mediaDeviceId);
@@ -85,6 +86,15 @@
       ? currentCameraIndex + 1
       : 0;
     mediaDeviceId.set($cameras[nextCameraIndex].deviceId);
+=======
+  function handleFeedClick (event) {
+    const activeCameraIndex = $cameras.findIndex(camera => camera.deviceID === mediaDeviceId);
+    const nextCameraIndex = ($cameras.length - 1) > activeCameraIndex
+      ? activeCameraIndex + 1
+      : 0;
+    
+    mediaDeviceId.set(nextCameraIndex);
+>>>>>>> ea52a9223eedafb5395664c28bcf829e5c3a1cb6
   }
 </script>
 
