@@ -1,5 +1,5 @@
 import { derived, readable, writable } from 'svelte/store';
-import store from 'store';
+import store from 'store2';
 
 import { COLOR_PALETTES, STORE_COLOR_PALETTE_ID } from './constants.js';
 
