@@ -5,10 +5,8 @@
   import throttle from 'just-throttle';
   import { onMount } from 'svelte';
 
-  import { colorPalette, mediaDeviceId, mediaStream } from '../store.js';
+  import { cameras, colorPalette, mediaDeviceId, mediaStream } from '../store.js';
   import { convertImageDataToColorPalette } from '../utils/canvas.js';
-
-  import WebcamSelector from './webcam-selector.svelte';
 
   const TARGET_WIDTH = 200;
   const TARGET_HEIGHT = 150;
@@ -80,21 +78,20 @@
     }
   });
 
-  let showWebcamSelector = false;
-  function handleFeedClick () {
-    showWebcamSelector = !showWebcamSelector;
-  }
-
-  function handleWebcamSelect (event) {
-    const deviceId = event.detail;
-    mediaDeviceId.set(deviceId);
-    showWebcamSelector = false;
+  function handleFeedClick (event) {
+    const activeCameraIndex = $cameras.findIndex(camera => camera.deviceID === mediaDeviceId);
+    const nextCameraIndex = ($cameras.length - 1) > activeCameraIndex
+      ? activeCameraIndex + 1
+      : 0;
+    
+    mediaDeviceId.set(nextCameraIndex);
   }
 </script>
 
 <style>
 .stylized-webcam-feed {
   position: relative;
+  cursor: pointer;
 }
   .raw-webcam {
     max-width: 300px;
@@ -122,5 +119,4 @@
   <video class="raw-webcam sekrit" bind:this={videoElement} />
   <canvas class="recording-webcam sekrit" width={TARGET_WIDTH} height={TARGET_HEIGHT} bind:this={recordingCanvasElement} />
   <canvas class="display-webcam" width={TARGET_WIDTH} height={TARGET_HEIGHT} bind:this={displayCanvasElement} />
-  {#if showWebcamSelector}<WebcamSelector on:select={handleWebcamSelect} />{/if}
 </div>
