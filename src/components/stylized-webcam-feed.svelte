@@ -83,18 +83,12 @@
   });
 
   function handleFeedClick (event) {
-    console.log('$cameras', $cameras)
-    console.log('$mediaDeviceId', $mediaDeviceId)
     const activeCameraIndex = $cameras.findIndex(camera => camera.deviceId === $mediaDeviceId);
-    console.log('activeCameraIndex', activeCameraIndex)
     const nextCameraIndex = ($cameras.length - 1) > activeCameraIndex
       ? activeCameraIndex + 1
       : 0;
-    console.log('nextCameraIndex', nextCameraIndex)
     const nextCameraDeviceId = $cameras[nextCameraIndex].deviceId;
-  console.log('nextCameraDeviceId', nextCameraDeviceId)
     mediaDeviceId.set(nextCameraDeviceId);
-    console.log('$mediaDeviceId', $mediaDeviceId)
   }
 </script>
 

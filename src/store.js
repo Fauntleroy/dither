@@ -19,15 +19,7 @@ export const pageVisible = readable(!document.hidden, (set) => {
   };
 });
 
-export const mediaDeviceId = writable(null, (set) => {
-  const camerasUnubscribe = cameras.subscribe((cameras) => {
-    if (cameras.length) {
-      set(cameras[0].deviceId);
-    }
-
-    setTimeout(() => camerasUnubscribe(), 1);
-  });
-});
+export const mediaDeviceId = writable(null);
 
 // hack, wish this was in the store code
 // how do i get previous store value in the updater?
@@ -89,12 +81,18 @@ async function getCameras () {
   return cameras;
 }
 
-export const cameras = readable([], async (set) => {
+export const cameras = derived([mediaDeviceId], async ([$mediaDeviceId], set) => {
   const cameras = await getCameras();
+  if (!$mediaDeviceId && cameras.length) {
+    mediaDeviceId.set(cameras[0].deviceId);
+  }
   set(cameras);
 
   async function handleDeviceChange (event) {
     const cameras = await getCameras();
+    if (!$mediaDeviceId && cameras.length) {
+      mediaDeviceId.set(cameras[0].deviceId);
+    }
     set(cameras);
   }
 
