@@ -12,18 +12,25 @@
   onMount(() => {
     drawDataURIOnCanvas(src);
 
-    colorPalette.subscribe(() => drawDataURIOnCanvas(src));
+    const colorPaletteUnsubscribe = colorPalette.subscribe(() => drawDataURIOnCanvas(src));
+
+    return () => {
+      colorPaletteUnsubscribe();
+    };
   });
 
   function drawDataURIOnCanvas (strDataURI) {
     const tempImage = new Image();
-    tempImage.addEventListener('load', () => {
+
+    function drawDataFromImage () {
       const canvasContext = canvasElement.getContext('2d');
       canvasContext.drawImage(tempImage, 0, 0);
       const imageData = canvasContext.getImageData(0, 0, canvasElement.width, canvasElement.height);
       const convertedImageData = convertImageDataToColorPalette(imageData, $colorPalette);
       canvasContext.putImageData(convertedImageData, 0, 0);
-    });
+    }
+
+    tempImage.addEventListener('load', drawDataFromImage);
     tempImage.setAttribute("src", strDataURI);
   }
 

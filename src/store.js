@@ -19,12 +19,23 @@ export const pageVisible = readable(!document.hidden, (set) => {
   };
 });
 
-export const mediaDeviceId = writable(null);
+export const mediaDeviceId = writable(null, (set) => {
+  const camerasUnubscribe = cameras.subscribe((cameras) => {
+    if (cameras.length) {
+      set(cameras[0].deviceId);
+    }
+
+    setTimeout(() => camerasUnubscribe(), 1);
+  });
+});
 
 // hack, wish this was in the store code
 // how do i get previous store value in the updater?
 let previousMediaStream;
 async function getMediaStream (deviceId) {
+  if (!deviceId) {
+    return;
+  }
   if (previousMediaStream) {
     previousMediaStream.getVideoTracks()[0].stop();
   }
@@ -71,7 +82,6 @@ async function getCameras () {
     const mediaDevices = await navigator.mediaDevices.enumerateDevices();
     const videoDevices = mediaDevices.filter(mediaDevice => mediaDevice.kind === 'videoinput');
     cameras = videoDevices;
-    mediaDeviceId.set(cameras[0].deviceId);
   } catch (error) {
     console.log('could not get the devices', error);
   }
@@ -79,11 +89,11 @@ async function getCameras () {
   return cameras;
 }
 
-export const cameras = derived([mediaStream], async ([$mediaStream], set) => {
+export const cameras = readable([], async (set) => {
   const cameras = await getCameras();
   set(cameras);
 
-  async function handleDeviceChange () {
+  async function handleDeviceChange (event) {
     const cameras = await getCameras();
     set(cameras);
   }
