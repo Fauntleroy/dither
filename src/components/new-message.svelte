@@ -206,7 +206,7 @@
       </span>
     </div>
   </form>
-  {#if $mediaStream.status != 'active'}
+  {#if !$webcamEnabled}
     <div class="enable-webcam-message__background" />
     <button class="enable-webcam-message" on:click={handleEnableWebcamClick}>
       <em>Click</em> to enable your webcam and chat<em>!</em>
