@@ -92,6 +92,10 @@
     webcamVideoStatus = 'suspended';
   }
 
+  function handleVideoWaiting () {
+    webcamVideoStatus = 'waiting';
+  }
+
   function handleFeedClick (event) {
     if ($cameras.length <= 1) {
       return;
@@ -112,7 +116,7 @@
   .stylized-webcam-feed {
     position: relative;
     cursor: pointer;
-    clip-path: circle(1%);
+    clip-path: circle(0%);
     transition: clip-path 250ms;
   }
 
@@ -162,7 +166,13 @@
 </style>
 
 <div class="stylized-webcam-feed" on:click={handleFeedClick} class:playing={webcamVideoStatus === 'playing'}>
-  <video class="raw-webcam sekrit" bind:this={videoElement} on:playing={handleVideoPlaying} on:suspend={handleVideoSuspend} playsinline={true} />
+  <video
+    class="raw-webcam sekrit"
+    bind:this={videoElement}
+    on:playing={handleVideoPlaying}
+    on:waiting={handleVideoSuspend}
+    on:waiting={handleVideoWaiting}
+    playsinline={true} />
   <canvas class="recording-webcam sekrit" width={TARGET_WIDTH} height={TARGET_HEIGHT} bind:this={recordingCanvasElement} />
   <canvas class="display-webcam" width={TARGET_WIDTH} height={TARGET_HEIGHT} bind:this={displayCanvasElement} />
   <span class="switch-camera-icon">⟲</span>
