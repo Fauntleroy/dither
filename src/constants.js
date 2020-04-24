@@ -7,4 +7,5 @@ export const COLOR_PALETTES = {
   'IBM 8503': ['#2E2F36', '#EBE5CE']
 };
 
+export const STORE_WEBCAM_ENABLED = 'dither:webcamEnabled';
 export const STORE_COLOR_PALETTE_ID = 'dither:colorPaletteId';

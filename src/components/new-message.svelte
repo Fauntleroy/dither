@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
 
+  import { mediaStream, webcamEnabled } from '../store.js';
   import { generateImage } from '../utils/filmstrip.js';
 
   import StylizedWebcamFeed from './stylized-webcam-feed.svelte';
@@ -29,6 +30,10 @@
       handleSubmit();
     }
   }
+
+  function handleEnableWebcamClick () {
+    webcamEnabled.set(true);
+  }
 </script>
 
 <style>
@@ -42,6 +47,7 @@
   }
 
   .new-message {
+    position: relative;
     max-width: 540px;
     margin: 0 auto;
   }
@@ -75,6 +81,7 @@
     font-size: inherit;
     font-style: italic;
     width: 100%;
+    resize: none;
   }
 
   .fake-input:focus-within {
@@ -124,13 +131,51 @@
     left: 0;
     width: 0;
     height: 3px;
-    background: white;
+    background: var(--white);
     transition: width 200ms;
   }
 
   .new-message.recording .recording-progress {
     width: 100%;
     transition: width 2000ms linear;
+  }
+
+  .enable-webcam-message__background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+
+  .enable-webcam-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--black);
+    color: var(--white);
+    border-radius: 5px;
+    padding: 7px 14px;
+    text-align: center;
+    border: var(--white) 1px solid;
+    box-shadow: var(--black) 0 0 0 3px;
+    white-space: pre;
+    transition: margin-top 200ms;
+  }
+
+  .enable-webcam-message:hover {
+    margin-top: -3px;
+  }
+
+  .enable-webcam-message:active {
+    margin-top: 0;
+    transition: margin-top 10ms;
+  }
+
+  button {
+    background: none;
+    border: none;
   }
 
   @media (max-width: 480px) {
@@ -155,10 +200,16 @@
         bind:value={inputMessage}
         on:keydown={handleInputKeydown}
         placeholder="Type to GIF"
-        disabled={recording} />
+        disabled={!$mediaStream || recording} />
       <span class="fake-input__action">
-        <button class="submit" type="submit" disabled={recording}>➪</button>
+        <button class="submit" type="submit" disabled={!$mediaStream || recording}>➪</button>
       </span>
     </div>
   </form>
+  {#if $mediaStream.status != 'active'}
+    <div class="enable-webcam-message__background" />
+    <button class="enable-webcam-message" on:click={handleEnableWebcamClick}>
+      <em>Click</em> to enable your webcam and chat<em>!</em>
+    </button>
+  {/if}
 </div>

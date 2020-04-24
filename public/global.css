@@ -46,8 +46,12 @@ input, button, select, textarea {
 	border-radius: 5px;
 }
 
-input:disabled {
-	color: #ccc;
+input:disabled,
+textarea:disabled {
+	background-color: var(--black);
+	background-image: linear-gradient(90deg, var(--white) 80%, transparent 20%),
+	linear-gradient(var(--white) 80%, transparent 20%);
+	background-size: 5px 5px;
 }
 
 input[type="range"] {
@@ -57,6 +61,12 @@ input[type="range"] {
 input, textarea {
 	background: var(--white);
 	color: var(--black);
+}
+
+input::placeholder,
+textarea::placeholder {
+	color: var(--black);
+	opacity: 0.5;
 }
 
 button {
@@ -69,12 +79,10 @@ button {
 }
 
 button:hover {
-	transform: translateY(-1px);
 	border-color: var(--black);
 }
 
 button:hover:active {
-	transform: translateY(0);
 }
 
 button:disabled {

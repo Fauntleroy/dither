@@ -1,7 +1,7 @@
 import { derived, readable, writable } from 'svelte/store';
 import store from 'store2';
 
-import { COLOR_PALETTES, STORE_COLOR_PALETTE_ID } from './constants.js';
+import { COLOR_PALETTES, STORE_WEBCAM_ENABLED, STORE_COLOR_PALETTE_ID } from './constants.js';
 
 export const pageVisible = readable(!document.hidden, (set) => {
   function handleVisibilityChange () {
@@ -19,15 +19,16 @@ export const pageVisible = readable(!document.hidden, (set) => {
   };
 });
 
+export const webcamEnabled = writable(store.get(STORE_WEBCAM_ENABLED) || false);
+
+webcamEnabled.subscribe((value) => store.set(STORE_WEBCAM_ENABLED, value));
+
 export const mediaDeviceId = writable(null);
 
 // hack, wish this was in the store code
 // how do i get previous store value in the updater?
 let previousMediaStream;
 async function getMediaStream (deviceId) {
-  if (!deviceId) {
-    return;
-  }
   if (previousMediaStream) {
     previousMediaStream.getVideoTracks()[0].stop();
   }
@@ -52,20 +53,43 @@ async function getMediaStream (deviceId) {
     }
   });
 
-  previousMediaStream = userMediaStream;
+  previousMediaStream = userMediaStream.stream;
   return userMediaStream;
 }
 
-export const mediaStream = derived([mediaDeviceId], async ([$mediaDeviceId], set) => {
-  try {
-    const userMediaStream = await getMediaStream($mediaDeviceId);
+export const mediaStream = derived(
+  [mediaDeviceId, webcamEnabled],
+  async ([$mediaDeviceId, $webcamEnabled], set) => {
+    if (!$webcamEnabled) {
+      return;
+    }
 
-    set(userMediaStream);
-  } catch (error) {
-    console.log('Unable to activate webcam: ', error);
-    alert('Unable to activate webcam!');
+    try {
+      set({
+        status: 'requesting',
+        stream: null
+      });
+
+      const userMediaStream = await getMediaStream($mediaDeviceId);
+
+      set({
+        status: 'active',
+        stream: userMediaStream
+      });
+    } catch (error) {
+      console.log('Unable to activate webcam: ', error);
+      set({
+        status: 'error',
+        stream: null
+      });
+      alert('Unable to activate webcam!');
+    }
+  },
+  {
+    status: 'initial',
+    stream: null
   }
-});
+);
 
 async function getCameras () {
   let cameras = [];
@@ -81,18 +105,16 @@ async function getCameras () {
   return cameras;
 }
 
-export const cameras = derived([mediaDeviceId], async ([$mediaDeviceId], set) => {
-  const cameras = await getCameras();
-  if (!$mediaDeviceId && cameras.length) {
-    mediaDeviceId.set(cameras[0].deviceId);
+export const cameras = derived([mediaStream], async ([$mediaStream], set) => {
+  if (!$mediaStream.stream) {
+    return;
   }
+
+  const cameras = await getCameras();
   set(cameras);
 
   async function handleDeviceChange (event) {
     const cameras = await getCameras();
-    if (!$mediaDeviceId && cameras.length) {
-      mediaDeviceId.set(cameras[0].deviceId);
-    }
     set(cameras);
   }
 

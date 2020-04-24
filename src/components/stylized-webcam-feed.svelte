@@ -15,6 +15,7 @@
   export let displayCanvasElement;
   export let recordingCanvasElement;
   export let videoElement;
+  let webcamVideoStatus = 'initial';
   let canvasWidth = TARGET_WIDTH;
   let canvasHeight = TARGET_HEIGHT;
   let processedImageDrawRequestId;
@@ -64,12 +65,13 @@
 
   onMount(() => {
     const mediaStreamUnsubscribe = mediaStream.subscribe((mediaStreamValue) => {
-      if (!mediaStreamValue) {
+      const { stream } = mediaStreamValue;
+      if (!stream) {
         return;
       }
 
       videoElement.srcObject = null;
-      videoElement.srcObject = mediaStreamValue;
+      videoElement.srcObject = stream;
       videoElement.play();
 
       cancelAnimationFrame(processedImageDrawRequestId);
@@ -82,8 +84,22 @@
     }
   });
 
+  const handleVideoPlaying = throttle(function () {
+    webcamVideoStatus = 'playing';
+  }, 1000);
+
+  function handleVideoSuspend () {
+    webcamVideoStatus = 'suspended';
+  }
+
   function handleFeedClick (event) {
-    const activeCameraIndex = $cameras.findIndex(camera => camera.deviceId === $mediaDeviceId);
+    if ($cameras.length <= 1) {
+      return;
+    }
+
+    const activeCameraIndex = $mediaDeviceId
+      ? $cameras.findIndex(camera => camera.deviceId === $mediaDeviceId)
+      : 0;
     const nextCameraIndex = ($cameras.length - 1) > activeCameraIndex
       ? activeCameraIndex + 1
       : 0;
@@ -93,10 +109,18 @@
 </script>
 
 <style>
-.stylized-webcam-feed {
-  position: relative;
-  cursor: pointer;
-}
+  .stylized-webcam-feed {
+    position: relative;
+    cursor: pointer;
+    clip-path: circle(1%);
+    transition: clip-path 250ms;
+  }
+
+  .stylized-webcam-feed.playing {
+    clip-path: circle(100%);
+    transition: clip-path 350ms;
+  }
+
   .raw-webcam {
     max-width: 300px;
   }
@@ -117,10 +141,29 @@
     top: -9999px;
     visibility: hidden;
   }
+
+  .switch-camera-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: var(--white);
+    font-size: 40px;
+    filter: drop-shadow(-2px 2px 0 var(--black));
+    transform: translateY(-50%) translateX(-50%) scale(0.75);
+    opacity: 0;
+    transition: transform 400ms, opacity 400ms;
+  }
+
+  .stylized-webcam-feed:hover .switch-camera-icon {
+    opacity: 1;
+    transform: translateY(-50%) translateX(-50%) scale(1);
+    transition: transform 200ms, opacity 200ms;
+  }
 </style>
 
-<div class="stylized-webcam-feed" on:click={handleFeedClick}>
-  <video class="raw-webcam sekrit" bind:this={videoElement} />
+<div class="stylized-webcam-feed" on:click={handleFeedClick} class:playing={webcamVideoStatus === 'playing'}>
+  <video class="raw-webcam sekrit" bind:this={videoElement} on:playing={handleVideoPlaying} on:suspend={handleVideoSuspend} playsinline={true} />
   <canvas class="recording-webcam sekrit" width={TARGET_WIDTH} height={TARGET_HEIGHT} bind:this={recordingCanvasElement} />
   <canvas class="display-webcam" width={TARGET_WIDTH} height={TARGET_HEIGHT} bind:this={displayCanvasElement} />
+  <span class="switch-camera-icon">⟲</span>
 </div>
