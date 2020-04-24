@@ -4,12 +4,15 @@
   import { crossfade } from 'svelte/transition';
   import { flip } from 'svelte/animate';
   import { derived } from 'svelte/store';
+  import store from 'store2';
   
   import { firestore, firestoreDb } from '../../firebase.js';
   import { pageVisible } from '../../store.js';
 
   import Message from '../../components/message.svelte';
   import NewMessage from '../../components/new-message.svelte';
+
+  import { STORE_ROOM_HISTORY } from '../../constants.js';
 
   export let currentRoute;
   const { namedParams } = currentRoute;
@@ -42,11 +45,25 @@
 		}
 	});
 
+  function updateRoomHistory () {
+    const roomHistory = store.get(STORE_ROOM_HISTORY);
+    const updatedRoomHistory = {
+      ...roomHistory,
+      [id]: {
+        lastSeen: Date.now(),
+        name: room.name
+      }
+    };
+
+    store.set(STORE_ROOM_HISTORY, updatedRoomHistory);
+  }
+
 	onMount(async () => {
     firestoreDb.collection('rooms').doc(id)
       .onSnapshot((doc) => {
         room = doc.data();
         inputValue = room.name;
+        updateRoomHistory();
       });
     firestoreDb.collection(`rooms/${id}/messages`)
       .limit(10)

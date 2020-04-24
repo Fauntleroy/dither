@@ -102,6 +102,10 @@ button:focus {
 	border-color: #666;
 }
 
+button.dark {
+	
+}
+
 
 @media (max-width: 480px) {
 	body {

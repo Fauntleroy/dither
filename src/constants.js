@@ -9,3 +9,4 @@ export const COLOR_PALETTES = {
 
 export const STORE_WEBCAM_ENABLED = 'dither:webcamEnabled';
 export const STORE_COLOR_PALETTE_ID = 'dither:colorPaletteId';
+export const STORE_ROOM_HISTORY = 'dither:roomHistory';
