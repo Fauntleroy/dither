@@ -175,5 +175,5 @@
     playsinline={true} />
   <canvas class="recording-webcam sekrit" width={TARGET_WIDTH} height={TARGET_HEIGHT} bind:this={recordingCanvasElement} />
   <canvas class="display-webcam" width={TARGET_WIDTH} height={TARGET_HEIGHT} bind:this={displayCanvasElement} />
-  <span class="switch-camera-icon">⟲</span>
+  {#if $cameras.length > 1}<span class="switch-camera-icon">⟲</span>{/if}
 </div>
