@@ -19,7 +19,7 @@ body {
 	margin: 0;
 	padding: 8px;
 	box-sizing: border-box;
-	font-family: 'EB Garamond', sans-serif;
+	font-family: 'IM Fell English', serif;
 	font-size: 22px;
 	line-height: 150%;
 }
@@ -121,10 +121,16 @@ button.blend {
 	box-shadow: none;
 }
 
-.enable-webcam-message:active {
-	
+h1, h2, h3, h4, h5, h6 {
+	font-weight: normal;
+	line-height: 125%;
 }
 
+hr {
+	border: none;
+	border-top: var(--white) 1px solid;
+	margin: 2em 0;
+}
 
 @media (max-width: 480px) {
 	body {
