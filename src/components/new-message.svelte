@@ -84,6 +84,10 @@
     resize: none;
   }
 
+  .input:focus {
+    outline: none;
+  }
+
   .fake-input:focus-within {
     transform: scale(1.05);
   }
