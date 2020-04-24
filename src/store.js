@@ -130,5 +130,7 @@ export const colorPaletteId = writable(store.get(STORE_COLOR_PALETTE_ID) || 'Bla
 colorPaletteId.subscribe((newColorPaletteId) => store.set(STORE_COLOR_PALETTE_ID, newColorPaletteId));
 
 export const colorPalette = derived([colorPaletteId], ([$colorPaletteId], set) => {
-  set(COLOR_PALETTES[$colorPaletteId]);
+  const palette = COLOR_PALETTES[$colorPaletteId] || COLOR_PALETTES['Black & White'];
+
+  set(palette);
 });

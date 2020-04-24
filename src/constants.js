@@ -4,7 +4,9 @@ export const COLOR_PALETTES = {
   'IBM 5151': ['#25332F', '#01EB61'],
   'Zenith ZVM 1240': ['#40291E', '#FDCA55'],
   'Commodore 1084': ['#40318F', '#88D7DE'],
-  'IBM 8503': ['#2E2F36', '#EBE5CE']
+  'IBM 8503': ['#2E2F36', '#EBE5CE'],
+  'Grayscale': ['#333333', '#CCCCCC'],
+  'kempf.dev': ['#004bff', '#dcdcfa']
 };
 
 export const STORE_WEBCAM_ENABLED = 'dither:webcamEnabled';
