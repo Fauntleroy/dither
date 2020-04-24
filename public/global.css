@@ -74,35 +74,54 @@ textarea::placeholder {
 }
 
 button {
-	border: var(--white) 1px solid;
 	color: var(--black);
-	background-color: var(--white);
+	background: var(--white);
+	border: var(--black) 1px solid;
+	box-shadow: var(--white) 0 0 0 3px;
 	outline: none;
 	cursor: pointer;
-	transition: background-color 500ms, border-color 150ms;
+	border-radius: 5px;
+	padding: 7px 14px;
+	text-align: center;
+	transition: transform 200ms;
 }
 
 button:hover {
-	border-color: var(--black);
-}
-
-button:hover:active {
+	transform: translateY(-3px);
 }
 
 button:disabled {
 	color: #999;
 }
 
-button:not(:disabled):active {
-	background-color: #ddd;
-	transition: background-color 0ms;
+button:focus {
+	transform: scale(1.05);
 }
 
-button:focus {
-	border-color: #666;
+button:focus:hover {
+	transform: scale(1.05) translateY(-3px);
+}
+
+button:not(:disabled):active {
+	transform: translateY(0);
+	transition: transform 10ms;
 }
 
 button.dark {
+	background: var(--black);
+	color: var(--white);
+	border: var(--white) 1px solid;
+	box-shadow: var(--black) 0 0 0 3px;
+}
+
+button.blend {
+	background: transparent;
+	color: var(--black);
+	border: none;
+	box-shadow: none;
+}
+
+.enable-webcam-message:active {
 	
 }
 

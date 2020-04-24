@@ -144,42 +144,19 @@
     transition: width 2000ms linear;
   }
 
-  .enable-webcam-message__background {
+  .enable-webcam-message__container {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .enable-webcam-message {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--black);
-    color: var(--white);
-    border-radius: 5px;
-    padding: 7px 14px;
-    text-align: center;
-    border: var(--white) 1px solid;
-    box-shadow: var(--black) 0 0 0 3px;
     white-space: pre;
-    transition: margin-top 200ms;
-  }
-
-  .enable-webcam-message:hover {
-    margin-top: -3px;
-  }
-
-  .enable-webcam-message:active {
-    margin-top: 0;
-    transition: margin-top 10ms;
-  }
-
-  button {
-    background: none;
-    border: none;
   }
 
   @media (max-width: 480px) {
@@ -206,14 +183,15 @@
         placeholder="Type to GIF"
         disabled={!$mediaStream || recording} />
       <span class="fake-input__action">
-        <button class="submit" type="submit" disabled={!$mediaStream || recording}>➪</button>
+        <button class="submit blend" type="submit" disabled={!$mediaStream || recording}>➪</button>
       </span>
     </div>
   </form>
   {#if !$webcamEnabled}
-    <div class="enable-webcam-message__background" />
-    <button class="enable-webcam-message" on:click={handleEnableWebcamClick}>
-      <em>Click</em> to enable your webcam and chat<em>!</em>
-    </button>
+    <div class="enable-webcam-message__container">
+      <button class="dark enable-webcam-message" on:click={handleEnableWebcamClick}>
+        <em>Click</em> to enable your webcam and chat<em>!</em>
+      </button>
+    </div>
   {/if}
 </div>
