@@ -3,6 +3,10 @@
 	--white: white;
 }
 
+* {
+	box-sizing: border-box;
+}
+
 html, body {
 	position: relative;
 	width: 100%;
