@@ -53,9 +53,9 @@ input, button, select, textarea {
 input:disabled,
 textarea:disabled {
 	background-color: var(--black);
-	background-image: linear-gradient(90deg, var(--white) 80%, transparent 20%),
-	linear-gradient(var(--white) 80%, transparent 20%);
-	background-size: 5px 5px;
+	background-image: linear-gradient(90deg, var(--white) 0% 75%, transparent 76% 100%),
+	linear-gradient(var(--white) 0% 75%, transparent 76% 100%);
+	background-size: 4px 4px;
 }
 
 input[type="range"] {

@@ -51,7 +51,7 @@
 </style>
 
 <svelte:head>
-	<title>NOT Meatspac.es</title>
+	<title>Dither - Lofi GIF Chat</title>
 </svelte:head>
 
 <div class="index">

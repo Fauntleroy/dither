@@ -65,6 +65,7 @@
     animation: play-frames 2000ms steps(20, end) infinite;
     width: 100%;
     image-rendering: crisp-edges;
+    image-rendering: pixelated;
   }
 
   .download {

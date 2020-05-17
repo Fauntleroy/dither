@@ -68,7 +68,6 @@
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     overflow: hidden;
-    border: var(--white) 1px solid;
     transition: transform 200ms;
   }
 
@@ -76,7 +75,6 @@
     display: block;
     border: none;
     margin: 0;
-    border: 2px var(--white) solid;
     padding: 10px 50px 10px 15px;
     font-size: inherit;
     font-style: italic;
