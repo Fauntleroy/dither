@@ -82,7 +82,7 @@ export const mediaStream = derived(
         status: 'error',
         stream: null
       });
-      alert('Unable to activate webcam!');
+      console.error('Unable to activate webcam!');
     }
   },
   {
