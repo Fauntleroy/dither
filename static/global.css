@@ -7,7 +7,8 @@
 	box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
 	position: relative;
 	width: 100%;
 	height: 100%;
@@ -41,7 +42,10 @@ label {
 	display: block;
 }
 
-input, button, select, textarea {
+input,
+button,
+select,
+textarea {
 	font-family: inherit;
 	font-size: inherit;
 	padding: 5px 10px;
@@ -54,15 +58,16 @@ input:disabled,
 textarea:disabled {
 	background-color: var(--black);
 	background-image: linear-gradient(90deg, var(--white) 0% 75%, transparent 76% 100%),
-	linear-gradient(var(--white) 0% 75%, transparent 76% 100%);
+		linear-gradient(var(--white) 0% 75%, transparent 76% 100%);
 	background-size: 4px 4px;
 }
 
-input[type="range"] {
+input[type='range'] {
 	height: 0;
 }
 
-input, textarea {
+input,
+textarea {
 	background: var(--white);
 	color: var(--black);
 }
@@ -80,13 +85,14 @@ button {
 	box-shadow: var(--white) 0 0 0 3px;
 	outline: none;
 	cursor: pointer;
-	border-radius: 5px;
+	border-radius: 0.5em;
 	padding: 7px 14px;
 	text-align: center;
 	transition: transform 200ms;
 }
 
-button:hover {
+button:hover,
+button:focus {
 	transform: translateY(-3px);
 }
 
@@ -94,12 +100,10 @@ button:disabled {
 	color: #999;
 }
 
-button:focus {
-	transform: scale(1.05);
-}
-
-button:focus:hover {
-	transform: scale(1.05) translateY(-3px);
+button:active {
+	border: var(--black) 3px solid;
+	box-shadow: var(--white) 0 0 0 2px;
+	padding: 5px 12px;
 }
 
 button:not(:disabled):active {
@@ -121,7 +125,12 @@ button.blend {
 	box-shadow: none;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	font-weight: normal;
 	line-height: 125%;
 }

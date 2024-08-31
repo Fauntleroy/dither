@@ -1,10 +1,12 @@
 <script>
-	import { Route } from 'svelte-router-spa';
-
 	import Nav from '../components/nav.svelte';
-
-	export let currentRoute;
 </script>
+
+<Nav />
+
+<main class="layout">
+	<slot></slot>
+</main>
 
 <style>
 	.layout {
@@ -13,9 +15,3 @@
 		padding: 25px 10px 20px 10px;
 	}
 </style>
-
-<Nav />
-
-<main class="layout">
-	<Route {currentRoute} />
-</main>

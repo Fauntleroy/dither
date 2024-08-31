@@ -1,17 +1,18 @@
-<script>
-	import { colorPaletteId, colorPalette } from '../store.js';
+<script lang="ts">
+	import { onMount } from 'svelte';
 
-	import { COLOR_PALETTES } from '../constants.js';
+	let ColorPaletteSelector: any = null; // Initially 'any', will be asserted later
 
-	function handleColorPaletteChange (event) {
-		colorPaletteId.set(event.target.value);
-	}
-
-	colorPalette.subscribe(([black, white]) => {
-		document.documentElement.style.setProperty('--black', black);
-		document.documentElement.style.setProperty('--white', white);
+	onMount(async () => {
+		const module = await import('./color-palette-selector.svelte');
+		ColorPaletteSelector = module.default as typeof module.default; // Type assertion
 	});
 </script>
+
+<nav class="nav">
+	<a href="/" class="app-name">Dither <span class="alpha-tag">alpha</span></a>
+	{#if ColorPaletteSelector}<ColorPaletteSelector />{/if}
+</nav>
 
 <style>
 	.nav {
@@ -37,12 +38,3 @@
 		text-transform: none;
 	}
 </style>
-
-<nav class="nav">
-	<a href="/" class="app-name">Dither <span class="alpha-tag">alpha</span></a>
-	<select on:change={handleColorPaletteChange}>
-		{#each Object.entries(COLOR_PALETTES) as [id, colorPalette] (id)}
-			<option value={id} selected={$colorPaletteId === id}>{id}</option>
-		{/each}
-	</select>
-</nav>
