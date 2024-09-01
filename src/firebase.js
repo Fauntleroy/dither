@@ -1,14 +1,12 @@
-import firebase from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/functions';
 
-firebase.initializeApp({
-  apiKey: 'AIzaSyDriffF4c33V459hiSyEkFmUZAQaportrs',
-  databaseURL: 'not-firebase-58b83.firebaseapp.com',
-  storageBucket: 'not-firebase-58b83.appspot.com',
-  projectId: 'not-firebase-58b83'
-});
+import { env } from '$env/dynamic/public';
 
-export default firebase;
-export const firestore = firebase.firestore;
-export const firestoreDb = firebase.firestore();
+export const firebaseApp = initializeApp({
+	apiKey: env.PUBLIC_FIREBASE_API_KEY,
+	databaseURL: 'not-firebase-58b83.firebaseapp.com',
+	storageBucket: 'not-firebase-58b83.appspot.com',
+	projectId: 'not-firebase-58b83'
+});

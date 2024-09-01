@@ -17,12 +17,12 @@
 </svelte:head>
 
 <div class="index">
-	<h1><em>DITHER</em> is a lo-fi GIF chat app.</h1>
+	<h1 class="heading"><em>DITHER</em><br />is a lo-fi GIF chat app.</h1>
 	<p>
 		Create a room, invite your friends, and have fun making lo-fi GIFs to relax and chat to. I mean,
 		webcams aren't that great, so why not lean into it?
 	</p>
-	<button class="create-new-room" on:click={handleNewRoomClick}>Create a New Room</button>
+	<button class="createNewRoom" on:click={handleNewRoomClick}>Create a New Room ⚇</button>
 
 	<hr />
 
@@ -34,9 +34,36 @@
 	<hr />
 
 	<h3>Prior Art:</h3>
-	<p>This app wouldn't have been possible without inspiration from:</p>
-	<ul>
-		<li><a href="https://obradinn.com/" target="_blank">Return of the Obra Dinn</a></li>
-		<li><a href="https://meatspac.es/" target="_blank">Meatspac.es</a></li>
-	</ul>
+	<p>
+		This app wouldn't have been possible without inspiration from <a
+			href="https://obradinn.com/"
+			target="_blank">Return of the Obra Dinn</a
+		>
+		and <a href="https://meatspac.es/" target="_blank">Meatspac.es</a>
+	</p>
 </div>
+
+<style>
+	.index {
+		display: flex;
+		flex-direction: column;
+
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6,
+		p {
+			margin: 0;
+		}
+	}
+
+	.heading {
+		text-align: center;
+	}
+
+	.createNewRoom {
+		align-self: center;
+	}
+</style>

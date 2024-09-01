@@ -28,10 +28,12 @@ body {
 a {
 	color: var(--white);
 	text-decoration: underline;
+	text-underline-offset: 0.25em;
 }
 
 a:hover {
 	text-decoration: underline;
+	text-decoration-thickness: 2px;
 }
 
 a:visited {
@@ -88,7 +90,9 @@ button {
 	border-radius: 0.5em;
 	padding: 7px 14px;
 	text-align: center;
-	transition: transform 200ms;
+	transition:
+		box-shadow 275ms,
+		transform 200ms;
 }
 
 button:hover,
@@ -101,7 +105,7 @@ button:disabled {
 }
 
 button:active {
-	border: var(--black) 3px solid;
+	border-width: 3px;
 	box-shadow: var(--white) 0 0 0 2px;
 	padding: 5px 12px;
 }

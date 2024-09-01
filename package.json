@@ -18,6 +18,7 @@
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0-next.6",
 		"@types/eslint": "^9.6.0",
+		"@types/firebase": "^3.2.1",
 		"eslint": "^9.0.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.36.0",
@@ -32,7 +33,12 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"canvas-dither": "^1.0.1",
+		"firebase": "^10.13.1",
+		"gif-encoder": "^0.7.2",
+		"hex-rgb": "^5.0.0",
 		"human-id": "^4.1.1",
+		"just-throttle": "^4.2.0",
 		"store2": "^2.14.3"
 	}
 }
