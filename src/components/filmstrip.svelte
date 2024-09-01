@@ -1,14 +1,12 @@
-<script>
-	import { onMount } from 'svelte';
+<script lang="ts">
+	import { generateGIF } from '$/utils/filmstrip.js';
+	import { convertImageDataToColorPalette } from '$/utils/canvas.js';
+	import { colorPalette } from '$/store.js';
 
-	import { generateGIF } from '../utils/filmstrip.js';
-	import { convertImageDataToColorPalette } from '../utils/canvas.js';
-	import { colorPalette } from '../store.js';
+	let { src } = $props();
+	let canvasElement: HTMLCanvasElement;
 
-	export let src;
-	let canvasElement;
-
-	onMount(() => {
+	$effect(() => {
 		drawDataURIOnCanvas(src);
 
 		const colorPaletteUnsubscribe = colorPalette.subscribe(() => drawDataURIOnCanvas(src));

@@ -1,12 +1,13 @@
 import type { LoadEvent } from '@sveltejs/kit';
+import type { PageLoad } from './$types';
 
-export interface PageData {
-	roomId: string | undefined;
-}
+import { error } from '@sveltejs/kit';
 
-export function load({ params }: LoadEvent): Promise<PageData> {
-	// TODO throw to an error page instead?
-	console.log('>>>>>>>>>>>>>>>>> XXXXXX OBVIOUS XXXXXXX - Load...', params);
+export function load({ params }: LoadEvent): PageLoad {
+	if (!params.roomId) {
+		throw error(404, 'Room not found');
+	}
+
 	return {
 		roomId: params.roomId
 	};

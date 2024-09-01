@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { ChatMessageT, RoomT } from '$app';
 	import type { PageData } from './+page.js';
 
 	import { onMount } from 'svelte';
@@ -37,8 +38,8 @@
 	let inputValue = data.roomId;
 
 	// firestore data
-	let room;
-	let messages = [];
+	let room: RoomT;
+	let messages: ChatMessageT[] = [];
 
 	$: roomName = room ? room.name : data.roomId;
 
@@ -80,7 +81,7 @@
 			// import the NewMessage comonent
 			const module = await import('$components/new-message.svelte');
 			NewMessage = module.default;
-			console.log('data', data);
+
 			if (!data.roomId) {
 				return;
 			}
@@ -90,7 +91,6 @@
 			const roomDocumentSnapshot = await getDoc(currentRoomRef);
 			if (roomDocumentSnapshot.exists()) {
 				room = roomDocumentSnapshot.data();
-				debugger;
 				inputValue = room.name;
 				updateRoomHistory();
 			}
@@ -106,6 +106,7 @@
 				};
 			});
 			messages = docsData;
+			console.log('messages', messages);
 		} catch (mountError) {
 			console.error('Error while mounting Room page', mountError);
 		}

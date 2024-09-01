@@ -1,13 +1,15 @@
 <script lang="ts">
-	let Filmstrip;
+	import type { SvelteComponent } from 'svelte';
 
-	export async function onMount() {
-		const module = await import('./filmstrip.svelte');
-		Filmstrip = module.default as typeof module.default; // Type assertion
-	}
+	let Filmstrip: SvelteComponent = $state(null);
 
-	export let imageBlob;
-	export let text;
+	$effect(() => {
+		const module = import('$/components/filmstrip.svelte').then((module) => {
+			Filmstrip = module.default;
+		});
+	});
+
+	let { imageBlob, text } = $props();
 </script>
 
 <div class="message">
