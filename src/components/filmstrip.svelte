@@ -3,7 +3,11 @@
 	import { convertImageDataToColorPalette } from '$/utils/canvas.js';
 	import { colorPalette } from '$/store.js';
 
-	let { src } = $props();
+	interface Props {
+		src: string;
+	}
+
+	let { src }: Props = $props();
 	let canvasElement: HTMLCanvasElement;
 
 	$effect(() => {
@@ -16,11 +20,17 @@
 		};
 	});
 
-	function drawDataURIOnCanvas(strDataURI) {
+	function drawDataURIOnCanvas(strDataURI: string) {
 		const tempImage = new Image();
 
 		function drawDataFromImage() {
 			const canvasContext = canvasElement.getContext('2d');
+
+			if (!canvasContext) {
+				console.error('Error getting canvas context!');
+				return;
+			}
+
 			canvasContext.drawImage(tempImage, 0, 0);
 			const imageData = canvasContext.getImageData(0, 0, canvasElement.width, canvasElement.height);
 			const convertedImageData = convertImageDataToColorPalette(imageData, $colorPalette);
@@ -38,8 +48,8 @@
 </script>
 
 <div class="filmstrip">
-	<canvas class="canvas" width="200" height="3000" bind:this={canvasElement} />
-	<button class="download" type="button" on:click={handleDownloadClick}>Save ▿</button>
+	<canvas class="canvas" width="200" height="3000" bind:this={canvasElement}></canvas>
+	<button class="download" type="button" onclick={handleDownloadClick}>Save ▿</button>
 </div>
 
 <style>
