@@ -1,14 +1,15 @@
-import type { LoadEvent } from '@sveltejs/kit';
-import type { PageLoad } from './$types';
+import type { Load, LoadEvent } from '@sveltejs/kit';
 
 import { error } from '@sveltejs/kit';
 
-export function load({ params }: LoadEvent): PageLoad {
+export function load({ params }: LoadEvent): Load {
 	if (!params.roomId) {
 		throw error(404, 'Room not found');
 	}
 
-	return {
+	const pageData = {
 		roomId: params.roomId
 	};
+
+	return pageData;
 }

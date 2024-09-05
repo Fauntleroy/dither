@@ -1,9 +1,6 @@
-<svelte:options accessors={true} />
-
-<script>
+<script lang="ts">
 	import Dither from 'canvas-dither';
 	import throttle from 'just-throttle';
-	import { onMount } from 'svelte';
 
 	import { cameras, colorPalette, mediaDeviceId, mediaStream } from '../store.js';
 	import { convertImageDataToColorPalette } from '../utils/canvas.js';
@@ -12,13 +9,19 @@
 	const TARGET_HEIGHT = 150;
 	const TARGET_ASPECT = TARGET_WIDTH / TARGET_HEIGHT;
 
-	export let displayCanvasElement;
-	export let recordingCanvasElement;
-	export let videoElement;
-	let webcamVideoStatus = 'initial';
-	let canvasWidth = TARGET_WIDTH;
-	let canvasHeight = TARGET_HEIGHT;
-	let processedImageDrawRequestId;
+	interface Props {
+		onMount: Function;
+	}
+
+	const { onMount }: Props = $props();
+	let videoElement: HTMLVideoElement;
+	let recordingCanvasElement: HTMLCanvasElement;
+	let displayCanvasElement: HTMLCanvasElement;
+	let canvasWidth: number = TARGET_WIDTH;
+	let canvasHeight: number = TARGET_HEIGHT;
+	let processedImageDrawRequestId: number;
+
+	let webcamVideoStatus = $state('initial');
 
 	function getCrop() {
 		const { videoWidth, videoHeight } = videoElement;
@@ -42,6 +45,12 @@
 	function drawProcessedImage() {
 		const displayCanvas2dContext = displayCanvasElement.getContext('2d');
 		const recordingCanvas2dContext = recordingCanvasElement.getContext('2d');
+
+		if (!displayCanvas2dContext || !recordingCanvas2dContext) {
+			console.error('Canvas contexts could not be initialized');
+			return;
+		}
+
 		const { x, y, width, height } = getCrop();
 		displayCanvas2dContext.drawImage(
 			videoElement,
@@ -69,7 +78,13 @@
 		processedImageDrawRequestId = requestAnimationFrame(tryToDraw);
 	}
 
-	onMount(() => {
+	$effect(() => {
+		onMount({
+			recordingCanvasElement: recordingCanvasElement
+		});
+	});
+
+	$effect(() => {
 		const mediaStreamUnsubscribe = mediaStream.subscribe((mediaStreamValue) => {
 			const { stream } = mediaStreamValue;
 			if (!stream) {
@@ -91,7 +106,8 @@
 	});
 
 	const handleVideoPlaying = throttle(function () {
-		webcamVideoStatus = 'playing';
+		// TODO see if this can be done without artificial delay
+		setTimeout(() => (webcamVideoStatus = 'playing'), 250);
 	}, 1000);
 
 	function handleVideoSuspend() {
@@ -102,7 +118,7 @@
 		webcamVideoStatus = 'waiting';
 	}
 
-	function handleFeedClick(event) {
+	function handleFeedClick() {
 		if ($cameras.length <= 1) {
 			return;
 		}
@@ -116,17 +132,18 @@
 	}
 </script>
 
-<a
+<button
+	type="button"
 	class="stylized-webcam-feed"
-	on:click={handleFeedClick}
 	class:playing={webcamVideoStatus === 'playing'}
+	onclick={handleFeedClick}
 >
 	<video
 		class="raw-webcam sekrit"
 		bind:this={videoElement}
-		on:playing={handleVideoPlaying}
-		on:waiting={handleVideoSuspend}
-		on:waiting={handleVideoWaiting}
+		onplaying={handleVideoPlaying}
+		onsuspend={handleVideoSuspend}
+		onwaiting={handleVideoWaiting}
 		playsinline={true}
 	/>
 	<canvas
@@ -142,19 +159,21 @@
 		bind:this={displayCanvasElement}
 	></canvas>
 	{#if $cameras.length > 1}<span class="switch-camera-icon">⟲</span>{/if}
-</a>
+</button>
 
 <style>
 	.stylized-webcam-feed {
+		--ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+
+		all: unset;
 		position: relative;
 		cursor: pointer;
 		clip-path: circle(0%);
-		transition: clip-path 250ms;
+		transition: clip-path 1000ms var(--ease-out-quint);
 	}
 
 	.stylized-webcam-feed.playing {
 		clip-path: circle(100%);
-		transition: clip-path 350ms;
 	}
 
 	.raw-webcam {

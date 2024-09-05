@@ -1,41 +1,39 @@
 <script lang="ts">
 	import type { ChatMessageT, RoomT } from '$app';
-	import type { PageData } from './+page.js';
 
 	import { onMount } from 'svelte';
 	import { quintOut } from 'svelte/easing';
 	import { crossfade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
-	import { derived } from 'svelte/store';
 	import store from 'store2';
 
 	import {
+		addDoc,
 		doc,
 		collection,
-		getDoc,
-		getDocs,
 		getFirestore,
 		onSnapshot,
 		query,
-		where,
 		orderBy,
-		limit
+		limit,
+		serverTimestamp
 	} from 'firebase/firestore';
 	// import { pageVisible } from '../../../store.js';
 
 	import { firebaseApp } from '../../../firebase.js';
 
-	import Message from '$components/message.svelte';
+	import Message from '$/components/message.svelte';
 
 	import { STORE_ROOM_HISTORY } from '../../../constants.js';
 
-	const firebaseDb = getFirestore(firebaseApp);
+	export let data;
 
-	export let data: PageData;
+	const firebaseDb = getFirestore(firebaseApp);
+	const roomMessagesRef = collection(firebaseDb, `rooms/${data.roomId}/messages`);
 
 	let unreadCount = 0;
 	let textAreaElement: HTMLTextAreaElement | null;
-	let inputValue = data.roomId;
+	let roomNameInputValue = data.roomId;
 
 	// firestore data
 	let room: RoomT;
@@ -76,62 +74,72 @@
 
 	let NewMessage;
 
-	onMount(async () => {
-		try {
-			// import the NewMessage comonent
-			const module = await import('$components/new-message.svelte');
-			NewMessage = module.default;
-
-			if (!data.roomId) {
-				return;
+	onMount(() => {
+		(async function () {
+			try {
+				// import the NewMessage comonent
+				const module = await import('$/components/new-message.svelte');
+				NewMessage = module.default;
+			} catch (importError) {
+				console.error('Error importing NewMessage component', importError);
 			}
+		})();
 
-			// get room data
-			const currentRoomRef = doc(firebaseDb, 'rooms', data.roomId);
-			const roomDocumentSnapshot = await getDoc(currentRoomRef);
-			if (roomDocumentSnapshot.exists()) {
-				room = roomDocumentSnapshot.data();
-				inputValue = room.name;
+		if (!data.roomId) {
+			return;
+		}
+
+		// get room data
+		const currentRoomRef = doc(firebaseDb, 'rooms', data.roomId);
+		const roomUnsubscribe = onSnapshot(currentRoomRef, (roomSnapshot) => {
+			if (roomSnapshot.exists()) {
+				room = roomSnapshot.data();
+				roomNameInputValue = room.name;
 				updateRoomHistory();
 			}
+		});
 
-			// get room messages
-			const roomMessagesRef = collection(firebaseDb, `rooms/${data.roomId}/messages`);
-			const roomMessagesQuery = query(roomMessagesRef, limit(10), orderBy('createdAt', 'desc'));
-			const roomMessagesSnapshot = await getDocs(roomMessagesQuery);
-			const docsData = roomMessagesSnapshot.docs.map((doc) => {
+		// get room messages
+		const roomMessagesQuery = query(roomMessagesRef, limit(10), orderBy('createdAt', 'desc'));
+		const roomMessagesUnsubscribe = onSnapshot(roomMessagesQuery, (roomMessagesSnapshot) => {
+			messages = roomMessagesSnapshot.docs.map((doc) => {
 				return {
 					id: doc.id,
 					...doc.data()
 				};
 			});
-			messages = docsData;
-			console.log('messages', messages);
-		} catch (mountError) {
-			console.error('Error while mounting Room page', mountError);
-		}
+		});
+
+		return () => {
+			roomUnsubscribe();
+			roomMessagesUnsubscribe();
+		};
 	});
 
 	// pageVisible.subscribe(() => {
 	// 	unreadCount = 0;
 	// });
 
-	async function handleCreateMessage(event) {
-		// const { text, imageDataURL } = event.detail;
-		// const newMessage = await firestoreDb.collection(`rooms/${id}/messages`).add({
-		// 	createdAt: firestore.FieldValue.serverTimestamp(),
-		// 	imageBlob: imageDataURL,
-		// 	text
-		// });
+	interface HandleCreateMessageArgs {
+		text: string;
+		imageDataURL: string;
+	}
+
+	async function handleCreateMessage({ text, imageDataURL }: HandleCreateMessageArgs) {
+		const newMessage = await addDoc(roomMessagesRef, {
+			createdAt: serverTimestamp(),
+			imageBlob: imageDataURL,
+			text
+		});
 	}
 
 	function handleNameBlur() {
-		// firestoreDb.doc(`rooms/${id}`).update({ name: inputValue });
+		// firestoreDb.doc(`rooms/${id}`).update({ name: roomNameInputValue });
 	}
 
-	function handleNameKeypress(event) {
+	function handleNameKeypress(event: KeyboardEvent) {
 		if (event.key === 'Enter') {
-			textAreaElement.blur();
+			textAreaElement?.blur();
 		}
 	}
 
@@ -159,19 +167,18 @@
 	<div class="room-name-container">
 		—
 		<textarea
-			type="text"
 			class="room-name"
 			rows="1"
 			maxlength="55"
 			bind:this={textAreaElement}
-			bind:value={inputValue}
+			bind:value={roomNameInputValue}
 			on:blur={handleNameBlur}
 			on:keypress={handleNameKeypress}
 			use:testUse
 		></textarea>
 		—
 	</div>
-	{#if NewMessage}<NewMessage on:createMessage={handleCreateMessage} />{/if}
+	{#if NewMessage}<NewMessage onCreateMessage={handleCreateMessage} />{/if}
 
 	<ul class="messages">
 		{#if messages.length === 0}

@@ -15,7 +15,6 @@ const config = {
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter(),
 		alias: {
-			$components: path.resolve('./src/components'),
 			$: path.resolve('./src')
 		}
 	}

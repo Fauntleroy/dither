@@ -8,13 +8,9 @@ service cloud.firestore {
       match /messages/{messageId} {
         allow read: if true; // Anyone can read messages
       }
-
-      function canWriteMessage() {
-        return request.auth != null; // Only authenticated users can write messages
-      }
-
-      match /messages {
-        allow create: if canWriteMessage(); // Anyone authenticated can create messages
+      
+      match /messages/{document=**} {
+         allow create: if request.resource.data.text != null && request.resource.data.imageBlob != null;
       }
     }
   }

@@ -1,22 +1,35 @@
-<script>
-	import { createEventDispatcher } from 'svelte';
-
-	import { mediaStream, webcamEnabled } from '../store.js';
-	import { generateImage } from '../utils/filmstrip.js';
+<script lang="ts">
+	import { mediaStream, webcamEnabled } from '$/store.js';
+	import { generateImage } from '$/utils/filmstrip.js';
 
 	import StylizedWebcamFeed from './stylized-webcam-feed.svelte';
 
-	const dispatch = createEventDispatcher();
-	let webcamFeed;
-	let inputMessage = '';
-	let recording = false;
+	interface Props {
+		onCreateMessage: Function;
+	}
 
-	async function handleSubmit() {
+	let { onCreateMessage }: Props = $props();
+
+	let recordingCanvasElement: HTMLCanvasElement;
+	let inputMessage = $state('');
+	let recording = $state(false);
+
+	interface onMountDataT {
+		recordingCanvasElement: HTMLCanvasElement;
+	}
+
+	function onMount(mountData: onMountDataT) {
+		recordingCanvasElement = mountData.recordingCanvasElement;
+	}
+
+	async function handleSubmit(event: Event) {
+		event.preventDefault();
+
 		recording = true;
-		const imageDataURL = await generateImage(webcamFeed.recordingCanvasElement);
+		const imageDataURL = await generateImage(recordingCanvasElement);
 		recording = false;
 
-		dispatch('createMessage', {
+		onCreateMessage({
 			text: inputMessage,
 			imageDataURL
 		});
@@ -24,9 +37,9 @@
 		inputMessage = '';
 	}
 
-	function handleInputKeydown(event) {
+	function handleInputKeydown(event: KeyboardEvent) {
 		if (event.key === 'Enter' && !event.shiftKey) {
-			handleSubmit();
+			handleSubmit(event);
 		}
 	}
 
@@ -36,21 +49,20 @@
 </script>
 
 <div class="new-message" class:recording>
-	<form class="form" on:submit|preventDefault={handleSubmit}>
+	<form class="form" onsubmit={handleSubmit}>
 		<div class="recording-booth">
-			<StylizedWebcamFeed bind:this={webcamFeed} />
-			{#if recording}<span class="recording-indicator" />{/if}
-			<div class="recording-progress" />
+			<StylizedWebcamFeed {onMount} />
+			{#if recording}<span class="recording-indicator"></span>{/if}
+			<div class="recording-progress"></div>
 		</div>
 		<div class="fake-input">
 			<textarea
 				class="input"
-				type="text"
 				bind:value={inputMessage}
-				on:keydown={handleInputKeydown}
+				onkeydown={handleInputKeydown}
 				placeholder="Type to GIF"
 				disabled={!$mediaStream || recording}
-			/>
+			></textarea>
 			<span class="fake-input__action">
 				<button class="submit blend" type="submit" disabled={!$mediaStream || recording}>➪</button>
 			</span>
@@ -58,7 +70,7 @@
 	</form>
 	{#if !$webcamEnabled}
 		<div class="enable-webcam-message__container">
-			<button class="dark enable-webcam-message" on:click={handleEnableWebcamClick}>
+			<button class="dark enable-webcam-message" onclick={handleEnableWebcamClick}>
 				<em>Click</em> to enable your webcam and chat<em>!</em>
 			</button>
 		</div>
@@ -79,25 +91,34 @@
 		position: relative;
 		max-width: 540px;
 		margin: 0 auto;
+		border-radius: 0.25em;
+		padding: 1px;
+		background: var(--white);
+		overflow: hidden;
 	}
 
 	.form {
 		display: flex;
 		align-items: stretch;
-		margin: 0;
 		justify-content: center;
+		gap: 1px;
+		margin: 0;
 	}
 
 	.fake-input {
 		display: flex;
 		flex-grow: 1;
 		position: relative;
-		background: var(--white);
+		background: none;
 		color: var(--black);
-		border-top-right-radius: 5px;
-		border-bottom-right-radius: 5px;
 		overflow: hidden;
 		transition: transform 200ms;
+		border: transparent 1px solid;
+		border-radius: 0.25em;
+	}
+
+	.fake-input:focus-within {
+		border-color: var(--black);
 	}
 
 	.input {
@@ -113,10 +134,6 @@
 
 	.input:focus {
 		outline: none;
-	}
-
-	.fake-input:focus-within {
-		transform: scale(1.05);
 	}
 
 	.fake-input__action {
@@ -136,12 +153,11 @@
 
 	.recording-booth {
 		position: relative;
-		border: var(--white) 1px solid;
-		border-top-left-radius: 5px;
-		border-bottom-left-radius: 5px;
 		flex-shrink: 0;
 		width: 150px;
 		height: 113px;
+		overflow: hidden;
+		border-radius: calc(0.25em - 1px);
 	}
 
 	.recording-indicator {

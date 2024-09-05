@@ -5,7 +5,7 @@ const DURATION = 2000;
 const FRAME_DELAY = 1000 / FRAMES_PER_SECOND;
 const FRAME_TOTAL = (DURATION / 1000) * FRAMES_PER_SECOND;
 
-export function generateImage(targetCanvasElement) {
+export function generateImage(targetCanvasElement: HTMLCanvasElement) {
 	const bufferCanvasElement = document.createElement('canvas');
 	bufferCanvasElement.width = FRAME_WIDTH;
 	bufferCanvasElement.height = FRAME_HEIGHT * FRAME_TOTAL;
