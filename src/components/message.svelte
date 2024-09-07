@@ -1,11 +1,12 @@
 <script lang="ts">
-	import type { SvelteComponent } from 'svelte';
+	import type { default as FilmstripT } from '$/components/filmstrip.svelte';
 
-	let Filmstrip: SvelteComponent = $state(null);
+	let Filmstrip: FilmstripT | null = $state(null);
 
 	$effect(() => {
-		const module = import('$/components/filmstrip.svelte').then((module) => {
-			Filmstrip = module.default;
+		import('$/components/filmstrip.svelte').then((module) => {
+			// TODO // look into this typing again after svelte 5 releases for real
+			Filmstrip = module.default as any as FilmstripT;
 		});
 	});
 
