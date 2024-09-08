@@ -1,10 +1,26 @@
 <script lang="ts">
 	import store from 'store2';
 
-	import { STORE_ROOM_HISTORY } from '../constants';
+	import { STORE_ROOM_HISTORY } from '$/constants';
 
-	const roomHistory = store.get(STORE_ROOM_HISTORY);
-	const roomHistoryArray: any[] = [];
+	interface RoomHistoryEntryT {
+		lastSeen: number;
+		name: string;
+	}
+	interface RoomHistoryT {
+		[key: string]: RoomHistoryEntryT;
+	}
+	type RoomHistoryEntriesT = [string, RoomHistoryEntryT];
+	interface RoomHistoryArrayEntryT extends RoomHistoryEntryT {
+		id: string;
+	}
+
+	const roomHistory: RoomHistoryT = store.get(STORE_ROOM_HISTORY) || {};
+	const roomHistoryArray: RoomHistoryArrayEntryT[] = Object.entries(roomHistory).map(
+		([id, { lastSeen, name }]: RoomHistoryEntriesT) => {
+			return { id, lastSeen, name };
+		}
+	);
 
 	function handleNewRoomClick() {
 		console.log('create a new room!');
