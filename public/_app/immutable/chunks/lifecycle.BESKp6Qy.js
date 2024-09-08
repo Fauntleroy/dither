@@ -1,0 +1,1 @@
+import{v as r,w as e,x as c,y as a,u as i,z as u,b as l,A as _}from"./runtime.CQ81CuDx.js";function b(){const s=c,n=s.l.u;n&&(n.b.length&&r(()=>{f(s),a(n.b)}),e(()=>{const o=i(()=>n.m.map(u));return()=>{for(const t of o)typeof t=="function"&&t()}}),n.a.length&&e(()=>{f(s),a(n.a)}))}function f(s){if(s.l.s)for(const n of s.l.s)l(n);_(s.s)}export{b as i};
