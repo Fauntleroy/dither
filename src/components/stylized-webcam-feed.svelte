@@ -70,7 +70,7 @@
 		displayCanvas2dContext.putImageData(colorChangedImageData, 0, 0);
 	}
 
-	const throttledDrawProcessedImage = throttle(drawProcessedImage, 100, true);
+	const throttledDrawProcessedImage = throttle(drawProcessedImage, 100, { leading: true });
 
 	function tryToDraw() {
 		throttledDrawProcessedImage();
