@@ -5,20 +5,27 @@
 	}
 
 	let { imageUrl, blur = 0 }: Props = $props();
-	let canvas: HTMLCanvasElement;
-	let error = $state(null);
+	let canvas: HTMLCanvasElement | null = $state(null);
+	let error: string | null = $state(null);
 
 	$effect(() => {
 		if (!canvas) return;
 
 		const ctx = canvas.getContext('2d');
-		if (!ctx) return;
+		if (!ctx) {
+			console.error('Error getting 2d context from canvas in dithered bg');
+			return;
+		}
 
 		const img = document.createElement('img');
 		img.crossOrigin = 'anonymous';
 		img.src = imageUrl;
 
 		const handleResize = () => {
+			if (!canvas) {
+				return;
+			}
+
 			canvas.width = window.innerWidth;
 			canvas.height = window.innerHeight;
 			if (img.complete) generateDitheredBackground(ctx, img);

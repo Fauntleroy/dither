@@ -11,8 +11,8 @@
 	let { onCreateMessage }: Props = $props();
 
 	let recordingCanvasElement: HTMLCanvasElement;
-	let inputMessage = $state('');
-	let recording = $state(false);
+	let inputMessage: string = $state('');
+	let recording: boolean = $state(false);
 
 	interface onMountDataT {
 		recordingCanvasElement: HTMLCanvasElement;

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { default as FilmstripT } from '$/components/filmstrip.svelte';
 
-	let Filmstrip: FilmstripT | null = $state(null);
+	let Filmstrip: any = $state(null);
 
 	$effect(() => {
 		import('$/components/filmstrip.svelte').then((module) => {

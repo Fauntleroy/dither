@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	let ColorPaletteSelector: any = null; // Initially 'any', will be asserted later
+	let ColorPaletteSelector: any = $state(null); // Initially 'any', will be asserted later
 
 	onMount(async () => {
 		const module = await import('./color-palette-selector.svelte');
