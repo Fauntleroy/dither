@@ -109,12 +109,13 @@
 		const roomMessagesQuery = query(roomMessagesRef, limit(10), orderBy('createdAt', 'desc'));
 		const roomMessagesUnsubscribe = onSnapshot(roomMessagesQuery, (roomMessagesSnapshot) => {
 			messages = roomMessagesSnapshot.docs.map((doc) => {
-				const { createdAt, imageBlob } = doc.data();
+				const { createdAt, imageBlob, text } = doc.data();
 
 				return {
 					id: doc.id,
 					createdAt,
-					imageBlob
+					imageBlob,
+					text
 				};
 			});
 		});
