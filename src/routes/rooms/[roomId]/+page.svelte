@@ -1,6 +1,4 @@
 <script lang="ts">
-	import type { ChatMessageT, RoomT } from '$app';
-
 	import { quintOut } from 'svelte/easing';
 	import { crossfade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
@@ -30,15 +28,15 @@
 	const firebaseDb = getFirestore(firebaseApp);
 	const roomMessagesRef = collection(firebaseDb, `rooms/${data.roomId}/messages`);
 
-	let unreadCount = $state(0);
+	let unreadCount: number = $state(0);
 	let textAreaElement: HTMLTextAreaElement | null;
-	let roomNameInputValue = $state(data.roomId);
+	let roomNameInputValue: string = $state(data.roomId);
 
 	// firestore data
-	let room: RoomT = $state();
-	let messages: ChatMessageT[] = $state([]);
+	let room: App.RoomT | undefined = $state();
+	let messages: App.ChatMessageT[] = $state([]);
 
-	let roomName = $derived(room?.name || data.roomId);
+	let roomName: string = $derived(room?.name || data.roomId);
 
 	const [send, receive] = crossfade({
 		duration: (d) => Math.sqrt(d * 100),
@@ -64,7 +62,7 @@
 			...roomHistory,
 			[data.roomId]: {
 				lastSeen: Date.now(),
-				name: room.name
+				name: room?.name
 			}
 		};
 
@@ -95,7 +93,7 @@
 		const roomUnsubscribe = onSnapshot(currentRoomRef, (roomSnapshot) => {
 			// TODO // some kind of 404 if there's no room at all
 			if (roomSnapshot.exists()) {
-				room = roomSnapshot.data();
+				room = roomSnapshot.data() as App.RoomT;
 				roomNameInputValue = room.name;
 				updateRoomHistory();
 			}
@@ -111,9 +109,12 @@
 		const roomMessagesQuery = query(roomMessagesRef, limit(10), orderBy('createdAt', 'desc'));
 		const roomMessagesUnsubscribe = onSnapshot(roomMessagesQuery, (roomMessagesSnapshot) => {
 			messages = roomMessagesSnapshot.docs.map((doc) => {
+				const { createdAt, imageBlob } = doc.data();
+
 				return {
 					id: doc.id,
-					...doc.data()
+					createdAt,
+					imageBlob
 				};
 			});
 		});

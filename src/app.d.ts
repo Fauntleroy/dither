@@ -2,6 +2,7 @@
 // for information about these interfaces
 declare namespace App {
 	interface ChatMessageT {
+		id: string;
 		createdAt: Date;
 		imageBlob: string;
 		text?: string;
@@ -13,5 +14,3 @@ declare namespace App {
 		messages: ChatMessageT[];
 	}
 }
-
-export {};
