@@ -2,7 +2,7 @@
 	import { mediaStream, webcamEnabled } from '$/store.svelte.js';
 	import { generateImage } from '$/utils/filmstrip.js';
 
-	import StylizedWebcamFeed from './stylized-webcam-feed.svelte';
+	import StylizedWebcamFeed from '$/components/stylized-webcam-feed.svelte';
 
 	interface Props {
 		onCreateMessage: Function;
@@ -26,12 +26,12 @@
 		event.preventDefault();
 
 		recording = true;
-		const imageDataURL = await generateImage(recordingCanvasElement);
+		const imageDataBlob = await generateImage(recordingCanvasElement);
 		recording = false;
 
 		onCreateMessage({
 			text: inputMessage,
-			imageDataURL
+			imageDataBlob
 		});
 
 		inputMessage = '';

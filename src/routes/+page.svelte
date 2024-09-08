@@ -1,5 +1,10 @@
 <script lang="ts">
 	import store from 'store2';
+	import humanId from 'human-id';
+	import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+	import { goto } from '$app/navigation';
+
+	import { firestore } from '$/firebase';
 
 	import { STORE_ROOM_HISTORY } from '$/constants';
 
@@ -22,8 +27,15 @@
 		}
 	);
 
-	function handleNewRoomClick() {
-		console.log('create a new room!');
+	const roomsRef = collection(firestore, 'rooms');
+
+	async function handleNewRoomClick() {
+		const newRoomDoc = await addDoc(roomsRef, {
+			name: humanId(' '),
+			createdAt: serverTimestamp()
+		});
+
+		goto(`/rooms/${newRoomDoc.id}`);
 	}
 </script>
 

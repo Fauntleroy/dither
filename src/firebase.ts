@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import 'firebase/firestore';
-import 'firebase/functions';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
+import { getStorage, connectStorageEmulator } from 'firebase/storage';
 
 import { env } from '$env/dynamic/public';
 
@@ -10,3 +10,11 @@ export const firebaseApp = initializeApp({
 	storageBucket: 'not-firebase-58b83.appspot.com',
 	projectId: 'not-firebase-58b83'
 });
+
+export const firestore = getFirestore(firebaseApp);
+export const firebaseStorage = getStorage(firebaseApp);
+
+if (import.meta.env.DEV) {
+	connectFirestoreEmulator(firestore, '127.0.0.1', 8080);
+	connectStorageEmulator(firebaseStorage, '127.0.0.1', 9199);
+}

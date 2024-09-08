@@ -2,8 +2,8 @@
 	import Dither from 'canvas-dither';
 	import throttle from 'just-throttle';
 
-	import { cameras, colorPalette, mediaDeviceId, mediaStream } from '../store.svelte.js';
-	import { convertImageDataToColorPalette } from '../utils/canvas.js';
+	import { cameras, colorPalette, mediaDeviceId, mediaStream } from '$/store.svelte.js';
+	import { convertImageData } from '$/utils/canvas.js';
 
 	const TARGET_WIDTH = 200;
 	const TARGET_HEIGHT = 150;
@@ -66,8 +66,8 @@
 		const canvasImageData = displayCanvas2dContext.getImageData(0, 0, canvasWidth, canvasHeight);
 		const filteredImageData = Dither.atkinson(canvasImageData);
 		recordingCanvas2dContext.putImageData(filteredImageData, 0, 0);
-		const colorChangedImageData = convertImageDataToColorPalette(filteredImageData, $colorPalette);
-		displayCanvas2dContext.putImageData(colorChangedImageData, 0, 0);
+		displayCanvas2dContext.putImageData(filteredImageData, 0, 0);
+		convertImageData(displayCanvasElement, $colorPalette as unknown as [string, string]);
 	}
 
 	const throttledDrawProcessedImage = throttle(drawProcessedImage, 100, { leading: true });

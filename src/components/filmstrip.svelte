@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { generateGIF } from '$/utils/filmstrip.js';
-	import { convertImageDataToColorPalette } from '$/utils/canvas.js';
+	import { convertImageData } from '$/utils/canvas.js';
 	import { colorPalette } from '$/store.svelte.js';
 
 	interface Props {
@@ -11,36 +11,44 @@
 	let { fileName, src }: Props = $props();
 	let canvasElement: HTMLCanvasElement;
 
+	async function loadImageAndDrawOnCanvas(
+		imageUrl: string,
+		targetCanvasElement: HTMLCanvasElement
+	) {
+		try {
+			const response = await fetch(imageUrl);
+			const blob = await response.blob();
+			const img = new Image();
+			img.src = URL.createObjectURL(blob);
+
+			img.onload = () => {
+				const ctx = targetCanvasElement.getContext('2d');
+
+				if (!ctx) {
+					console.error('Could not create 2d canvas context while loading image.');
+					return;
+				}
+
+				// Adjust canvas size to match the image
+				targetCanvasElement.width = img.width;
+				targetCanvasElement.height = img.height;
+
+				ctx.drawImage(img, 0, 0); // Draw the image onto the canvas
+
+				convertImageData(targetCanvasElement, $colorPalette as unknown as [string, string]);
+			};
+		} catch (error) {
+			console.error('Error loading or drawing image:', error);
+		}
+	}
+
 	$effect(() => {
-		drawDataURIOnCanvas(src);
-
-		const colorPaletteUnsubscribe = colorPalette.subscribe(() => drawDataURIOnCanvas(src));
-
-		return () => {
-			colorPaletteUnsubscribe();
-		};
+		loadImageAndDrawOnCanvas(src, canvasElement);
 	});
 
-	function drawDataURIOnCanvas(strDataURI: string) {
-		const tempImage = new Image();
-
-		function drawDataFromImage() {
-			const canvasContext = canvasElement.getContext('2d');
-
-			if (!canvasContext) {
-				console.error('Error getting canvas context!');
-				return;
-			}
-
-			canvasContext.drawImage(tempImage, 0, 0);
-			const imageData = canvasContext.getImageData(0, 0, canvasElement.width, canvasElement.height);
-			const convertedImageData = convertImageDataToColorPalette(imageData, $colorPalette);
-			canvasContext.putImageData(convertedImageData, 0, 0);
-		}
-
-		tempImage.addEventListener('load', drawDataFromImage);
-		tempImage.setAttribute('src', strDataURI);
-	}
+	$effect(() => {
+		convertImageData(canvasElement, $colorPalette as unknown as [string, string]);
+	});
 
 	function handleDownloadClick() {
 		generateGIF(canvasElement, fileName);
@@ -68,7 +76,7 @@
 		height: 225px;
 		max-width: 100%;
 		overflow: hidden;
-		background: var(--black);
+		background: var(--white);
 		border: var(--white) 1px solid;
 		border-radius: 5px;
 	}

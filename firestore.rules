@@ -3,6 +3,7 @@ service cloud.firestore {
 
   match /databases/{database}/documents {
     match /rooms/{roomId} {
+      allow create: if true; // Anyone can create rooms
       allow read: if true; // Anyone can read rooms
       allow update: if request.writeFields.size() == 1 && 'name' in request.writeFields;
 
@@ -11,7 +12,7 @@ service cloud.firestore {
       }
       
       match /messages/{document=**} {
-         allow create: if request.resource.data.text != null && request.resource.data.imageBlob != null;
+         allow create: if request.resource.data.text != null && request.resource.data.imageUrl != null;
       }
     }
   }

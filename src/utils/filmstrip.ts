@@ -7,7 +7,7 @@ const DURATION = 2000;
 const FRAME_DELAY = 1000 / FRAMES_PER_SECOND;
 const FRAME_TOTAL = (DURATION / 1000) * FRAMES_PER_SECOND;
 
-export function generateImage(targetCanvasElement: HTMLCanvasElement) {
+export function generateImage(targetCanvasElement: HTMLCanvasElement): Promise<Blob> {
 	const bufferCanvasElement = document.createElement('canvas');
 	bufferCanvasElement.width = FRAME_WIDTH;
 	bufferCanvasElement.height = FRAME_HEIGHT * FRAME_TOTAL;
@@ -15,10 +15,10 @@ export function generateImage(targetCanvasElement: HTMLCanvasElement) {
 
 	if (!bufferContext) {
 		console.error('Error creating 2d canvas context while generating GIF');
-		return;
+		return Promise.reject('Error creating 2d canvas context while generating GIF');
 	}
 
-	return new Promise((resolve) => {
+	return new Promise((resolve, reject) => {
 		let frameCount = 0;
 
 		function captureFrame() {
@@ -34,8 +34,13 @@ export function generateImage(targetCanvasElement: HTMLCanvasElement) {
 			if (frameCount < FRAME_TOTAL) {
 				setTimeout(captureFrame, FRAME_DELAY);
 			} else {
-				const bufferDataURL = bufferCanvasElement.toDataURL('image/png');
-				resolve(bufferDataURL);
+				bufferCanvasElement.toBlob((blob) => {
+					if (blob) {
+						resolve(blob);
+					} else {
+						reject('Could not convert canvas to blob');
+					}
+				}, 'image/png');
 			}
 		}
 

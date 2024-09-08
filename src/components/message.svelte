@@ -10,13 +10,13 @@
 		});
 	});
 
-	let { imageBlob, text } = $props();
+	let { imageUrl, text } = $props();
 	const messageText = text || '…';
 </script>
 
 <div class="message">
 	<div class="image">
-		{#if Filmstrip}<Filmstrip src={imageBlob} fileName={messageText} />{/if}
+		{#if Filmstrip}<Filmstrip src={imageUrl} fileName={messageText} />{/if}
 	</div>
 	<div class="text">{messageText}</div>
 </div>

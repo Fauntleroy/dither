@@ -3,12 +3,12 @@
 	import { crossfade } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import store from 'store2';
-
+	import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 	import {
 		addDoc,
+		setDoc,
 		doc,
 		collection,
-		getFirestore,
 		onSnapshot,
 		query,
 		orderBy,
@@ -16,8 +16,9 @@
 		serverTimestamp,
 		updateDoc
 	} from 'firebase/firestore';
+
 	import { pageVisible } from '$/store.svelte.js';
-	import { firebaseApp } from '$/firebase.js';
+	import { firebaseStorage, firestore } from '$/firebase.js';
 
 	import Message from '$/components/message.svelte';
 
@@ -25,8 +26,7 @@
 
 	const { data } = $props();
 
-	const firebaseDb = getFirestore(firebaseApp);
-	const roomMessagesRef = collection(firebaseDb, `rooms/${data.roomId}/messages`);
+	const roomMessagesRef = collection(firestore, `rooms/${data.roomId}/messages`);
 
 	let unreadCount: number = $state(0);
 	let textAreaElement: HTMLTextAreaElement | null;
@@ -89,7 +89,7 @@
 		}
 
 		// get room data
-		const currentRoomRef = doc(firebaseDb, 'rooms', data.roomId);
+		const currentRoomRef = doc(firestore, 'rooms', data.roomId);
 		const roomUnsubscribe = onSnapshot(currentRoomRef, (roomSnapshot) => {
 			// TODO // some kind of 404 if there's no room at all
 			if (roomSnapshot.exists()) {
@@ -109,12 +109,12 @@
 		const roomMessagesQuery = query(roomMessagesRef, limit(10), orderBy('createdAt', 'desc'));
 		const roomMessagesUnsubscribe = onSnapshot(roomMessagesQuery, (roomMessagesSnapshot) => {
 			messages = roomMessagesSnapshot.docs.map((doc) => {
-				const { createdAt, imageBlob, text } = doc.data();
+				const { createdAt, imageUrl, text } = doc.data();
 
 				return {
 					id: doc.id,
 					createdAt,
-					imageBlob,
+					imageUrl,
 					text
 				};
 			});
@@ -131,19 +131,34 @@
 
 	interface HandleCreateMessageArgs {
 		text: string;
-		imageDataURL: string;
+		imageDataBlob: Blob;
 	}
 
-	async function handleCreateMessage({ text, imageDataURL }: HandleCreateMessageArgs) {
-		await addDoc(roomMessagesRef, {
-			createdAt: serverTimestamp(),
-			imageBlob: imageDataURL,
-			text
-		});
+	async function handleCreateMessage({ text, imageDataBlob }: HandleCreateMessageArgs) {
+		try {
+			// Generate a new document ID for the message
+			const newMessageRef = doc(roomMessagesRef);
+			const messageId = newMessageRef.id;
+
+			// Upload the image to Firebase Storage
+			const storageRef = ref(firebaseStorage, `messages/${messageId}/filmstrip.png`);
+			await uploadBytes(storageRef, imageDataBlob); // Assuming imageDataURL is a data URL
+
+			// Get the download URL of the uploaded image
+			const imageUrl = await getDownloadURL(storageRef);
+
+			await setDoc(newMessageRef, {
+				createdAt: serverTimestamp(),
+				imageUrl: imageUrl,
+				text
+			});
+		} catch (addMessageError) {
+			console.error('Error adding message to room', addMessageError);
+		}
 	}
 
 	async function handleNameBlur() {
-		const roomRef = doc(firebaseDb, 'rooms', data.roomId);
+		const roomRef = doc(firestore, 'rooms', data.roomId);
 		await updateDoc(roomRef, { name: roomNameInputValue });
 	}
 
@@ -195,9 +210,9 @@
 			<p>Nothing has been said.</p>
 			<p>Click ➪ to say something</p>
 		{/if}
-		{#each messages as { id, text, imageBlob }, i (id)}
+		{#each messages as { id, text, imageUrl }, i (id)}
 			<li animate:flip={{ duration: 200 }} in:receive={{ key: id }} out:send={{ key: id }}>
-				<Message {text} {imageBlob} />
+				<Message {text} {imageUrl} />
 			</li>
 		{/each}
 	</ul>

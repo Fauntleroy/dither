@@ -4,7 +4,7 @@ declare namespace App {
 	interface ChatMessageT {
 		id: string;
 		createdAt: Date;
-		imageBlob: string;
+		imageUrl: string;
 		text?: string;
 	}
 
