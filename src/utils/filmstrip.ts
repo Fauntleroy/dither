@@ -11,6 +11,11 @@ export function generateImage(targetCanvasElement: HTMLCanvasElement) {
 	bufferCanvasElement.height = FRAME_HEIGHT * FRAME_TOTAL;
 	const bufferContext = bufferCanvasElement.getContext('2d');
 
+	if (!bufferContext) {
+		console.error('Error creating 2d canvas context while generating GIF');
+		return;
+	}
+
 	return new Promise((resolve) => {
 		let frameCount = 0;
 
@@ -31,54 +36,53 @@ export function generateImage(targetCanvasElement: HTMLCanvasElement) {
 	});
 }
 
-export async function generateGIF(targetFilmstripElement) {
-	const GifEncoder = await import('gif-encoder').default;
+export async function generateGIF(targetFilmstripElement: HTMLCanvasElement) {
+	const { encode } = await import('modern-gif');
+	// import the workerUrl through Vite
+	const { workerUrl } = await import('modern-gif/worker?url');
 
 	const bufferCanvasElement = document.createElement('canvas');
 	bufferCanvasElement.width = FRAME_WIDTH;
 	bufferCanvasElement.height = FRAME_HEIGHT;
 	const bufferContext = bufferCanvasElement.getContext('2d');
 
-	return new Promise((resolve) => {
-		const gif = new GifEncoder(FRAME_WIDTH, FRAME_HEIGHT, {
-			highWaterMark: 128 * 1000
-		});
-		gif.writeHeader();
-		gif.setDelay(100);
-		gif.setRepeat(0);
+	if (!bufferContext) {
+		console.error('Error creating 2d canvas context while generating GIF');
+		return;
+	}
 
-		for (let i = 0; i < FRAME_TOTAL; i++) {
-			bufferContext.drawImage(
-				targetFilmstripElement,
-				0,
-				i * FRAME_HEIGHT,
-				FRAME_WIDTH,
-				FRAME_HEIGHT, // source
-				0,
-				0,
-				FRAME_WIDTH,
-				FRAME_HEIGHT // destination
-			);
-			const bufferImageData = bufferContext.getImageData(0, 0, FRAME_WIDTH, FRAME_HEIGHT);
-			gif.addFrame(bufferImageData.data);
-		}
+	const frames = [];
 
-		gif.on('readable', function () {
-			const buffer = gif.read();
-			const blob = new Blob([buffer], { type: 'image/gif' });
-			const url = window.URL.createObjectURL(blob);
+	for (let i = 0; i < FRAME_TOTAL; i++) {
+		bufferContext.drawImage(
+			targetFilmstripElement,
+			0,
+			i * FRAME_HEIGHT,
+			FRAME_WIDTH,
+			FRAME_HEIGHT, // source
+			0,
+			0,
+			FRAME_WIDTH,
+			FRAME_HEIGHT // destination
+		);
+		const bufferImageData = bufferContext.getImageData(0, 0, FRAME_WIDTH, FRAME_HEIGHT);
+		frames.push({ data: bufferImageData.data, delay: 100 });
+	}
 
-			const link = document.createElement('a');
-			link.href = url;
-			link.download = Date.now() + '.gif';
-
-			const clickEvent = new MouseEvent('click');
-			link.dispatchEvent(clickEvent);
-
-			setTimeout(() => window.URL.revokeObjectURL(url), 100);
-		});
-
-		gif.finish();
-		resolve(gif);
+	const output = await encode({
+		// workerUrl is optional
+		workerUrl,
+		width: FRAME_WIDTH,
+		height: FRAME_HEIGHT,
+		frames
 	});
+
+	const blob = new Blob([output], { type: 'image/gif' });
+	const url = window.URL.createObjectURL(blob);
+	const link = document.createElement('a');
+	link.href = url;
+	link.download = Date.now() + '.gif';
+	const clickEvent = new MouseEvent('click');
+	link.dispatchEvent(clickEvent);
+	setTimeout(() => window.URL.revokeObjectURL(url), 100);
 }
