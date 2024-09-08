@@ -42,7 +42,6 @@
 	}
 
 	function handleDownloadClick() {
-		console.log('handleDownloadClick()');
 		generateGIF(canvasElement);
 	}
 </script>

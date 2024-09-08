@@ -71,8 +71,6 @@ export const mediaStream: Readable<DerivedMediaStream> = derived<
 	[mediaDeviceId, webcamEnabled],
 	([$mediaDeviceId, $webcamEnabled], set) => {
 		(async () => {
-			console.log('hello what is going on', $webcamEnabled, $mediaDeviceId);
-
 			if (!$webcamEnabled) {
 				set({
 					status: 'initial',

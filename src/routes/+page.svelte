@@ -4,7 +4,6 @@
 	import { STORE_ROOM_HISTORY } from '../constants';
 
 	const roomHistory = store.get(STORE_ROOM_HISTORY);
-	console.log('roomHistory', roomHistory);
 	const roomHistoryArray: any[] = [];
 
 	function handleNewRoomClick() {

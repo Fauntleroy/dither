@@ -87,7 +87,7 @@
 	$effect(() => {
 		const mediaStreamUnsubscribe = mediaStream.subscribe((mediaStreamValue) => {
 			const { stream } = mediaStreamValue;
-			console.log(mediaStreamValue);
+
 			if (!stream) {
 				return;
 			}

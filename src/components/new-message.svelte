@@ -46,9 +46,6 @@
 	function handleEnableWebcamClick() {
 		$webcamEnabled = true;
 	}
-
-	console.log('webcam enabled', $webcamEnabled);
-	console.log('mediaStream', $mediaStream);
 </script>
 
 <div class="new-message" class:recording>
