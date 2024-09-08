@@ -1,10 +1,11 @@
-<script>
-	import { colorPaletteId, colorPalette } from '../store.js';
+<script lang="ts">
+	import { colorPaletteId, colorPalette } from '$/store.svelte.js';
 
-	import { COLOR_PALETTES } from '../constants.js';
+	import { COLOR_PALETTES } from '$/constants.js';
 
-	function handleColorPaletteChange(event) {
-		colorPaletteId.set(event.target.value);
+	function handleColorPaletteChange(event: Event) {
+		const target = event.target as HTMLSelectElement;
+		colorPaletteId.set(target.value);
 	}
 
 	colorPalette.subscribe(([black, white]) => {
@@ -13,7 +14,7 @@
 	});
 </script>
 
-<select on:change={handleColorPaletteChange}>
+<select onchange={handleColorPaletteChange}>
 	{#each Object.entries(COLOR_PALETTES) as [id, colorPalette] (id)}
 		<option value={id} selected={$colorPaletteId === id}>{id}</option>
 	{/each}

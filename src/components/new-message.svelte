@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mediaStream, webcamEnabled } from '$/store.js';
+	import { mediaStream, webcamEnabled } from '$/store.svelte.js';
 	import { generateImage } from '$/utils/filmstrip.js';
 
 	import StylizedWebcamFeed from './stylized-webcam-feed.svelte';
@@ -44,8 +44,11 @@
 	}
 
 	function handleEnableWebcamClick() {
-		webcamEnabled.set(true);
+		$webcamEnabled = true;
 	}
+
+	console.log('webcam enabled', $webcamEnabled);
+	console.log('mediaStream', $mediaStream);
 </script>
 
 <div class="new-message" class:recording>

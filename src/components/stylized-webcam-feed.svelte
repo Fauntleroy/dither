@@ -2,7 +2,7 @@
 	import Dither from 'canvas-dither';
 	import throttle from 'just-throttle';
 
-	import { cameras, colorPalette, mediaDeviceId, mediaStream } from '../store.js';
+	import { cameras, colorPalette, mediaDeviceId, mediaStream } from '../store.svelte.js';
 	import { convertImageDataToColorPalette } from '../utils/canvas.js';
 
 	const TARGET_WIDTH = 200;
@@ -87,6 +87,7 @@
 	$effect(() => {
 		const mediaStreamUnsubscribe = mediaStream.subscribe((mediaStreamValue) => {
 			const { stream } = mediaStreamValue;
+			console.log(mediaStreamValue);
 			if (!stream) {
 				return;
 			}

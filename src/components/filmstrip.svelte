@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { generateGIF } from '$/utils/filmstrip.js';
 	import { convertImageDataToColorPalette } from '$/utils/canvas.js';
-	import { colorPalette } from '$/store.js';
+	import { colorPalette } from '$/store.svelte.js';
 
 	interface Props {
 		src: string;
@@ -89,6 +89,7 @@
 		position: absolute;
 		top: 5px;
 		right: 5px;
+		outline: var(--black) 2px solid;
 	}
 
 	.filmstrip:hover .download {
