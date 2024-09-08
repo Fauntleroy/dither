@@ -1,10 +1,21 @@
+node_modules
+
+# Output
+.output
+.vercel
+/.svelte-kit
+/build
+
+# OS
 .DS_Store
-/node_modules/
-/src/node_modules/@sapper/
-yarn-error.log
-/cypress/screenshots/
-/__sapper__/
-/.firebase/
-firestore-debug.log
-rollup-stats.html
-/public/build/
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
