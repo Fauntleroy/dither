@@ -1,3 +1,5 @@
+import workerUrl from 'modern-gif/worker?url';
+
 const FRAME_HEIGHT = 150;
 const FRAME_WIDTH = 200;
 const FRAMES_PER_SECOND = 10;
@@ -20,6 +22,11 @@ export function generateImage(targetCanvasElement: HTMLCanvasElement) {
 		let frameCount = 0;
 
 		function captureFrame() {
+			if (!bufferContext) {
+				console.error('Error creating 2d canvas context while capturing frames');
+				return;
+			}
+
 			const yOffset = frameCount * FRAME_HEIGHT;
 			bufferContext.drawImage(targetCanvasElement, 0, yOffset, FRAME_WIDTH, FRAME_HEIGHT);
 			frameCount++;
@@ -36,10 +43,8 @@ export function generateImage(targetCanvasElement: HTMLCanvasElement) {
 	});
 }
 
-export async function generateGIF(targetFilmstripElement: HTMLCanvasElement) {
+export async function generateGIF(targetFilmstripElement: HTMLCanvasElement, fileName: string) {
 	const { encode } = await import('modern-gif');
-	// import the workerUrl through Vite
-	const { workerUrl } = await import('modern-gif/worker?url');
 
 	const bufferCanvasElement = document.createElement('canvas');
 	bufferCanvasElement.width = FRAME_WIDTH;
@@ -81,7 +86,7 @@ export async function generateGIF(targetFilmstripElement: HTMLCanvasElement) {
 	const url = window.URL.createObjectURL(blob);
 	const link = document.createElement('a');
 	link.href = url;
-	link.download = Date.now() + '.gif';
+	link.download = `${fileName}.gif`;
 	const clickEvent = new MouseEvent('click');
 	link.dispatchEvent(clickEvent);
 	setTimeout(() => window.URL.revokeObjectURL(url), 100);

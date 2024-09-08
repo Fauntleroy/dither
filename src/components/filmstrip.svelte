@@ -4,10 +4,11 @@
 	import { colorPalette } from '$/store.svelte.js';
 
 	interface Props {
+		fileName: string;
 		src: string;
 	}
 
-	let { src }: Props = $props();
+	let { fileName, src }: Props = $props();
 	let canvasElement: HTMLCanvasElement;
 
 	$effect(() => {
@@ -42,7 +43,7 @@
 	}
 
 	function handleDownloadClick() {
-		generateGIF(canvasElement);
+		generateGIF(canvasElement, fileName);
 	}
 </script>
 
