@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { colorPaletteId, colorPalette } from '$/store.svelte.js';
 
-	import { COLOR_PALETTES } from '$/constants.js';
+	import { COLOR_PALETTES, type ColorPaletteId } from '$/constants.js';
 
 	function handleColorPaletteChange(event: Event) {
 		const target = event.target as HTMLSelectElement;
-		colorPaletteId.set(target.value);
+		colorPaletteId.set(target.value as ColorPaletteId);
 	}
 
 	colorPalette.subscribe(([black, white]) => {

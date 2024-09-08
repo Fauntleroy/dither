@@ -139,6 +139,7 @@
 	class:playing={webcamVideoStatus === 'playing'}
 	onclick={handleFeedClick}
 >
+	<!-- svelte-ignore a11y_media_has_caption -->
 	<video
 		class="raw-webcam sekrit"
 		bind:this={videoElement}
@@ -146,7 +147,7 @@
 		onsuspend={handleVideoSuspend}
 		onwaiting={handleVideoWaiting}
 		playsinline={true}
-	/>
+	></video>
 	<canvas
 		class="recording-webcam sekrit"
 		width={TARGET_WIDTH}
