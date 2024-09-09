@@ -1,0 +1,8 @@
+[
+	{
+		"origin": ["https://dither.kempf.dev"],
+		"method": ["GET"],
+		"responseHeader": ["image/png"],
+		"maxAgeSeconds": 3600
+	}
+]
