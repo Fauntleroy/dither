@@ -1,1 +1,0 @@
-import{B as o,C as _}from"./runtime.CQ81CuDx.js";function c(r,s,f,A){f=f==null?null:f+"";var i=r.__attributes??(r.__attributes={});o&&(i[s]=r.getAttribute(s),s==="src"||s==="srcset"||s==="href"&&r.nodeName==="LINK")||i[s]!==(i[s]=f)&&(s==="loading"&&(r[_]=f),f===null?r.removeAttribute(s):r.setAttribute(s,f))}export{c as s};

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { default as FilmstripT } from '$/components/filmstrip.svelte';
-	import { expoOut } from 'svelte/easing';
+	import { bounceIn, bounceInOut, bounceOut, expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
 	let Filmstrip: any = $state(null);
@@ -20,7 +20,10 @@
 	<div class="image" in:scale={{ duration: 1000, easing: expoOut, opacity: 0 }}>
 		{#if Filmstrip}<Filmstrip src={imageUrl} fileName={messageText} />{/if}
 	</div>
-	<div class="text" in:scale={{ delay: 250, duration: 1000, easing: expoOut, opacity: 0 }}>
+	<div
+		class="text"
+		in:scale={{ delay: 500, duration: 500, easing: expoOut, opacity: 0, start: 0.25 }}
+	>
 		{messageText}
 	</div>
 </div>
@@ -59,6 +62,6 @@
 		border: var(--white) 1px solid;
 		border-radius: 5px;
 		z-index: 2;
-		transform-origin: -20% 50%;
+		transform-origin: 50% 50%;
 	}
 </style>
