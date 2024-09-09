@@ -72,13 +72,9 @@
 
 	.filmstrip {
 		position: relative;
-		width: 300px;
-		height: 225px;
+		width: 100%;
 		max-width: 100%;
-		overflow: hidden;
-		background: var(--white);
-		border: var(--white) 1px solid;
-		border-radius: 5px;
+		aspect-ratio: 4 / 3;
 	}
 
 	.canvas {
@@ -103,12 +99,5 @@
 	.filmstrip:hover .download {
 		opacity: 1;
 		transform: scale(1);
-	}
-
-	@media (max-width: 600px) {
-		.filmstrip {
-			width: 200px;
-			height: 150px;
-		}
 	}
 </style>

@@ -1,5 +1,7 @@
 <script lang="ts">
 	import type { default as FilmstripT } from '$/components/filmstrip.svelte';
+	import { expoOut } from 'svelte/easing';
+	import { scale } from 'svelte/transition';
 
 	let Filmstrip: any = $state(null);
 
@@ -15,10 +17,12 @@
 </script>
 
 <div class="message">
-	<div class="image">
+	<div class="image" in:scale={{ duration: 1000, easing: expoOut, opacity: 0 }}>
 		{#if Filmstrip}<Filmstrip src={imageUrl} fileName={messageText} />{/if}
 	</div>
-	<div class="text">{messageText}</div>
+	<div class="text" in:scale={{ delay: 250, duration: 1000, easing: expoOut, opacity: 0 }}>
+		{messageText}
+	</div>
 </div>
 
 <style>
@@ -30,6 +34,20 @@
 
 	.image {
 		flex-shrink: 0;
+		width: 300px;
+		aspect-ratio: 4 / 3;
+		overflow: hidden;
+		background-color: var(--white);
+		border: var(--white) 1px solid;
+		border-radius: 5px;
+		transform-origin: 25% -50%;
+	}
+
+	@media (max-width: 600px) {
+		.image {
+			width: 200px;
+			height: 150px;
+		}
 	}
 
 	.text {
@@ -41,5 +59,6 @@
 		border: var(--white) 1px solid;
 		border-radius: 5px;
 		z-index: 2;
+		transform-origin: -20% 50%;
 	}
 </style>

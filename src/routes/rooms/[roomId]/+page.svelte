@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { quintOut } from 'svelte/easing';
-	import { crossfade } from 'svelte/transition';
+	import { scale } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import store from 'store2';
 	import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -37,24 +37,6 @@
 	let messages: App.ChatMessageT[] = $state([]);
 
 	let roomName: string = $derived(room?.name || data.roomId);
-
-	const [send, receive] = crossfade({
-		duration: (d) => Math.sqrt(d * 100),
-
-		fallback(node, params) {
-			const style = getComputedStyle(node);
-			const transform = style.transform === 'none' ? '' : style.transform;
-
-			return {
-				duration: 125,
-				easing: quintOut,
-				css: (t) => `
-					transform: ${transform} scale(${t});
-					opacity: ${t}
-				`
-			};
-		}
-	});
 
 	function updateRoomHistory() {
 		const roomHistory = store.get(STORE_ROOM_HISTORY);
@@ -203,7 +185,9 @@
 		></textarea>
 		—
 	</div>
-	{#if NewMessage}<NewMessage onCreateMessage={handleCreateMessage} />{/if}
+	<div class="new-message">
+		{#if NewMessage}<NewMessage onCreateMessage={handleCreateMessage} />{/if}
+	</div>
 
 	<ul class="messages">
 		{#if messages.length === 0}
@@ -211,7 +195,7 @@
 			<p>Click ➪ to say something</p>
 		{/if}
 		{#each messages as { id, text, imageUrl }, i (id)}
-			<li animate:flip={{ duration: 200 }} in:receive={{ key: id }} out:send={{ key: id }}>
+			<li class="message-container" animate:flip={{ duration: 500, easing: quintOut }}>
 				<Message {text} {imageUrl} />
 			</li>
 		{/each}
@@ -251,10 +235,21 @@
 		outline: none;
 	}
 
+	.new-message {
+		z-index: 2;
+		position: relative;
+	}
+
 	.messages {
+		z-index: 1;
+		position: relative;
 		list-style-type: none;
 		margin: 25px 0 0 0;
 		padding: 0;
 		text-align: center;
+	}
+
+	.message-container {
+		transform-origin: top left;
 	}
 </style>
