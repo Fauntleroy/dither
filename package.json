@@ -6,6 +6,7 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"emulators": "firebase emulators:start --only firestore,storage",
+		"deploy": "npm run build && firebase deploy",
 		"preview": "vite preview",
 		"test": "playwright test",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
