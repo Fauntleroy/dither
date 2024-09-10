@@ -7,6 +7,28 @@ const DURATION = 2000;
 const FRAME_DELAY = 1000 / FRAMES_PER_SECOND;
 const FRAME_TOTAL = (DURATION / 1000) * FRAMES_PER_SECOND;
 
+async function generateOptimizedPngFromCanvas(canvasElement: HTMLCanvasElement): Promise<Blob> {
+	const uPNG = (await import('upng-js')).default;
+
+	// Get image data from canvas
+	const context = canvasElement.getContext('2d');
+	if (!context) {
+		throw new Error('Canvas context not available');
+	}
+	const imageData = context.getImageData(0, 0, canvasElement.width, canvasElement.height);
+
+	// Encode black and white image with UPNG, optimizing for minimal size
+	const optimizedUpngImage = uPNG.encode(
+		[imageData.data.buffer],
+		imageData.width,
+		imageData.height,
+		2 + 1
+	);
+
+	// Convert optimized UPNG data to Blob
+	return new Blob([optimizedUpngImage], { type: 'image/png' });
+}
+
 export function generateImage(targetCanvasElement: HTMLCanvasElement): Promise<Blob> {
 	const bufferCanvasElement = document.createElement('canvas');
 	bufferCanvasElement.width = FRAME_WIDTH;
@@ -34,13 +56,14 @@ export function generateImage(targetCanvasElement: HTMLCanvasElement): Promise<B
 			if (frameCount < FRAME_TOTAL) {
 				setTimeout(captureFrame, FRAME_DELAY);
 			} else {
-				bufferCanvasElement.toBlob((blob) => {
-					if (blob) {
-						resolve(blob);
-					} else {
-						reject('Could not convert canvas to blob');
+				(async function () {
+					try {
+						const optimizedPngBlob = await generateOptimizedPngFromCanvas(bufferCanvasElement);
+						resolve(optimizedPngBlob);
+					} catch (imageGenerationError) {
+						reject(imageGenerationError);
 					}
-				}, 'image/png');
+				})();
 			}
 		}
 
