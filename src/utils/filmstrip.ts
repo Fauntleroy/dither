@@ -1,5 +1,7 @@
 import workerUrl from 'modern-gif/worker?url';
 
+import { convertImageData } from './canvas';
+
 const FRAME_HEIGHT = 150;
 const FRAME_WIDTH = 200;
 const FRAMES_PER_SECOND = 10;
@@ -73,6 +75,7 @@ export function generateImage(targetCanvasElement: HTMLCanvasElement): Promise<B
 
 export async function generateGIF(
 	targetElement: HTMLCanvasElement | HTMLImageElement,
+	colorPalette: [string, string],
 	fileName: string
 ) {
 	const { encode } = await import('modern-gif');
@@ -101,6 +104,7 @@ export async function generateGIF(
 			FRAME_WIDTH,
 			FRAME_HEIGHT // destination
 		);
+		convertImageData(bufferCanvasElement, colorPalette);
 		const bufferImageData = bufferContext.getImageData(0, 0, FRAME_WIDTH, FRAME_HEIGHT);
 		frames.push({ data: bufferImageData.data, delay: 100 });
 	}

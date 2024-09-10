@@ -81,7 +81,7 @@
 			return;
 		}
 
-		generateGIF(image, fileName);
+		generateGIF(image, $colorPalette as unknown as [string, string], fileName);
 	}
 </script>
 
