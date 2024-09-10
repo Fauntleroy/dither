@@ -11,7 +11,7 @@ async function generateOptimizedPngFromCanvas(canvasElement: HTMLCanvasElement):
 	const uPNG = (await import('upng-js')).default;
 
 	// Get image data from canvas
-	const context = canvasElement.getContext('2d');
+	const context = canvasElement.getContext('2d', { willReadFrequently: true });
 	if (!context) {
 		throw new Error('Canvas context not available');
 	}

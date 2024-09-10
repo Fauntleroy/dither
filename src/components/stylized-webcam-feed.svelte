@@ -44,7 +44,9 @@
 
 	function drawProcessedImage() {
 		const displayCanvas2dContext = displayCanvasElement.getContext('2d');
-		const recordingCanvas2dContext = recordingCanvasElement.getContext('2d');
+		const recordingCanvas2dContext = recordingCanvasElement.getContext('2d', {
+			willReadFrequently: true
+		});
 
 		if (!displayCanvas2dContext || !recordingCanvas2dContext) {
 			console.error('Canvas contexts could not be initialized');
