@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { default as FilmstripT } from '$/components/filmstrip.svelte';
-	import { bounceIn, bounceInOut, bounceOut, expoOut } from 'svelte/easing';
+	import { expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
 
 	let Filmstrip: any = $state(null);

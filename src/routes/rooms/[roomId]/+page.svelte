@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { quintOut } from 'svelte/easing';
-	import { scale } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 	import store from 'store2';
 	import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 	import {
-		addDoc,
 		setDoc,
 		doc,
 		collection,
