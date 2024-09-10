@@ -1,7 +1,10 @@
 <script lang="ts">
 	import type { default as FilmstripT } from '$/components/filmstrip.svelte';
+
 	import { expoOut } from 'svelte/easing';
 	import { scale } from 'svelte/transition';
+
+	import RenderIfVisible from './render-if-visible.svelte';
 
 	let Filmstrip: any = $state(null);
 
@@ -18,7 +21,9 @@
 
 <div class="message">
 	<div class="image" in:scale={{ duration: 1000, easing: expoOut, opacity: 0 }}>
-		{#if Filmstrip}<Filmstrip src={imageUrl} fileName={messageText} />{/if}
+		<RenderIfVisible>
+			{#if Filmstrip}<Filmstrip src={imageUrl} fileName={messageText} />{/if}
+		</RenderIfVisible>
 	</div>
 	<div
 		class="text"
