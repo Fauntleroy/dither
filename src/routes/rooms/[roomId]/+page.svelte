@@ -213,9 +213,10 @@
 		align-items: center;
 		justify-content: center;
 		align-self: center;
-		padding: 0 0.5em;
+		padding: 0 15px;
 		border: var(--white) 1px dotted;
 		border-radius: 0.25em;
+		font-size: 12px;
 	}
 
 	.room-name {
