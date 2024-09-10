@@ -170,7 +170,7 @@
 
 <div class="content">
 	<div class="room-name-container">
-		—
+		߷
 		<textarea
 			class="room-name"
 			rows="1"
@@ -181,7 +181,7 @@
 			onkeypress={handleNameKeypress}
 			use:useResize
 		></textarea>
-		—
+		߷
 	</div>
 	<div class="new-message">
 		{#if NewMessage}<NewMessage onCreateMessage={handleCreateMessage} />{/if}
@@ -203,13 +203,19 @@
 <style>
 	.content {
 		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 1em;
 	}
 
 	.room-name-container {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		margin: 0 0 10px 0;
+		align-self: center;
+		padding: 0 0.5em;
+		border: var(--white) 1px dotted;
+		border-radius: 0.25em;
 	}
 
 	.room-name {
@@ -242,7 +248,7 @@
 		z-index: 1;
 		position: relative;
 		list-style-type: none;
-		margin: 25px 0 0 0;
+		margin: 0;
 		padding: 0;
 		text-align: center;
 	}
