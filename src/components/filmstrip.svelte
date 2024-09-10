@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	import { generateGIF } from '$/utils/filmstrip.js';
 	import { convertImageData } from '$/utils/canvas.js';
 	import { colorPalette } from '$/store.svelte.js';
@@ -42,7 +44,7 @@
 		}
 	}
 
-	$effect(() => {
+	onMount(() => {
 		loadImageAndDrawOnCanvas(src, canvasElement);
 	});
 
