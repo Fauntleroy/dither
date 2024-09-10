@@ -71,7 +71,10 @@ export function generateImage(targetCanvasElement: HTMLCanvasElement): Promise<B
 	});
 }
 
-export async function generateGIF(targetFilmstripElement: HTMLCanvasElement, fileName: string) {
+export async function generateGIF(
+	targetElement: HTMLCanvasElement | HTMLImageElement,
+	fileName: string
+) {
 	const { encode } = await import('modern-gif');
 
 	const bufferCanvasElement = document.createElement('canvas');
@@ -88,7 +91,7 @@ export async function generateGIF(targetFilmstripElement: HTMLCanvasElement, fil
 
 	for (let i = 0; i < FRAME_TOTAL; i++) {
 		bufferContext.drawImage(
-			targetFilmstripElement,
+			targetElement,
 			0,
 			i * FRAME_HEIGHT,
 			FRAME_WIDTH,

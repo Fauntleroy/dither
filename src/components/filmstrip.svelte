@@ -11,12 +11,14 @@
 	}
 
 	let { fileName, src }: Props = $props();
+	let image: HTMLImageElement | undefined = $state();
+	let startTime: number = $state(0);
+	let currentTime: number = $state(0);
 	let canvasElement: HTMLCanvasElement;
+	let canvasContext: CanvasRenderingContext2D | null;
+	let frame = $derived(Math.floor((currentTime - startTime) / 100));
 
-	async function loadImageAndDrawOnCanvas(
-		imageUrl: string,
-		targetCanvasElement: HTMLCanvasElement
-	) {
+	async function loadImage(imageUrl: string) {
 		try {
 			const response = await fetch(imageUrl);
 			const blob = await response.blob();
@@ -24,54 +26,71 @@
 			img.src = URL.createObjectURL(blob);
 
 			img.onload = () => {
-				const ctx = targetCanvasElement.getContext('2d');
-
-				if (!ctx) {
-					console.error('Could not create 2d canvas context while loading image.');
-					return;
-				}
-
-				// Adjust canvas size to match the image
-				targetCanvasElement.width = img.width;
-				targetCanvasElement.height = img.height;
-
-				ctx.drawImage(img, 0, 0); // Draw the image onto the canvas
-
-				convertImageData(targetCanvasElement, $colorPalette as unknown as [string, string]);
+				image = img;
+				startTime = performance.now();
+				updateTime();
 			};
 		} catch (error) {
 			console.error('Error loading or drawing image:', error);
 		}
 	}
 
+	function updateTime() {
+		currentTime = performance.now();
+
+		window.requestAnimationFrame(updateTime);
+	}
+
 	onMount(() => {
-		loadImageAndDrawOnCanvas(src, canvasElement);
+		canvasContext = canvasElement.getContext('2d');
+
+		loadImage(src);
 	});
 
 	$effect(() => {
+		if (!(image instanceof Image)) {
+			return;
+		}
+
+		if (!canvasContext) {
+			console.error('Could not create 2d canvas context while loading image.');
+			return;
+		}
+
+		const frameNumber = frame % 20;
+
+		canvasContext.drawImage(
+			image,
+			// source
+			0,
+			frameNumber * 150,
+			200,
+			150,
+			// destination
+			0,
+			0,
+			200,
+			150
+		); // Draw the image onto the canvas
+
 		convertImageData(canvasElement, $colorPalette as unknown as [string, string]);
 	});
 
 	function handleDownloadClick() {
-		generateGIF(canvasElement, fileName);
+		if (!image) {
+			return;
+		}
+
+		generateGIF(image, fileName);
 	}
 </script>
 
 <div class="filmstrip">
-	<canvas class="canvas" width="200" height="3000" bind:this={canvasElement}></canvas>
+	<canvas class="canvas" width="200" height="150" bind:this={canvasElement}></canvas>
 	<button class="download" type="button" onclick={handleDownloadClick}>Save ▿</button>
 </div>
 
 <style>
-	@keyframes play-frames {
-		from {
-			transform: translateY(0%);
-		}
-		to {
-			transform: translateY(-100%);
-		}
-	}
-
 	.filmstrip {
 		position: relative;
 		width: 100%;
@@ -80,7 +99,6 @@
 	}
 
 	.canvas {
-		animation: play-frames 2000ms steps(20, end) infinite;
 		width: 100%;
 		image-rendering: crisp-edges;
 		image-rendering: pixelated;
