@@ -20,7 +20,7 @@
 		top: 0;
 		right: 0;
 		left: 0;
-		padding: 0 10px;
+		padding: 10px 10px;
 		z-index: 5;
 		background: var(--black);
 		font-size: 14px;

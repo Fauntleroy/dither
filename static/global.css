@@ -89,6 +89,7 @@ button {
 	cursor: pointer;
 	border-radius: 0.5em;
 	padding: 7px 14px;
+	font-size: inherit;
 	text-align: center;
 	transition:
 		box-shadow 275ms,
