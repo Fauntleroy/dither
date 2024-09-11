@@ -19,11 +19,12 @@
 	});
 
 	const options = Object.keys(COLOR_PALETTES).map((key) => {
-		const colorPalette = COLOR_PALETTES[key];
+		const [black, white] = COLOR_PALETTES[key];
 		return {
 			label: key,
 			children: key,
-			value: key
+			value: key,
+			style: `--black: ${black}; --white: ${white}`
 		};
 	});
 </script>

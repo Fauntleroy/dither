@@ -9,6 +9,7 @@
 		value: any;
 		label: string;
 		children: any;
+		style: string;
 	}
 
 	interface PropsT {
@@ -41,7 +42,12 @@
 		<div class="content" use:builder.action {...builder}>
 			{#each options as option}
 				<Select.Item value={option.value} label={option.label} asChild let:builder>
-					<div class="item" style={`font-size: ${fontSize}`} use:builder.action {...builder}>
+					<div
+						class="item"
+						style={`font-size: ${fontSize}; ${option.style}`}
+						use:builder.action
+						{...builder}
+					>
 						{option.children}
 						<Select.ItemIndicator class="item-indicator" asChild
 							><span class="item-indicator"><CaretLeftIcon /></span>
