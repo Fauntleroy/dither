@@ -60,11 +60,11 @@
 				class="input"
 				bind:value={inputMessage}
 				onkeydown={handleInputKeydown}
-				placeholder="Type to GIF"
+				placeholder="Press enter to record a clip and send a message"
 				disabled={!$mediaStream || recording}
 			></textarea>
 			<span class="fake-input__action">
-				<button class="submit blend" type="submit" disabled={!$mediaStream || recording}>➪</button>
+				<button class="submit blend" type="submit" disabled={!$mediaStream || recording}>⇓</button>
 			</span>
 		</div>
 	</form>
@@ -139,16 +139,23 @@
 	.fake-input__action {
 		position: absolute;
 		top: 50%;
-		right: 0;
+		right: 10px;
 		transform: translateY(-50%);
 	}
 
 	.submit {
-		padding: 10px;
+		padding: 0;
 		margin: 0;
 		color: var(--black);
-		font-size: 40px;
-		line-height: 40px;
+		font-size: 25px;
+		line-height: 25px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.5em;
+		height: 1.5em;
+		border: var(--black) 1px dotted;
+		border-radius: 50%;
 	}
 
 	.recording-booth {
