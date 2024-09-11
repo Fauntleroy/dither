@@ -12,6 +12,6 @@
 	.layout {
 		max-width: 640px;
 		margin: 0 auto;
-		padding: 25px 10px 20px 10px;
+		padding: 2em 1em;
 	}
 </style>

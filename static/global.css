@@ -18,7 +18,7 @@ body {
 	color: var(--white);
 	background: var(--black);
 	margin: 0;
-	padding: 8px;
+	padding: 0;
 	box-sizing: border-box;
 	font-family: 'IM Fell English', serif;
 	font-size: 22px;
@@ -143,6 +143,10 @@ hr {
 	border: none;
 	border-top: var(--white) 1px solid;
 	margin: 2em 0;
+}
+
+ul {
+	padding-left: 1em;
 }
 
 @media (max-width: 480px) {
