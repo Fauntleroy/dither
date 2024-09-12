@@ -6,6 +6,8 @@
 	import { convertImageData } from '$/utils/canvas.js';
 	import { colorPalette } from '$/store.svelte.js';
 
+	import Button from './button.svelte';
+
 	interface Props {
 		fileName: string;
 		src: string;
@@ -111,7 +113,9 @@
 	<canvas class="canvas" width={FRAME_WIDTH} height={FRAME_HEIGHT} bind:this={canvasElement}
 	></canvas>
 	{#if saveable}
-		<button class="download" type="button" onclick={handleDownloadClick}>Save ▿</button>
+		<div class="download">
+			<Button type="button" onclick={handleDownloadClick}>Save GIF 💾</Button>
+		</div>
 	{/if}
 </div>
 
@@ -121,27 +125,27 @@
 		width: 100%;
 		max-width: 100%;
 		aspect-ratio: 4 / 3;
+
+		&:hover {
+			.download {
+				display: block;
+				transform: translate(-50%, -50%) scale(1);
+			}
+		}
 	}
 
 	.canvas {
 		width: 100%;
 		image-rendering: optimizequality;
+		border-radius: var(--border-radius);
 	}
 
 	.download {
-		opacity: 0;
-		transition:
-			opacity 200ms,
-			transform 200ms;
-		transform: scale(0.9);
 		position: absolute;
-		top: 5px;
-		right: 5px;
-		outline: var(--black) 2px solid;
-	}
-
-	.filmstrip:hover .download {
-		opacity: 1;
-		transform: scale(1);
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%) scale(0);
+		transition: transform 250ms;
+		font-size: 0.9rem;
 	}
 </style>

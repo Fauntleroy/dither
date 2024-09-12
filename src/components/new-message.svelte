@@ -3,6 +3,7 @@
 	import { generateImage } from '$/utils/filmstrip.js';
 
 	import StylizedWebcamFeed from '$/components/stylized-webcam-feed.svelte';
+	import Button from './button.svelte';
 
 	interface Props {
 		onCreateMessage: Function;
@@ -64,7 +65,7 @@
 				disabled={!$mediaStream || recording}
 			></textarea>
 			<span class="fake-input__action">
-				<button class="submit blend" type="submit" disabled={!$mediaStream || recording}>⇓</button>
+				<Button type="submit" disabled={!$mediaStream || recording}>⇓</Button>
 			</span>
 		</div>
 	</form>
@@ -141,21 +142,6 @@
 		top: 50%;
 		right: 10px;
 		transform: translateY(-50%);
-	}
-
-	.submit {
-		padding: 0;
-		margin: 0;
-		color: var(--black);
-		font-size: 25px;
-		line-height: 25px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 1.5em;
-		height: 1.5em;
-		border: var(--black) 1px dotted;
-		border-radius: 50%;
 	}
 
 	.recording-booth {

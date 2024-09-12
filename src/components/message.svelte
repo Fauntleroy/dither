@@ -25,26 +25,24 @@
 		interactive?: boolean;
 	}
 
-	let {
-		imageUrl,
-		text = '…',
-		index = 0,
-		size = 'normal',
-		interactive = true
-	}: MessagePropsT = $props();
+	let { imageUrl, text, index = 0, size = 'normal', interactive = true }: MessagePropsT = $props();
+
+	const displayText = text || '…';
 </script>
 
 <div class="message {size}">
 	<div class="image" in:scale={{ duration: 1000, easing: expoOut, opacity: 0, delay: index * 50 }}>
 		<RenderIfVisible>
-			{#if Filmstrip}<Filmstrip src={imageUrl} fileName={text} saveable={interactive} />{/if}
+			{#if Filmstrip}
+				<Filmstrip src={imageUrl} fileName={displayText} saveable={interactive} />
+			{/if}
 		</RenderIfVisible>
 	</div>
 	<div
 		class="text"
 		in:scale={{ delay: index * 50 + 500, duration: 500, easing: expoOut, opacity: 0, start: 0.25 }}
 	>
-		{text}
+		{displayText}
 	</div>
 </div>
 
@@ -60,13 +58,13 @@
 	}
 
 	.image {
+		--border-radius: 5px;
 		flex-shrink: 0;
 		width: var(--image-width);
 		aspect-ratio: 4 / 3;
-		overflow: hidden;
 		background-color: var(--white);
 		outline: var(--white) 1px solid;
-		border-radius: 5px;
+		border-radius: var(--border-radius);
 		transform-origin: 25% -50%;
 	}
 

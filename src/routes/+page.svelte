@@ -8,6 +8,7 @@
 
 	import { STORE_ROOM_HISTORY } from '$/constants';
 
+	import Button from '$/components/button.svelte';
 	import Message from '$/components/message.svelte';
 
 	interface RoomHistoryEntryT {
@@ -54,7 +55,9 @@
 	<div class="demoMessage">
 		<Message imageUrl="/home-promo-filmstrip.png" text="Howdy!" size="normal" interactive={false} />
 	</div>
-	<button class="createNewRoom" on:click={handleNewRoomClick}>Create a GIF Chat Room ➔</button>
+	<div class="createNewRoom">
+		<Button onclick={handleNewRoomClick}>Create a GIF Chat Room ➔</Button>
+	</div>
 
 	<hr />
 

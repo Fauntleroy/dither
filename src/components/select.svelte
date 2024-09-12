@@ -2,6 +2,7 @@
 	import { Select } from 'bits-ui';
 	import { onMount } from 'svelte';
 
+	import Button from './button.svelte';
 	import CaretLeftIcon from '$/icons/caret-left.svelte';
 	import SelectArrowsIcon from '$/icons/select-arrows.svelte';
 
