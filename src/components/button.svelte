@@ -20,7 +20,7 @@
 		background: var(--white);
 		padding: var(--outer-border-width);
 		border-radius: var(--border-radius);
-		border: var(--black) 1px solid;
+		border: var(--black) 1px dotted;
 	}
 
 	.inner {

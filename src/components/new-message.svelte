@@ -142,6 +142,7 @@
 		top: 50%;
 		right: 10px;
 		transform: translateY(-50%);
+		font-size: 0.75em;
 	}
 
 	.recording-booth {
