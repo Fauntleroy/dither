@@ -122,8 +122,7 @@
 
 	.canvas {
 		width: 100%;
-		image-rendering: crisp-edges;
-		image-rendering: pixelated;
+		image-rendering: optimizequality;
 	}
 
 	.download {
