@@ -75,6 +75,7 @@
 		border-radius: 5px;
 		z-index: 2;
 		transform-origin: 50% 50%;
+		box-shadow: var(--black) 0 1px 0 2px;
 
 		&::before,
 		&::after {
@@ -84,7 +85,7 @@
 			border-radius: 0.25em;
 			background: var(--white);
 			color: var(--black);
-			border: var(--black) 2px solid;
+			box-shadow: var(--black) 0 1px 0 2px;
 		}
 
 		&::before {
