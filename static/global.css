@@ -20,7 +20,7 @@ body {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	font-family: 'IM Fell English', serif;
+	font-family: 'IM Fell English', 'Noto Emoji', serif;
 	font-size: 22px;
 	line-height: 150%;
 }
