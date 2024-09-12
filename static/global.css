@@ -80,6 +80,13 @@ textarea::placeholder {
 	opacity: 0.5;
 }
 
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+	outline: var(--white) 2px dotted;
+	outline-offset: 3px;
+}
+
 button {
 	all: unset;
 	cursor: pointer;
