@@ -18,7 +18,8 @@
 		document.documentElement.style.setProperty('--white', white);
 	});
 
-	const options = Object.keys(COLOR_PALETTES).map((key) => {
+	const colorPalettesKeys = Object.keys(COLOR_PALETTES) as (keyof typeof COLOR_PALETTES)[];
+	const options = colorPalettesKeys.map((key) => {
 		const [black, white] = COLOR_PALETTES[key];
 		return {
 			label: key,
