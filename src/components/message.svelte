@@ -65,6 +65,7 @@
 	}
 
 	.text {
+		position: relative;
 		flex-grow: 1;
 		margin-left: -10px;
 		padding: 15px 20px;
@@ -74,5 +75,30 @@
 		border-radius: 5px;
 		z-index: 2;
 		transform-origin: 50% 50%;
+
+		&::before,
+		&::after {
+			position: absolute;
+			width: 1em;
+			height: 1em;
+			border-radius: 0.25em;
+			background: var(--white);
+			color: var(--black);
+			border: var(--black) 2px solid;
+		}
+
+		&::before {
+			content: '“';
+			top: 0;
+			left: 0;
+			transform: translate(-50%, 25%);
+		}
+
+		&::after {
+			content: '”';
+			right: 0;
+			bottom: 0;
+			transform: translate(50%, -25%);
+		}
 	}
 </style>
