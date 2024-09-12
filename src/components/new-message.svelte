@@ -62,18 +62,18 @@
 				bind:value={inputMessage}
 				onkeydown={handleInputKeydown}
 				placeholder="Press enter to record a clip and send a message"
-				disabled={!$mediaStream || recording}
+				disabled={!$mediaStream || recording || !$webcamEnabled}
 			></textarea>
 			<span class="fake-input__action">
-				<Button type="submit" disabled={!$mediaStream || recording}>⇓</Button>
+				<Button type="submit" disabled={!$mediaStream || recording || !$webcamEnabled}>⇓</Button>
 			</span>
 		</div>
 	</form>
 	{#if !$webcamEnabled}
 		<div class="enable-webcam-message__container">
-			<button class="dark enable-webcam-message" onclick={handleEnableWebcamClick}>
+			<Button onclick={handleEnableWebcamClick}>
 				<em>Click</em> to enable your webcam and chat<em>!</em>
-			</button>
+			</Button>
 		</div>
 	{/if}
 </div>
@@ -189,10 +189,6 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-	}
-
-	.enable-webcam-message {
-		white-space: pre;
 	}
 
 	@media (max-width: 480px) {
