@@ -15,19 +15,25 @@
 		});
 	});
 
-	let { imageUrl, text } = $props();
+	interface MessagePropsT {
+		imageUrl: string;
+		text: string;
+		index: number;
+	}
+
+	let { imageUrl, text, index }: MessagePropsT = $props();
 	const messageText = text || '…';
 </script>
 
 <div class="message">
-	<div class="image" in:scale={{ duration: 1000, easing: expoOut, opacity: 0 }}>
+	<div class="image" in:scale={{ duration: 1000, easing: expoOut, opacity: 0, delay: index * 50 }}>
 		<RenderIfVisible>
 			{#if Filmstrip}<Filmstrip src={imageUrl} fileName={messageText} />{/if}
 		</RenderIfVisible>
 	</div>
 	<div
 		class="text"
-		in:scale={{ delay: 500, duration: 500, easing: expoOut, opacity: 0, start: 0.25 }}
+		in:scale={{ delay: index * 50 + 500, duration: 500, easing: expoOut, opacity: 0, start: 0.25 }}
 	>
 		{messageText}
 	</div>
