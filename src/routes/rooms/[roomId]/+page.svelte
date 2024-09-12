@@ -22,6 +22,8 @@
 
 	import { STORE_ROOM_HISTORY } from '$/constants.js';
 
+	const MESSAGES_COUNT = 15;
+
 	const { data } = $props();
 
 	const roomMessagesRef = collection(firestore, `rooms/${data.roomId}/messages`);
@@ -54,7 +56,7 @@
 	$effect(() => {
 		(async function () {
 			try {
-				// import the NewMessage comonent
+				// import the NewMessage component
 				const module = await import('$/components/new-message.svelte');
 				NewMessage = module.default as any as typeof NewMessage;
 			} catch (importError) {
@@ -86,7 +88,11 @@
 
 	$effect(() => {
 		// get room messages
-		const roomMessagesQuery = query(roomMessagesRef, limit(10), orderBy('createdAt', 'desc'));
+		const roomMessagesQuery = query(
+			roomMessagesRef,
+			limit(MESSAGES_COUNT),
+			orderBy('createdAt', 'desc')
+		);
 		const roomMessagesUnsubscribe = onSnapshot(roomMessagesQuery, (roomMessagesSnapshot) => {
 			messages = roomMessagesSnapshot.docs.map((doc) => {
 				const { createdAt, imageUrl, text } = doc.data();
