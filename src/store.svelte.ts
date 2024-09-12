@@ -142,7 +142,7 @@ export const cameras: Readable<MediaDeviceInfo[]> = derived<typeof mediaStream, 
 
 // Type the colorPaletteId store
 export const colorPaletteId: Writable<ColorPaletteId> = writable(
-	store.get(STORE_COLOR_PALETTE_ID) || 'Black & White'
+	store.get(STORE_COLOR_PALETTE_ID) || 'JD093A'
 );
 
 colorPaletteId.subscribe((newColorPaletteId) =>

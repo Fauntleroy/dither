@@ -1,13 +1,13 @@
 export const COLOR_PALETTES = {
-	'Black & White': ['#000000', '#ffffff'],
-	Macintosh: ['#333319', '#e5ffff'],
-	'IBM 5151': ['#25332F', '#01EB61'],
-	'Zenith ZVM 1240': ['#40291E', '#FDCA55'],
-	'Commodore 1084': ['#40318F', '#88D7DE'],
-	'IBM 8503': ['#2E2F36', '#EBE5CE'],
-	Grayscale: ['#333333', '#CCCCCC'],
 	JD093A: ['#121D1D', '#D2FFF8'],
-	'Metal Gear': ['#111111', '#74da9e']
+	Macintosh: ['#333319', '#e5ffff'],
+	'Zenith ZVM 1240': ['#40291E', '#FDCA55'],
+	'Commodore 1084': ['#392F6D', '#9CE4EB'],
+	'IBM 5151': ['#25332F', '#01EB61'],
+	'IBM 8503': ['#2E2F36', '#EBE5CE'],
+	'Metal Gear': ['#111111', '#74da9e'],
+	'Black & White': ['#000000', '#ffffff'],
+	Grayscale: ['#222222', '#DDDDDD']
 } as const;
 
 export type ColorPaletteId = keyof typeof COLOR_PALETTES;
