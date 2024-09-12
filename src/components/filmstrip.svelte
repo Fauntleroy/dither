@@ -9,12 +9,13 @@
 	interface Props {
 		fileName: string;
 		src: string;
+		saveable: boolean;
 	}
 
 	const FRAME_WIDTH = 200;
 	const FRAME_HEIGHT = 150;
 
-	let { fileName, src }: Props = $props();
+	let { fileName, src, saveable = true }: Props = $props();
 	let image: HTMLImageElement | undefined = $state();
 	let startTime: number = $state(0);
 	let currentTime: number = $state(0);
@@ -109,7 +110,9 @@
 <div class="filmstrip">
 	<canvas class="canvas" width={FRAME_WIDTH} height={FRAME_HEIGHT} bind:this={canvasElement}
 	></canvas>
-	<button class="download" type="button" onclick={handleDownloadClick}>Save ▿</button>
+	{#if saveable}
+		<button class="download" type="button" onclick={handleDownloadClick}>Save ▿</button>
+	{/if}
 </div>
 
 <style>

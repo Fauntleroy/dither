@@ -142,8 +142,8 @@ h6 {
 
 hr {
 	border: none;
-	border-top: var(--white) 1px solid;
-	margin: 2em 0;
+	border-top: var(--white) 1px dotted;
+	margin: 1em 0;
 }
 
 ul {

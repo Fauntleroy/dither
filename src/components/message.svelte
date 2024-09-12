@@ -15,44 +15,57 @@
 		});
 	});
 
+	type MessageSizeT = 'normal' | 'large';
+
 	interface MessagePropsT {
 		imageUrl: string;
-		text: string;
-		index: number;
+		text?: string;
+		index?: number;
+		size: MessageSizeT;
+		interactive?: boolean;
 	}
 
-	let { imageUrl, text, index }: MessagePropsT = $props();
-	const messageText = text || '…';
+	let {
+		imageUrl,
+		text = '…',
+		index = 0,
+		size = 'normal',
+		interactive = true
+	}: MessagePropsT = $props();
 </script>
 
-<div class="message">
+<div class="message {size}">
 	<div class="image" in:scale={{ duration: 1000, easing: expoOut, opacity: 0, delay: index * 50 }}>
 		<RenderIfVisible>
-			{#if Filmstrip}<Filmstrip src={imageUrl} fileName={messageText} />{/if}
+			{#if Filmstrip}<Filmstrip src={imageUrl} fileName={text} saveable={interactive} />{/if}
 		</RenderIfVisible>
 	</div>
 	<div
 		class="text"
 		in:scale={{ delay: index * 50 + 500, duration: 500, easing: expoOut, opacity: 0, start: 0.25 }}
 	>
-		{messageText}
+		{text}
 	</div>
 </div>
 
 <style>
 	.message {
+		--image-width: 200px;
 		display: flex;
 		align-items: center;
-		margin-bottom: 25px;
+	}
+
+	.large {
+		--image-width: 300px;
 	}
 
 	.image {
 		flex-shrink: 0;
-		width: 300px;
+		width: var(--image-width);
 		aspect-ratio: 4 / 3;
 		overflow: hidden;
 		background-color: var(--white);
-		border: var(--white) 1px solid;
+		outline: var(--white) 1px solid;
 		border-radius: 5px;
 		transform-origin: 25% -50%;
 	}
@@ -66,20 +79,24 @@
 
 	.text {
 		position: relative;
+		z-index: 2;
 		flex-grow: 1;
+		min-width: 20ch;
 		margin-left: -10px;
 		padding: 15px 20px;
+		text-align: center;
 		background: var(--black);
 		color: var(--white);
 		border: var(--white) 1px solid;
 		border-radius: 5px;
-		z-index: 2;
 		transform-origin: 50% 50%;
 		box-shadow: var(--black) 0 1px 0 2px;
 
 		&::before,
 		&::after {
 			position: absolute;
+			display: flex;
+			justify-content: center;
 			width: 1em;
 			height: 1em;
 			border-radius: 0.25em;

@@ -189,12 +189,11 @@
 
 	<ul class="messages">
 		{#if messages.length === 0}
-			<p>Nothing has been said.</p>
-			<p>Click ➪ to say something</p>
+			<p>Nothing has been said, <em>yet!</em></p>
 		{/if}
 		{#each messages as { id, text, imageUrl }, i (id)}
 			<li class="message-container" animate:flip={{ duration: 500, easing: quintOut }}>
-				<Message {text} {imageUrl} index={i} />
+				<Message {text} {imageUrl} size="large" index={i} />
 			</li>
 		{/each}
 	</ul>
@@ -252,6 +251,9 @@
 		margin: 0;
 		padding: 0;
 		text-align: center;
+		display: flex;
+		flex-direction: column;
+		gap: 1.5em;
 	}
 
 	.message-container {

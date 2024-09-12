@@ -8,6 +8,8 @@
 
 	import { STORE_ROOM_HISTORY } from '$/constants';
 
+	import Message from '$/components/message.svelte';
+
 	interface RoomHistoryEntryT {
 		lastSeen: number;
 		name: string;
@@ -45,32 +47,37 @@
 
 <div class="index">
 	<h1 class="heading"><em>DITHER</em><br />is a lo-fi GIF chat app.</h1>
-	<p>
-		Create a room, invite your friends, and have fun lobbing aggressively dithered Game Boy
-		Camera-esque animations of yourselves to each other!
-	</p>
-	<button class="createNewRoom" on:click={handleNewRoomClick}>Create a New Room ⚇</button>
+	<div>
+		Create a room, invite your friends, and have fun lobbing <em>dithered</em> Game Boy Camera-esque
+		animations of yourselves to each other!
+	</div>
+	<div class="demoMessage">
+		<Message imageUrl="/home-promo-filmstrip.png" text="Howdy!" size="normal" interactive={false} />
+	</div>
+	<button class="createNewRoom" on:click={handleNewRoomClick}>Create a GIF Chat Room ➔</button>
 
 	<hr />
 
-	<h2 class="room-list-heading">Rooms You've Visited</h2>
-	<ul class="room-list">
-		{#each roomHistoryArray as { id, lastSeen, name }, i (id)}
-			<li><a href="/rooms/{id}">{name || id}</a></li>
-		{/each}
-	</ul>
+	<div class="rooms">
+		<h2 class="room-list-heading">Rooms You've Visited</h2>
+		<ul class="room-list">
+			{#each roomHistoryArray as { id, lastSeen, name }, i (id)}
+				<li><a href="/rooms/{id}">{name || id}</a></li>
+			{/each}
+		</ul>
+	</div>
 
 	<hr />
 
 	<div>
 		<h3>Prior Art:</h3>
-		<p>
+		<div>
 			This app wouldn't have been possible without inspiration from <a
 				href="https://obradinn.com/"
 				target="_blank">Return of the Obra Dinn</a
 			>
 			and <a href="https://meatspac.es/" target="_blank">Meatspac.es</a>
-		</p>
+		</div>
 	</div>
 </div>
 
@@ -78,14 +85,12 @@
 	.index {
 		display: flex;
 		flex-direction: column;
+		gap: 1em;
 
 		h1,
 		h2,
 		h3,
-		h4,
-		h5,
-		h6,
-		p {
+		ul {
 			margin: 0;
 		}
 	}
@@ -94,15 +99,19 @@
 		text-align: center;
 	}
 
+	.demoMessage {
+		align-self: center;
+	}
+
 	.createNewRoom {
 		align-self: center;
 	}
 
-	.room-list-heading {
+	.rooms {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 		align-self: center;
-	}
-
-	.room-list {
-		align-self: center;
+		gap: 0.5em;
 	}
 </style>
