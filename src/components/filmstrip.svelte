@@ -18,6 +18,7 @@
 	const FRAME_HEIGHT = 150;
 
 	let { fileName, src, saveable = true }: Props = $props();
+	let mounted: boolean = $state(false);
 	let image: HTMLImageElement | undefined = $state();
 	let startTime: number = $state(0);
 	let currentTime: number = $state(0);
@@ -43,15 +44,22 @@
 	function updateTime() {
 		currentTime = performance.now();
 
-		window.requestAnimationFrame(updateTime);
+		if (mounted) {
+			window.requestAnimationFrame(updateTime);
+		}
 	}
 
 	onMount(() => {
+		mounted = true;
 		canvasContext = canvasElement.getContext('2d');
 
 		loadImage(src);
 		startTime = performance.now();
 		updateTime();
+
+		return () => {
+			mounted = false;
+		};
 	});
 
 	$effect(() => {
