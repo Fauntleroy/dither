@@ -38,6 +38,7 @@ export function generateImage(targetCanvasElement: HTMLCanvasElement): Promise<B
 	const bufferContext = bufferCanvasElement.getContext('2d');
 
 	if (!bufferContext) {
+		bufferCanvasElement.remove();
 		console.error('Error creating 2d canvas context while generating GIF');
 		return Promise.reject('Error creating 2d canvas context while generating GIF');
 	}
@@ -47,8 +48,9 @@ export function generateImage(targetCanvasElement: HTMLCanvasElement): Promise<B
 
 		function captureFrame() {
 			if (!bufferContext) {
+				bufferCanvasElement.remove();
 				console.error('Error creating 2d canvas context while capturing frames');
-				return;
+				return reject('Error creating 2d canvas context while capturing frames');
 			}
 
 			const yOffset = frameCount * FRAME_HEIGHT;
@@ -64,6 +66,8 @@ export function generateImage(targetCanvasElement: HTMLCanvasElement): Promise<B
 						resolve(optimizedPngBlob);
 					} catch (imageGenerationError) {
 						reject(imageGenerationError);
+					} finally {
+						bufferCanvasElement.remove();
 					}
 				})();
 			}
@@ -80,7 +84,7 @@ export async function generateGIF(
 ) {
 	const { encode } = await import('modern-gif');
 
-	const bufferCanvasElement = document.createElement('canvas');
+	const bufferCanvasElement: HTMLCanvasElement = document.createElement('canvas');
 	bufferCanvasElement.width = FRAME_WIDTH;
 	bufferCanvasElement.height = FRAME_HEIGHT;
 	const bufferContext = bufferCanvasElement.getContext('2d');
@@ -125,4 +129,5 @@ export async function generateGIF(
 	const clickEvent = new MouseEvent('click');
 	link.dispatchEvent(clickEvent);
 	setTimeout(() => window.URL.revokeObjectURL(url), 100);
+	bufferCanvasElement.remove();
 }
