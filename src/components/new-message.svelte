@@ -65,7 +65,7 @@
 				disabled={!$mediaStream || recording || !$webcamEnabled}
 			></textarea>
 			<span class="fake-input__action">
-				<Button type="submit" disabled={!$mediaStream || recording || !$webcamEnabled}>⇓</Button>
+				<Button type="submit" disabled={!$mediaStream || recording || !$webcamEnabled}>➸</Button>
 			</span>
 		</div>
 	</form>

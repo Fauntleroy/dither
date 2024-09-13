@@ -32,7 +32,7 @@
 	});
 </script>
 
-<Select.Root items={options} {onSelectedChange} {selected}>
+<Select.Root items={options} portal="#content" {onSelectedChange} {selected}>
 	<Select.Trigger aria-label="Select a theme">
 		<div class="trigger">
 			{prefix}<strong><Select.Value class="text" placeholder="Select a theme" /></strong>

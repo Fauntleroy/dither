@@ -1,6 +1,8 @@
 :root {
 	--black: black;
 	--white: white;
+
+	--z-screen-effects: 90000;
 }
 
 * {
