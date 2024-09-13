@@ -76,9 +76,17 @@
 		linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
 	z-index: calc(var(--z-screen-effects) + 1);
 	background-size:
-		100% 2px,
-		3px 100%;
+		100% 3px,
+		5px 100%;
 	pointer-events: none;
+}
+
+@media (min-resolution: 300dpi) {
+	.crt::before {
+		background-size:
+			100% 6px,
+			9px 100%;
+	}
 }
 
 .crt::after {
