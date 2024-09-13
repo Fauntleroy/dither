@@ -5,30 +5,18 @@
 	import { goto } from '$app/navigation';
 
 	import { firestore } from '$/firebase';
-
-	import { STORE_ROOM_HISTORY } from '$/constants';
+	import { roomHistory } from '$/store.svelte';
 
 	import Button from '$/components/button.svelte';
 	import Message from '$/components/message.svelte';
+	import RoomList from '$/components/room-list/room-list.svelte';
 
 	interface RoomHistoryEntryT {
 		lastSeen: number;
 		name: string;
 	}
-	interface RoomHistoryT {
-		[key: string]: RoomHistoryEntryT;
-	}
-	type RoomHistoryEntriesT = [string, RoomHistoryEntryT];
-	interface RoomHistoryArrayEntryT extends RoomHistoryEntryT {
-		id: string;
-	}
 
-	const roomHistory: RoomHistoryT = store.get(STORE_ROOM_HISTORY) || {};
-	const roomHistoryArray: RoomHistoryArrayEntryT[] = Object.entries(roomHistory).map(
-		([id, { lastSeen, name }]: RoomHistoryEntriesT) => {
-			return { id, lastSeen, name };
-		}
-	);
+	const hasRoomHistory: boolean = Object.entries(roomHistory).length > 0;
 
 	const roomsRef = collection(firestore, 'rooms');
 
@@ -59,19 +47,14 @@
 		<Button onclick={handleNewRoomClick}>Create a GIF Chat Room ➔</Button>
 	</div>
 
-	<hr />
-
-	<div class="rooms">
-		<h2 class="room-list-heading">Rooms You've Visited</h2>
-		<ul class="room-list">
-			{#each roomHistoryArray as { id, lastSeen, name }, i (id)}
-				<li><a href="/rooms/{id}">{name || id}</a></li>
-			{/each}
-		</ul>
-	</div>
+	{#if hasRoomHistory}
+		<hr />
+		<div class="rooms">
+			<RoomList />
+		</div>
+	{/if}
 
 	<hr />
-
 	<div>
 		<h3>Prior Art:</h3>
 		<div>

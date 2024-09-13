@@ -3,28 +3,32 @@
 
 	interface Props {
 		children: Snippet;
+		variant?: 'normal' | 'inverted';
 	}
 
-	const { children, ...restProps }: Props = $props();
+	const { children, variant = 'normal', ...restProps }: Props = $props();
 </script>
 
-<button {...restProps}>
+<button {...restProps} class:invert={variant === 'inverted'}>
 	<div class="inner">{@render children()}</div>
 </button>
 
 <style>
 	button {
+		--background-color: var(--white);
+		--foreground-color: var(--black);
 		--border-radius: 0.5em;
 		--outer-border-width: 3px;
 		--transition-duration: 150ms;
-		background: var(--white);
+		background: var(--background-color);
+		color: var(--foreground-color);
 		padding: var(--outer-border-width);
 		border-radius: var(--border-radius);
-		border: var(--black) 1px dotted;
+		border: var(--foreground-color) 1px dotted;
 	}
 
 	.inner {
-		border: var(--black) 1px solid;
+		border: var(--foreground-color) 1px solid;
 		padding: 0.25em 0.75em;
 		border-radius: calc(var(--border-radius) - var(--outer-border-width));
 		transition:
@@ -35,7 +39,7 @@
 	button:hover:not(:disabled) {
 		.inner {
 			transform: translateY(-3px);
-			box-shadow: var(--black) 0px 3px 0px;
+			box-shadow: var(--foreground-color) 0px 3px 0px;
 		}
 	}
 
@@ -43,7 +47,7 @@
 		.inner {
 			--transition-duration: 25ms;
 			transform: translateY(1px);
-			box-shadow: var(--black) 0px -1px 0px;
+			box-shadow: var(--foreground-color) 0px -1px 0px;
 		}
 	}
 
@@ -51,10 +55,15 @@
 		pointer-events: none;
 
 		.inner {
-			background-color: var(--black);
-			background-image: linear-gradient(90deg, var(--white) 0% 75%, transparent 76% 100%),
+			background-color: var(--foreground-color);
+			background-image: linear-gradient(90deg, var(--background-color) 0% 75%, transparent 76% 100%),
 				linear-gradient(var(--white) 0% 75%, transparent 76% 100%);
 			background-size: 4px 4px;
 		}
+	}
+
+	.invert {
+		--background-color: var(--black);
+		--foreground-color: var(--white);
 	}
 </style>

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { quintOut } from 'svelte/easing';
 	import { flip } from 'svelte/animate';
-	import store from 'store2';
 	import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 	import {
 		setDoc,
@@ -15,12 +14,10 @@
 		updateDoc
 	} from 'firebase/firestore';
 
-	import { pageVisible } from '$/store.svelte.js';
+	import { pageVisible, roomHistory } from '$/store.svelte.js';
 	import { firebaseStorage, firestore } from '$/firebase.js';
 
 	import Message from '$/components/message.svelte';
-
-	import { STORE_ROOM_HISTORY } from '$/constants.js';
 
 	const MESSAGES_COUNT = 15;
 
@@ -39,16 +36,14 @@
 	let roomName: string = $derived(room?.name || data.roomId);
 
 	function updateRoomHistory() {
-		const roomHistory = store.get(STORE_ROOM_HISTORY);
 		const updatedRoomHistory = {
-			...roomHistory,
+			...$roomHistory,
 			[data.roomId]: {
 				lastSeen: Date.now(),
-				name: room?.name
+				name: roomName
 			}
 		};
-
-		store.set(STORE_ROOM_HISTORY, updatedRoomHistory);
+		$roomHistory = updatedRoomHistory;
 	}
 
 	let NewMessage = $state();

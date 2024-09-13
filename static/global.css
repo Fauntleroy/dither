@@ -38,6 +38,7 @@ a {
 	color: var(--white);
 	text-decoration: underline;
 	text-underline-offset: 0.25em;
+	border-radius: 0.25em;
 }
 
 a:hover {
@@ -91,7 +92,8 @@ textarea::placeholder {
 
 button:focus-visible,
 input:focus-visible,
-textarea:focus-visible {
+textarea:focus-visible,
+a:focus-visible {
 	outline: var(--white) 2px dotted;
 	outline-offset: 3px;
 }

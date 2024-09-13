@@ -9,6 +9,7 @@ declare namespace App {
 	}
 
 	interface RoomT {
+		id: string;
 		createdAt: Date;
 		name: string;
 		messages: ChatMessageT[];

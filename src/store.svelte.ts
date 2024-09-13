@@ -2,7 +2,12 @@ import { derived, readable, writable, type Readable, type Writable } from 'svelt
 import store from 'store2';
 
 import type { ColorPaletteId } from './constants.js';
-import { COLOR_PALETTES, STORE_WEBCAM_ENABLED, STORE_COLOR_PALETTE_ID } from '$/constants.js';
+import {
+	COLOR_PALETTES,
+	STORE_WEBCAM_ENABLED,
+	STORE_COLOR_PALETTE_ID,
+	STORE_ROOM_HISTORY
+} from '$/constants.js';
 
 // Ensure `document` is available in the browser
 export const pageVisible: Readable<boolean> = readable(
@@ -160,3 +165,13 @@ export const colorPalette: Readable<ColorPalette> = derived(
 		set(palette);
 	}
 );
+
+interface RoomHistoryEntry {
+	name: string;
+	lastSeen: number;
+}
+type RoomHistoryT = Record<string, RoomHistoryEntry>;
+
+export const roomHistory: Writable<RoomHistoryT> = writable(store.get(STORE_ROOM_HISTORY) || []);
+
+roomHistory.subscribe((updatedRoomHistory) => store.set(STORE_ROOM_HISTORY, updatedRoomHistory));
