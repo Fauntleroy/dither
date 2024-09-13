@@ -84,7 +84,6 @@
 		padding: 15px 20px;
 		text-align: center;
 		overflow-wrap: break-word;
-		word-break: break-all;
 		text-wrap: balance;
 		background: var(--black);
 		color: var(--white);
