@@ -3,6 +3,8 @@
 	--white: white;
 
 	--z-screen-effects: 90000;
+
+	--mm-in-px: 100px;
 }
 
 * {
