@@ -13,5 +13,7 @@
 		max-width: 640px;
 		margin: 0 auto;
 		padding: 1em 1em;
+		border: var(--white) 1px dotted;
+		border-radius: 0.25em;
 	}
 </style>

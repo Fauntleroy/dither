@@ -88,6 +88,7 @@
 	.index {
 		display: flex;
 		flex-direction: column;
+		padding: 0.5em 0;
 		gap: 1em;
 
 		h1,
