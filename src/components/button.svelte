@@ -34,8 +34,8 @@
 
 	button:hover:not(:disabled) {
 		.inner {
-			transform: translateY(-2px);
-			box-shadow: var(--black) 0px 2px 0px;
+			transform: translateY(-3px);
+			box-shadow: var(--black) 0px 3px 0px;
 		}
 	}
 

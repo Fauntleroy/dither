@@ -7,6 +7,11 @@
 	--mm-in-px: 100px;
 }
 
+::selection {
+	background-color: var(--white);
+	color: var(--black);
+}
+
 * {
 	box-sizing: border-box;
 }

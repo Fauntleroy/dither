@@ -126,7 +126,7 @@
 		display: block;
 		border: none;
 		margin: 0;
-		padding: 10px 50px 10px 15px;
+		padding: 0.5em 3em 0.5em 0.5em;
 		font-size: inherit;
 		font-style: italic;
 		width: 100%;
@@ -140,7 +140,7 @@
 	.fake-input__action {
 		position: absolute;
 		top: 50%;
-		right: 10px;
+		right: 0.5em;
 		transform: translateY(-50%);
 		font-size: 0.75em;
 	}

@@ -72,8 +72,8 @@
 	display: block;
 	position: fixed;
 	inset: 0;
-	background: linear-gradient(rgba(8, 7, 7, 0.125) 50%, rgba(255, 255, 255, 0.1) 50%),
-		linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.05));
+	background: linear-gradient(rgba(8, 7, 7, 0.1125) 50%, rgba(255, 255, 255, 0.075) 50%),
+		linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.04));
 	z-index: calc(var(--z-screen-effects) + 1);
 	background-size:
 		100% 2px,
