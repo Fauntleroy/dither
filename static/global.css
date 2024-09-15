@@ -35,15 +35,21 @@ body {
 }
 
 a {
+	display: inline-block;
 	color: var(--white);
 	text-decoration: underline;
 	text-underline-offset: 0.25em;
 	border-radius: 0.25em;
+	transition:
+		transform 250ms,
+		text-underline-offset 250ms;
 }
 
 a:hover {
 	text-decoration: underline;
 	text-decoration-thickness: 2px;
+	transform: translateY(-0.125em);
+	text-underline-offset: calc(0.125em + 0.25em);
 }
 
 a:visited {
