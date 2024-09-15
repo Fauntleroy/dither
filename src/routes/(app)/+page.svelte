@@ -11,12 +11,7 @@
 	import Message from '$/components/message.svelte';
 	import RoomList from '$/components/room-list/room-list.svelte';
 
-	interface RoomHistoryEntryT {
-		lastSeen: number;
-		name: string;
-	}
-
-	const hasRoomHistory: boolean = Object.entries(roomHistory).length > 0;
+	const hasRoomHistory: boolean = Object.entries($roomHistory).length > 0;
 
 	const roomsRef = collection(firestore, 'rooms');
 
@@ -35,27 +30,29 @@
 </svelte:head>
 
 <div class="index">
-	<h1 class="heading"><em>DITHER</em><br />is a lo-fi GIF chat app.</h1>
-	<div>
-		Create a room, invite your friends, and have fun lobbing <em>dithered</em> Game Boy Camera-esque
-		animations of yourselves to each other!
-	</div>
-	<div class="demoMessage">
-		<Message imageUrl="/home-promo-filmstrip.png" text="Howdy!" size="normal" interactive={false} />
-	</div>
-	<div class="createNewRoom">
-		<Button onclick={handleNewRoomClick}>Create a GIF Chat Room ➔</Button>
-	</div>
+	<section class="intro">
+		<h1 class="heading"><em>DITHER</em><br />is a lo-fi GIF chat app.</h1>
+		<div>
+			Create a room, invite your friends, and have fun lobbing <em>dithered</em> Game Boy Camera-esque
+			animations of yourselves to each other!
+		</div>
+		<div class="demoMessage">
+			<Message imageUrl="/home-promo-filmstrip.png" text="Howdy!" interactive={false} />
+		</div>
+		<div class="createNewRoom">
+			<Button onclick={handleNewRoomClick}>Create a GIF Chat Room ➔</Button>
+		</div>
+	</section>
 
 	{#if hasRoomHistory}
-		<hr />
-		<div class="rooms">
-			<RoomList />
-		</div>
+		<section class="room-history">
+			<div class="rooms">
+				<RoomList />
+			</div>
+		</section>
 	{/if}
 
-	<hr />
-	<div>
+	<section class="credits">
 		<h3>Prior Art:</h3>
 		<div>
 			This app wouldn't have been possible without inspiration from <a
@@ -64,21 +61,21 @@
 			>
 			and <a href="https://meatspac.es/" target="_blank">Meatspac.es</a>
 		</div>
-	</div>
+	</section>
 </div>
 
 <style>
 	.index {
 		display: flex;
 		flex-direction: column;
-		padding: 0.5em 0;
-		gap: 1em;
+		gap: 0;
 
-		h1,
-		h2,
-		h3,
-		ul {
-			margin: 0;
+		section {
+			display: flex;
+			flex-direction: column;
+			padding: 1.5em;
+			gap: 1em;
+			border-bottom: var(--white) 1px dotted;
 		}
 	}
 

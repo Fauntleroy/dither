@@ -17,7 +17,7 @@
 	);
 </script>
 
-<div class="room-list">
+<div class="roomList">
 	<h2 class="heading">Rooms You've Visited</h2>
 	<ul class="list-items">
 		{#each rooms as { id, name }, i (id)}
@@ -27,3 +27,11 @@
 		{/each}
 	</ul>
 </div>
+
+<style>
+	.roomList {
+		display: flex;
+		flex-direction: column;
+		gap: 1em;
+	}
+</style>

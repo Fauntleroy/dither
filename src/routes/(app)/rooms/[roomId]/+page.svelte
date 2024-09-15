@@ -206,6 +206,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 1em;
+		padding: 1em;
 	}
 
 	.room-name-container {
@@ -217,6 +218,12 @@
 		border: var(--white) 1px dotted;
 		border-radius: 0.25em;
 		font-size: 12px;
+		background: var(--black);
+		margin-top: calc((1rem + 1.5rem) * -1);
+
+		@media (width <= 900px) {
+			margin-top: 0;
+		}
 	}
 
 	.room-name {

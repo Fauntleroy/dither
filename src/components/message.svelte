@@ -21,16 +21,15 @@
 		imageUrl: string;
 		text?: string;
 		index?: number;
-		size: MessageSizeT;
 		interactive?: boolean;
 	}
 
-	let { imageUrl, text, index = 0, size = 'normal', interactive = true }: MessagePropsT = $props();
+	let { imageUrl, text, index = 0, interactive = true }: MessagePropsT = $props();
 
 	const displayText = text || '…';
 </script>
 
-<div class="message {size}">
+<div class="message">
 	<div class="image" in:scale={{ duration: 1000, easing: expoOut, opacity: 0, delay: index * 50 }}>
 		<RenderIfVisible>
 			{#if Filmstrip}
@@ -48,19 +47,14 @@
 
 <style>
 	.message {
-		--image-width: 200px;
-		display: flex;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
 		align-items: center;
-	}
-
-	.large {
-		--image-width: 300px;
 	}
 
 	.image {
 		--border-radius: 5px;
 		flex-shrink: 0;
-		width: var(--image-width);
 		aspect-ratio: 4 / 3;
 		background-color: var(--white);
 		outline: var(--white) 1px solid;
@@ -68,18 +62,11 @@
 		transform-origin: 25% -50%;
 	}
 
-	@media (max-width: 600px) {
-		.image {
-			width: 200px;
-			height: 150px;
-		}
-	}
-
 	.text {
 		position: relative;
 		z-index: 2;
 		flex-grow: 1;
-		min-width: 20ch;
+		/* min-width: 20ch; */
 		margin-left: -10px;
 		padding: 15px 20px;
 		text-align: center;
