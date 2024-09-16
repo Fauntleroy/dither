@@ -178,3 +178,11 @@ canvas {
 		font-size: 18px;
 	}
 }
+
+.icon {
+	width: 1.5em;
+	height: 1.5em;
+	display: inline-block;
+	vertical-align: middle;
+	fill: currentColor;
+}

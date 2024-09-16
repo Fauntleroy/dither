@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { roomHistory } from '$/store.svelte';
+	import X from '$/icons/x.svelte';
 
 	import Button from '../button.svelte';
 
@@ -27,7 +28,7 @@
 
 <div class="roomListItem">
 	<a href="/rooms/{id}">{name || id}</a>
-	<div class="remove"><Button variant="inverted" onclick={handleRemoveClick}>❌</Button></div>
+	<div class="remove"><Button variant="inverted" onclick={handleRemoveClick}><X /></Button></div>
 </div>
 
 <style>
