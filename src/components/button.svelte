@@ -1,15 +1,23 @@
 <script lang="ts">
 	import { type Snippet } from 'svelte';
+	import { builderActions, getAttrs, type Builder } from 'bits-ui';
 
 	interface Props {
 		children: Snippet;
 		variant?: 'normal' | 'inverted';
+		// bits-ui
+		builders: Builder[];
 	}
 
-	const { children, variant = 'normal', ...restProps }: Props = $props();
+	const { children, variant = 'normal', builders = [], ...restProps }: Props = $props();
 </script>
 
-<button {...restProps} class:invert={variant === 'inverted'}>
+<button
+	{...restProps}
+	class:invert={variant === 'inverted'}
+	use:builderActions={{ builders }}
+	{...getAttrs(builders)}
+>
 	<div class="inner">{@render children()}</div>
 </button>
 

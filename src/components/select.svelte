@@ -9,35 +9,40 @@
 	interface SelectOptionT {
 		value: any;
 		label: string;
-		children: any;
-		style: string;
+		children?: any;
+		style?: string;
 	}
 
 	interface PropsT {
 		name: string;
+		placeholder: string;
 		options: SelectOptionT[];
-		prefix: any;
-		onSelectedChange: Function;
+		prefix?: any;
+		onSelectedChange: Function | undefined;
 		selected: any;
 	}
 
-	let { name, options, prefix, onSelectedChange, selected }: PropsT = $props();
+	let { name, options, prefix, onSelectedChange, placeholder, selected }: PropsT = $props();
 
 	let fontSize: string = $state('1em');
 	let selectArrowsElement: HTMLElement; // Reference to the element you want to check
 
 	onMount(() => {
 		fontSize = window.getComputedStyle(selectArrowsElement).fontSize;
-		console.log('Computed font size:', fontSize);
 	});
+
+	console.log('placeholder', placeholder);
 </script>
 
 <Select.Root items={options} portal="#content" {onSelectedChange} {selected}>
-	<Select.Trigger aria-label="Select a theme">
-		<div class="trigger">
-			{prefix}<strong><Select.Value class="text" placeholder="Select a theme" /></strong>
-			<span class="select-arrows" bind:this={selectArrowsElement}><SelectArrowsIcon /></span>
-		</div>
+	<Select.Trigger aria-label={placeholder} asChild let:builder>
+		<Button builders={[builder]}>
+			<div class="trigger">
+				{#if prefix}{prefix}{/if}
+				<strong><Select.Value class="text" {placeholder} /></strong>
+				<span class="select-arrows" bind:this={selectArrowsElement}><SelectArrowsIcon /></span>
+			</div>
+		</Button>
 	</Select.Trigger>
 	<Select.Content strategy="fixed" sameWidth={false} asChild let:builder>
 		<div class="content" use:builder.action {...builder}>
@@ -49,7 +54,7 @@
 						use:builder.action
 						{...builder}
 					>
-						{option.children}
+						{option.children || option.label}
 						<Select.ItemIndicator class="item-indicator" asChild
 							><span class="item-indicator"><CaretLeftIcon /></span>
 						</Select.ItemIndicator>

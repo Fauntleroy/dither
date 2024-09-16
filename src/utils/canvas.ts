@@ -1,3 +1,5 @@
+import Dither from 'canvas-dither';
+
 export function convertImageData(
 	canvas: HTMLCanvasElement,
 	colorPalette: [black: string, white: string]
@@ -48,4 +50,26 @@ export function convertImageData(
 	}
 
 	ctx.putImageData(imageData, 0, 0);
+}
+
+export function drawDitheredNoise(
+	canvasContext: CanvasRenderingContext2D,
+	width: number,
+	height: number
+) {
+	const imageData = canvasContext.createImageData(width, height);
+	const data = imageData.data;
+
+	for (let i = 0; i < data.length; i += 4) {
+		const grayValue = 128 + Math.random() * 10 - 5; // Base gray with slight variation
+		data[i] = grayValue; // Red
+		data[i + 1] = grayValue; // Green
+		data[i + 2] = grayValue; // Blue
+		data[i + 3] = 255; // Alpha (fully opaque)
+	}
+
+	canvasContext.putImageData(imageData, 0, 0);
+	const canvasImageData = canvasContext.getImageData(0, 0, 200, 150);
+	const filteredImageData = Dither.atkinson(canvasImageData);
+	canvasContext.putImageData(filteredImageData, 0, 0);
 }

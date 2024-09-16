@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Dither from 'canvas-dither';
 
-	import { generateGIF } from '$/utils/filmstrip.js';
-	import { convertImageData } from '$/utils/canvas.js';
+	import { generateGIF, downloadFile } from '$/utils/filmstrip.js';
+	import { convertImageData, drawDitheredNoise } from '$/utils/canvas.js';
 	import { colorPalette } from '$/store.svelte.js';
 
 	import Button from './button.svelte';
@@ -72,48 +71,43 @@
 
 		// if image hasn't loaded, show empty noise
 		if (!(image instanceof Image)) {
-			const imageData = canvasContext.createImageData(FRAME_WIDTH, FRAME_HEIGHT);
-			const data = imageData.data;
-
-			for (let i = 0; i < data.length; i += 4) {
-				const grayValue = 128 + Math.random() * 10 - 5; // Base gray with slight variation
-				data[i] = grayValue; // Red
-				data[i + 1] = grayValue; // Green
-				data[i + 2] = grayValue; // Blue
-				data[i + 3] = 255; // Alpha (fully opaque)
-			}
-
-			canvasContext.putImageData(imageData, 0, 0);
-			const canvasImageData = canvasContext.getImageData(0, 0, 200, 150);
-			const filteredImageData = Dither.atkinson(canvasImageData);
-			canvasContext.putImageData(filteredImageData, 0, 0);
-			convertImageData(canvasElement, $colorPalette as unknown as [string, string]);
-			return;
+			drawDitheredNoise(canvasContext, FRAME_WIDTH, FRAME_HEIGHT);
+		} else {
+			canvasContext.drawImage(
+				image,
+				// source
+				0,
+				frameNumber * FRAME_HEIGHT,
+				FRAME_WIDTH,
+				FRAME_HEIGHT,
+				// destination
+				0,
+				0,
+				FRAME_WIDTH,
+				FRAME_HEIGHT
+			); // Draw the image onto the canvas
 		}
-
-		canvasContext.drawImage(
-			image,
-			// source
-			0,
-			frameNumber * FRAME_HEIGHT,
-			FRAME_WIDTH,
-			FRAME_HEIGHT,
-			// destination
-			0,
-			0,
-			FRAME_WIDTH,
-			FRAME_HEIGHT
-		); // Draw the image onto the canvas
 
 		convertImageData(canvasElement, $colorPalette as unknown as [string, string]);
 	});
 
-	function handleDownloadClick() {
+	async function handleDownloadClick() {
 		if (!image) {
 			return;
 		}
 
-		generateGIF(image, $colorPalette as unknown as [string, string], fileName);
+		const gifBlob = await generateGIF(
+			image,
+			'filmstrip',
+			$colorPalette as unknown as [string, string]
+		);
+
+		if (!gifBlob) {
+			console.error('Could not create GIF Blob object');
+			return;
+		}
+
+		downloadFile(gifBlob, fileName);
 	}
 </script>
 

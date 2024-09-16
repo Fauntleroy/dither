@@ -23,6 +23,10 @@
 
 		goto(`/rooms/${newRoomDoc.id}`);
 	}
+
+	function handleCameraClick() {
+		goto(`/camera`);
+	}
 </script>
 
 <svelte:head>
@@ -41,6 +45,8 @@
 		</div>
 		<div class="createNewRoom">
 			<Button onclick={handleNewRoomClick}>Create a GIF Chat Room ➔</Button>
+			<div>Prefer going solo? Try out the camera!</div>
+			<Button onclick={handleCameraClick}>Use the Dither Cam 📷</Button>
 		</div>
 	</section>
 
@@ -89,6 +95,10 @@
 
 	.createNewRoom {
 		align-self: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1em;
 	}
 
 	.rooms {

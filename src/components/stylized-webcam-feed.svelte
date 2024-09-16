@@ -11,20 +11,26 @@
 
 	interface Props {
 		onMount: Function;
+		width: number;
+		height: number;
+		recordingCanvasElement: HTMLCanvasElement | undefined;
 	}
 
-	const { onMount }: Props = $props();
-	let videoElement: HTMLVideoElement;
-	let recordingCanvasElement: HTMLCanvasElement;
-	let displayCanvasElement: HTMLCanvasElement;
-	let canvasWidth: number = TARGET_WIDTH;
-	let canvasHeight: number = TARGET_HEIGHT;
+	let {
+		onMount,
+		width = TARGET_WIDTH,
+		height = TARGET_HEIGHT,
+		recordingCanvasElement = $bindable()
+	}: Props = $props();
+	let videoElement: HTMLVideoElement | undefined;
+	// let recordingCanvasElement: HTMLCanvasElement;
+	let displayCanvasElement: HTMLCanvasElement | undefined;
 	let processedImageDrawRequestId: number;
 
 	let webcamVideoStatus = $state('initial');
 
-	function getCrop() {
-		const { videoWidth, videoHeight } = videoElement;
+	function getCrop(videoElementToCrop: HTMLVideoElement) {
+		const { videoWidth, videoHeight } = videoElementToCrop;
 		const webcamVideoAspect = videoWidth / videoHeight;
 		let width, height;
 
@@ -43,6 +49,16 @@
 	}
 
 	function drawProcessedImage() {
+		if (!displayCanvasElement) {
+			console.error('No canvas element to draw to');
+			return;
+		}
+
+		if (!recordingCanvasElement) {
+			console.error('No canvas element to draw from');
+			return;
+		}
+
 		const displayCanvas2dContext = displayCanvasElement.getContext('2d');
 		const recordingCanvas2dContext = recordingCanvasElement.getContext('2d', {
 			willReadFrequently: true
@@ -53,19 +69,24 @@
 			return;
 		}
 
-		const { x, y, width, height } = getCrop();
+		if (!videoElement) {
+			console.error('No video element to draw from');
+			return;
+		}
+
+		const { x, y, width: cropWidth, height: cropHeight } = getCrop(videoElement);
 		displayCanvas2dContext.drawImage(
 			videoElement,
 			x,
 			y,
+			cropWidth,
+			cropHeight, // source (webcam)
+			0,
+			0,
 			width,
-			height, // source (webcam)
-			0,
-			0,
-			canvasWidth,
-			canvasHeight // destination (canvas)
+			height // destination (canvas)
 		);
-		const canvasImageData = displayCanvas2dContext.getImageData(0, 0, canvasWidth, canvasHeight);
+		const canvasImageData = displayCanvas2dContext.getImageData(0, 0, width, height);
 		const filteredImageData = Dither.atkinson(canvasImageData);
 		recordingCanvas2dContext.putImageData(filteredImageData, 0, 0);
 		displayCanvas2dContext.putImageData(filteredImageData, 0, 0);
@@ -87,24 +108,27 @@
 	});
 
 	$effect(() => {
-		const mediaStreamUnsubscribe = mediaStream.subscribe((mediaStreamValue) => {
-			const { stream } = mediaStreamValue;
+		const { stream } = $mediaStream;
 
-			if (!stream) {
-				return;
-			}
+		if (!stream) {
+			console.warn('No stream available to attach to video element');
+			return;
+		}
 
-			videoElement.srcObject = null;
-			videoElement.srcObject = stream;
-			videoElement.play();
+		if (!videoElement) {
+			console.warn('No video element available to attach stream to');
+			return;
+		}
 
-			cancelAnimationFrame(processedImageDrawRequestId);
-			processedImageDrawRequestId = requestAnimationFrame(tryToDraw);
-		});
+		videoElement.srcObject = null;
+		videoElement.srcObject = stream;
+		videoElement.play();
+
+		cancelAnimationFrame(processedImageDrawRequestId);
+		processedImageDrawRequestId = requestAnimationFrame(tryToDraw);
 
 		return function onUnMount() {
 			cancelAnimationFrame(processedImageDrawRequestId);
-			mediaStreamUnsubscribe();
 		};
 	});
 
@@ -150,18 +174,9 @@
 		onwaiting={handleVideoWaiting}
 		playsinline={true}
 	></video>
-	<canvas
-		class="recording-webcam sekrit"
-		width={TARGET_WIDTH}
-		height={TARGET_HEIGHT}
-		bind:this={recordingCanvasElement}
+	<canvas class="recording-webcam sekrit" {width} {height} bind:this={recordingCanvasElement}
 	></canvas>
-	<canvas
-		class="display-webcam"
-		width={TARGET_WIDTH}
-		height={TARGET_HEIGHT}
-		bind:this={displayCanvasElement}
-	></canvas>
+	<canvas class="display-webcam" {width} {height} bind:this={displayCanvasElement}></canvas>
 	{#if $cameras.length > 1}<span class="switch-camera-icon">⟲</span>{/if}
 </button>
 
