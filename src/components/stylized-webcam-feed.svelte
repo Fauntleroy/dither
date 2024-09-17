@@ -189,6 +189,7 @@
 		cursor: pointer;
 		clip-path: circle(0%);
 		transition: clip-path 1000ms var(--ease-out-quint);
+		display: block;
 	}
 
 	.stylized-webcam-feed.playing {

@@ -3,7 +3,7 @@
 	import Select from '$/components/select.svelte';
 	import Button from '$/components/button.svelte';
 
-	import { colorPalette, cameraResolutionId } from '$/store.svelte';
+	import { colorPalette, cameraResolutionId, webcamEnabled } from '$/store.svelte';
 	import { downloadFile, generateGIF } from '$/utils/filmstrip';
 	import { CAMERA_RESOLUTIONS, type CameraResolutionId } from '$/constants';
 
@@ -64,10 +64,58 @@
 
 		downloadFile(gifBlob, `dither-gif_${generateShortId()}`);
 	}
+
+	function handleEnableWebcamClick() {
+		$webcamEnabled = true;
+	}
 </script>
 
 <div class="cameraPage">
-	<StylizedWebcamFeed {width} {height} onMount={handleMount} bind:recordingCanvasElement />
+	<div class="cameraFeed">
+		<svg class="line" viewBox="0 0 1 1" preserveAspectRatio="none">
+			<line
+				x1="0"
+				y1="0"
+				x2="1"
+				y2="1"
+				stroke="currentColor"
+				stroke-width="0.001"
+				stroke-dasharray="0.0025, 0.0025"
+			/>
+		</svg>
+		<svg class="line" viewBox="0 0 1 1" preserveAspectRatio="none">
+			<line
+				x1="1"
+				y1="0"
+				x2="0"
+				y2="1"
+				stroke="currentColor"
+				stroke-width="0.001"
+				stroke-dasharray="0.0025, 0.0025"
+			/>
+		</svg>
+		<div class="sizes">
+			{#each Object.keys(CAMERA_RESOLUTIONS) as cameraResolutionId}
+				{@const cameraResolution = CAMERA_RESOLUTIONS[cameraResolutionId]}
+				<div
+					class="size"
+					style={`width: ${cameraResolution[0]}px; height: ${cameraResolution[1]}px`}
+				>
+					{cameraResolutionId}
+				</div>
+			{/each}
+		</div>
+		<div class="cameraFeedActual">
+			<StylizedWebcamFeed {width} {height} onMount={handleMount} bind:recordingCanvasElement />
+		</div>
+		{#if !$webcamEnabled}
+			<div class="enableWebcam">
+				<Button onclick={handleEnableWebcamClick}>
+					<em>Click</em> to enable your webcam<em>!</em>
+				</Button>
+			</div>
+		{/if}
+	</div>
 	<div class="controls">
 		<Select
 			name="resolution"
@@ -84,6 +132,58 @@
 	.cameraPage {
 		display: flex;
 		flex-direction: column;
+	}
+
+	.cameraFeed {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr;
+		grid-template-areas: 'main';
+		align-items: center;
+		justify-items: center;
+		aspect-ratio: 4/ 3;
+		border-bottom: var(--white) 1px dotted;
+	}
+
+	.cameraFeedActual {
+		grid-area: main;
+	}
+
+	.enableWebcam {
+		grid-area: main;
+	}
+
+	.line {
+		aspect-ratio: 4 / 3;
+		grid-area: main;
+	}
+
+	.sizes {
+		grid-area: main;
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr;
+		grid-template-areas: 'main';
+		align-items: center;
+		justify-items: center;
+		aspect-ratio: 4/ 3;
+	}
+
+	.size {
+		grid-area: main;
+		font-family: sans-serif;
+		font-size: 8px;
+		text-transform: uppercase;
+		letter-spacing: 0.25em;
+		border: var(--white) 1px dotted;
+		padding: 0.25em 0.5em;
+		display: flex;
+		align-items: end;
+		justify-content: start;
+
+		&:last-child {
+			border: none;
+		}
 	}
 
 	.controls {
