@@ -24,7 +24,6 @@
 	let resolutions = [];
 	let resolutionOptions: ResolutionOptionT[] = [];
 	Object.entries(CAMERA_RESOLUTIONS).forEach(([cameraResolutionId, cameraResolution]) => {
-		console.log(cameraResolutionId, cameraResolution);
 		resolutions.push(cameraResolution);
 		resolutionOptions.push({
 			value: cameraResolutionId,
@@ -75,7 +74,7 @@
 			placeholder="Select a Resolution"
 			options={resolutionOptions}
 			onSelectedChange={handleResolutionChange}
-			selected={$cameraResolutionId}
+			selected={{ value: $cameraResolutionId, label: $cameraResolutionId }}
 		/>
 		<Button onclick={handleGenerateGifClick}>Generate Gif</Button>
 	</div>

@@ -152,7 +152,7 @@ const storedCameraResolutionId = store.get(STORE_CAMERA_RESOLUTION_ID);
 const initialCameraResolutionId =
 	storedCameraResolutionId && Object.hasOwn(CAMERA_RESOLUTIONS, storedCameraResolutionId)
 		? storedCameraResolutionId
-		: '200 x 150';
+		: '320 x 240';
 export const cameraResolutionId: Writable<CameraResolutionId> = writable(initialCameraResolutionId);
 
 cameraResolutionId.subscribe((newCameraResolutionId) =>

@@ -26,7 +26,7 @@
 
 	let fontSize: string = $state('1em');
 	let selectArrowsElement: HTMLElement; // Reference to the element you want to check
-
+	console.log('selected', selected);
 	onMount(() => {
 		fontSize = window.getComputedStyle(selectArrowsElement).fontSize;
 	});
@@ -53,8 +53,10 @@
 						{...builder}
 					>
 						{option.children || option.label}
-						<Select.ItemIndicator class="item-indicator" asChild
-							><span class="item-indicator"><CaretLeftIcon /></span>
+						<Select.ItemIndicator class="item-indicator" asChild>
+							<span class="item-indicator">
+								<CaretLeftIcon />
+							</span>
 						</Select.ItemIndicator>
 					</div>
 				</Select.Item>
