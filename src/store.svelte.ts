@@ -1,12 +1,14 @@
 import { derived, readable, writable, type Readable, type Writable } from 'svelte/store';
 import store from 'store2';
 
-import type { ColorPaletteId } from './constants.js';
+import type { CameraResolutionId, ColorPaletteId } from './constants.js';
 import {
 	COLOR_PALETTES,
 	STORE_WEBCAM_ENABLED,
 	STORE_COLOR_PALETTE_ID,
-	STORE_ROOM_HISTORY
+	STORE_ROOM_HISTORY,
+	STORE_CAMERA_RESOLUTION_ID,
+	CAMERA_RESOLUTIONS
 } from '$/constants.js';
 
 // Ensure `document` is available in the browser
@@ -143,6 +145,18 @@ export const cameras: Readable<MediaDeviceInfo[]> = derived<typeof mediaStream, 
 		};
 	},
 	[]
+);
+
+// Type the cameraResolutionId store
+const storedCameraResolutionId = store.get(STORE_CAMERA_RESOLUTION_ID);
+const initialCameraResolutionId =
+	storedCameraResolutionId && Object.hasOwn(CAMERA_RESOLUTIONS, storedCameraResolutionId)
+		? storedCameraResolutionId
+		: '200 x 150';
+export const cameraResolutionId: Writable<CameraResolutionId> = writable(initialCameraResolutionId);
+
+cameraResolutionId.subscribe((newCameraResolutionId) =>
+	store.set(STORE_CAMERA_RESOLUTION_ID, newCameraResolutionId)
 );
 
 // Type the colorPaletteId store

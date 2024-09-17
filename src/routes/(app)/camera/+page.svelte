@@ -3,8 +3,9 @@
 	import Select from '$/components/select.svelte';
 	import Button from '$/components/button.svelte';
 
-	import { colorPalette } from '$/store.svelte';
+	import { colorPalette, cameraResolutionId } from '$/store.svelte';
 	import { downloadFile, generateGIF } from '$/utils/filmstrip';
+	import { CAMERA_RESOLUTIONS, type CameraResolutionId } from '$/constants';
 
 	let recordingCanvasElement: HTMLCanvasElement | undefined = $state();
 
@@ -15,21 +16,24 @@
 		return timestamp + randomChars;
 	}
 
-	const resolutions = [
-		[200, 150],
-		[320, 240],
-		[480, 360],
-		[640, 480]
-	];
-	const resolutionOptions = resolutions.map((resolution, index) => {
-		return {
-			value: index,
-			label: `${resolution[0]} x ${resolution[1]}`
-		};
+	interface ResolutionOptionT {
+		value: string;
+		label: string;
+	}
+
+	let resolutions = [];
+	let resolutionOptions: ResolutionOptionT[] = [];
+	Object.entries(CAMERA_RESOLUTIONS).forEach(([cameraResolutionId, cameraResolution]) => {
+		console.log(cameraResolutionId, cameraResolution);
+		resolutions.push(cameraResolution);
+		resolutionOptions.push({
+			value: cameraResolutionId,
+			label: cameraResolutionId
+		});
 	});
-	let selectedResolutionIndex = $state(0);
-	let width = $derived(resolutions[selectedResolutionIndex][0]);
-	let height = $derived(resolutions[selectedResolutionIndex][1]);
+	let selectedResolution = $derived(CAMERA_RESOLUTIONS[$cameraResolutionId]);
+	let width = $derived(selectedResolution[0]);
+	let height = $derived(selectedResolution[1]);
 
 	function handleMount() {
 		console.log('mounted', arguments);
@@ -37,8 +41,8 @@
 	}
 
 	function handleResolutionChange(event: any) {
-		const resolutionIndex = Number(event.value as string);
-		selectedResolutionIndex = resolutionIndex;
+		const newCameraResolutionId = event.value as CameraResolutionId;
+		$cameraResolutionId = newCameraResolutionId;
 	}
 
 	async function handleGenerateGifClick() {
@@ -71,7 +75,7 @@
 			placeholder="Select a Resolution"
 			options={resolutionOptions}
 			onSelectedChange={handleResolutionChange}
-			selected={selectedResolutionIndex}
+			selected={$cameraResolutionId}
 		/>
 		<Button onclick={handleGenerateGifClick}>Generate Gif</Button>
 	</div>

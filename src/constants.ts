@@ -12,6 +12,16 @@ export const COLOR_PALETTES = {
 
 export type ColorPaletteId = keyof typeof COLOR_PALETTES;
 
+export const CAMERA_RESOLUTIONS = {
+	'200 x 150': [200, 150],
+	'320 x 240': [320, 240],
+	'480 x 360': [480, 360],
+	'640 x 480': [640, 480]
+} as const;
+
+export type CameraResolutionId = keyof typeof CAMERA_RESOLUTIONS;
+
 export const STORE_WEBCAM_ENABLED = 'dither:webcamEnabled';
 export const STORE_COLOR_PALETTE_ID = 'dither:colorPaletteId';
 export const STORE_ROOM_HISTORY = 'dither:roomHistory';
+export const STORE_CAMERA_RESOLUTION_ID = 'dither:resolutionId';
