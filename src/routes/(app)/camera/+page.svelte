@@ -36,11 +36,7 @@
 		console.log('recordingCanvasElement', recordingCanvasElement);
 	}
 
-	interface ResolutionChangeEvent {
-		value: string;
-	}
-
-	function handleResolutionChange(event: ResolutionChangeEvent) {
+	function handleResolutionChange(event: any) {
 		const resolutionIndex = Number(event.value as string);
 		selectedResolutionIndex = resolutionIndex;
 	}

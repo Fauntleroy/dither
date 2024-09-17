@@ -18,7 +18,7 @@
 		placeholder: string;
 		options: SelectOptionT[];
 		prefix?: any;
-		onSelectedChange: Function | undefined;
+		onSelectedChange: (value: unknown | undefined) => void;
 		selected: any;
 	}
 
@@ -30,8 +30,6 @@
 	onMount(() => {
 		fontSize = window.getComputedStyle(selectArrowsElement).fontSize;
 	});
-
-	console.log('placeholder', placeholder);
 </script>
 
 <Select.Root items={options} portal="#content" {onSelectedChange} {selected}>

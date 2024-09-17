@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { type Snippet } from 'svelte';
+	import { type HTMLButtonAttributes } from 'svelte/elements';
 	import { builderActions, getAttrs, type Builder } from 'bits-ui';
 
-	interface Props {
+	interface Props extends HTMLButtonAttributes {
 		children: Snippet;
 		variant?: 'normal' | 'inverted';
 		// bits-ui
-		builders: Builder[];
+		builders?: Builder[];
 	}
 
 	const { children, variant = 'normal', builders = [], ...restProps }: Props = $props();
