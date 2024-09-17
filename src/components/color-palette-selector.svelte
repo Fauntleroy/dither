@@ -5,11 +5,7 @@
 
 	import Select from './select.svelte';
 
-	interface ColorPaletteChangeEvent {
-		value: string;
-	}
-
-	function handleColorPaletteChange(event: ColorPaletteChangeEvent) {
+	function handleColorPaletteChange(event: any) {
 		colorPaletteId.set(event.value as ColorPaletteId);
 	}
 
@@ -34,6 +30,7 @@
 	{options}
 	name="color-palette-selector"
 	prefix="Theme:"
+	placeholder="None"
 	onSelectedChange={handleColorPaletteChange}
 	selected={{ value: $colorPaletteId, label: $colorPaletteId, children: $colorPaletteId }}
 />
