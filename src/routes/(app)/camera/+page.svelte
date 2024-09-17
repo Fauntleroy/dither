@@ -97,10 +97,7 @@
 		<div class="sizes">
 			{#each Object.keys(CAMERA_RESOLUTIONS) as cameraResolutionId}
 				{@const cameraResolution = CAMERA_RESOLUTIONS[cameraResolutionId]}
-				<div
-					class="size"
-					style={`width: ${cameraResolution[0]}px; height: ${cameraResolution[1]}px`}
-				>
+				<div class="size" style={`width: ${cameraResolution[0]}px;`}>
 					{cameraResolutionId}
 				</div>
 			{/each}
@@ -161,12 +158,13 @@
 	.sizes {
 		grid-area: main;
 		display: grid;
-		grid-template-columns: 1fr;
-		grid-template-rows: 1fr;
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-rows: minmax(0, 1fr);
 		grid-template-areas: 'main';
 		align-items: center;
 		justify-items: center;
 		aspect-ratio: 4/ 3;
+		max-width: 100vw;
 	}
 
 	.size {
@@ -176,10 +174,12 @@
 		text-transform: uppercase;
 		letter-spacing: 0.25em;
 		border: var(--white) 1px dotted;
+		max-width: 100%;
 		padding: 0.25em 0.5em;
 		display: flex;
 		align-items: end;
 		justify-content: start;
+		aspect-ratio: 4 / 3;
 
 		&:last-child {
 			border: none;
