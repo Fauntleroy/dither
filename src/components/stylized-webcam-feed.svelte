@@ -196,7 +196,6 @@
 	}
 
 	.raw-webcam {
-		max-width: 300px;
 	}
 
 	.display-webcam {
