@@ -214,6 +214,7 @@
 		z-index: 9999;
 		top: -9999px;
 		visibility: hidden;
+		display: none;
 	}
 
 	.switch-camera-icon {
