@@ -26,7 +26,7 @@
 
 	let fontSize: string = $state('1em');
 	let selectArrowsElement: HTMLElement; // Reference to the element you want to check
-	console.log('selected', selected);
+
 	onMount(() => {
 		fontSize = window.getComputedStyle(selectArrowsElement).fontSize;
 	});

@@ -7,39 +7,35 @@
 
 	const TARGET_WIDTH = 200;
 	const TARGET_HEIGHT = 150;
-	const TARGET_ASPECT = TARGET_WIDTH / TARGET_HEIGHT;
 
 	interface Props {
-		onMount: Function;
 		width: number;
 		height: number;
 		recordingCanvasElement: HTMLCanvasElement | undefined;
 	}
 
 	let {
-		onMount,
 		width = TARGET_WIDTH,
 		height = TARGET_HEIGHT,
 		recordingCanvasElement = $bindable()
 	}: Props = $props();
 	let videoElement: HTMLVideoElement | undefined;
-	// let recordingCanvasElement: HTMLCanvasElement;
 	let displayCanvasElement: HTMLCanvasElement | undefined;
 	let processedImageDrawRequestId: number;
 
 	let webcamVideoStatus = $state('initial');
 
-	function getCrop(videoElementToCrop: HTMLVideoElement) {
+	function getCrop(videoElementToCrop: HTMLVideoElement, aspectRatio: number) {
 		const { videoWidth, videoHeight } = videoElementToCrop;
 		const webcamVideoAspect = videoWidth / videoHeight;
 		let width, height;
 
-		if (webcamVideoAspect > TARGET_ASPECT) {
+		if (webcamVideoAspect > aspectRatio) {
 			height = videoHeight;
-			width = height * TARGET_ASPECT;
+			width = height * aspectRatio;
 		} else {
 			width = videoWidth;
-			height = width / TARGET_ASPECT;
+			height = width / aspectRatio;
 		}
 
 		const x = videoWidth / 2 - width / 2;
@@ -74,7 +70,7 @@
 			return;
 		}
 
-		const { x, y, width: cropWidth, height: cropHeight } = getCrop(videoElement);
+		const { x, y, width: cropWidth, height: cropHeight } = getCrop(videoElement, width / height);
 		displayCanvas2dContext.drawImage(
 			videoElement,
 			x,
@@ -100,12 +96,6 @@
 
 		processedImageDrawRequestId = requestAnimationFrame(tryToDraw);
 	}
-
-	$effect(() => {
-		onMount({
-			recordingCanvasElement: recordingCanvasElement
-		});
-	});
 
 	$effect(() => {
 		const { stream } = $mediaStream;

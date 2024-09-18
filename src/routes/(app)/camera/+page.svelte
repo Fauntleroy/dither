@@ -34,11 +34,6 @@
 	let width = $derived(selectedResolution[0]);
 	let height = $derived(selectedResolution[1]);
 
-	function handleMount() {
-		console.log('mounted', arguments);
-		console.log('recordingCanvasElement', recordingCanvasElement);
-	}
-
 	function handleResolutionChange(event: any) {
 		const newCameraResolutionId = event.value as CameraResolutionId;
 		$cameraResolutionId = newCameraResolutionId;
@@ -97,13 +92,11 @@
 		<div class="sizes">
 			{#each Object.keys(CAMERA_RESOLUTIONS) as cameraResolutionId}
 				{@const cameraResolution = CAMERA_RESOLUTIONS[cameraResolutionId]}
-				<div class="size" style={`width: ${cameraResolution[0]}px;`}>
-					{cameraResolutionId}
-				</div>
+				<div class="size" style={`width: ${cameraResolution[0]}px;`}></div>
 			{/each}
 		</div>
 		<div class="cameraFeedActual">
-			<StylizedWebcamFeed {width} {height} onMount={handleMount} bind:recordingCanvasElement />
+			<StylizedWebcamFeed {width} {height} bind:recordingCanvasElement />
 		</div>
 		{#if !$webcamEnabled}
 			<div class="enableWebcam">
@@ -173,7 +166,7 @@
 		font-size: 8px;
 		text-transform: uppercase;
 		letter-spacing: 0.25em;
-		border: var(--white) 1px dotted;
+		outline: var(--white) 1px dotted;
 		max-width: 100%;
 		padding: 0.25em 0.5em;
 		display: flex;
@@ -182,7 +175,7 @@
 		aspect-ratio: 4 / 3;
 
 		&:last-child {
-			border: none;
+			outline: none;
 		}
 	}
 

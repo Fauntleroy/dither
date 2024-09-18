@@ -11,20 +11,17 @@
 
 	let { onCreateMessage }: Props = $props();
 
-	let recordingCanvasElement: HTMLCanvasElement;
+	let recordingCanvasElement: HTMLCanvasElement | undefined = $state();
 	let inputMessage: string = $state('');
 	let recording: boolean = $state(false);
 
-	interface onMountDataT {
-		recordingCanvasElement: HTMLCanvasElement;
-	}
-
-	function onMount(mountData: onMountDataT) {
-		recordingCanvasElement = mountData.recordingCanvasElement;
-	}
-
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
+
+		if (!recordingCanvasElement) {
+			console.error('No camera to record from for message.');
+			return;
+		}
 
 		recording = true;
 		const imageDataBlob = await generateImage(recordingCanvasElement);
@@ -52,7 +49,7 @@
 <div class="new-message" class:recording>
 	<form class="form" onsubmit={handleSubmit}>
 		<div class="recording-booth">
-			<StylizedWebcamFeed {onMount} />
+			<StylizedWebcamFeed bind:recordingCanvasElement />
 			{#if recording}<span class="recording-indicator"></span>{/if}
 			<div class="recording-progress"></div>
 		</div>
@@ -65,7 +62,7 @@
 				disabled={!$mediaStream || recording || !$webcamEnabled}
 			></textarea>
 			<span class="fake-input__action">
-				<Button type="submit" disabled={!$mediaStream || recording || !$webcamEnabled}>➸</Button>
+				<Button type="submit" disabled={!$mediaStream || recording || !$webcamEnabled}>⏷</Button>
 			</span>
 		</div>
 	</form>
