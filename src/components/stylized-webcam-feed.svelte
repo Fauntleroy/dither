@@ -176,7 +176,13 @@
 	></video>
 	<canvas class="recording-webcam sekrit" {width} {height} bind:this={recordingCanvasElement}
 	></canvas>
-	<canvas class="display-webcam" {width} {height} bind:this={displayCanvasElement}></canvas>
+	<canvas
+		class="display-webcam"
+		{width}
+		{height}
+		bind:this={displayCanvasElement}
+		style={`width: ${width}px; height: ${height}px`}
+	></canvas>
 	{#if $cameras.length > 1}<span class="switch-camera-icon">⟲</span>{/if}
 </button>
 
@@ -201,12 +207,11 @@
 
 	.display-webcam {
 		display: block;
-		width: 100%;
-		height: 100%;
 	}
 
 	.display-webcam {
 		background: var(--black);
+		transition: all 500ms cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
 	.sekrit {
