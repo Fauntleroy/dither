@@ -1,38 +1,12 @@
-# create-svelte
+# Dither - A lo-fi GIF chat app
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+![dither-gif_m19r7m8cdbblit](https://github.com/user-attachments/assets/55c15261-baf7-41d4-a40e-92418d795b3a)
 
-## Creating a project
+https://dither.kempf.dev/
 
-If you're seeing this, you've probably already done this step. Congrats!
+Taking inspiration from [Return of the Obra Dinn](https://obradinn.com/) and [Meatspac.es](https://chat.meatspac.es/), I got to work making my own mix of a micro-vlog and chat app. I used several new (to me) technologies to make it happen:
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+- [Svelte 5](https://svelte-5-preview.vercel.app/)
+- TypeScript
+- Firebase [Firestore](https://firebase.google.com/docs/firestore/)
+- Lots of `<canvas>` antics I'm not _super_ familiar with
