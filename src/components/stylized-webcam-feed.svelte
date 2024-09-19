@@ -11,7 +11,7 @@
 	interface Props {
 		width: number;
 		height: number;
-		recordingCanvasElement: HTMLCanvasElement | undefined;
+		recordingCanvasElement?: HTMLCanvasElement | undefined;
 	}
 
 	let {

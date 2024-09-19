@@ -2,6 +2,7 @@
 	import StylizedWebcamFeed from '$/components/stylized-webcam-feed.svelte';
 	import Select from '$/components/select.svelte';
 	import Button from '$/components/button.svelte';
+	import WebcamPermissionButton from '$/components/webcam-permission-button.svelte';
 
 	import { colorPalette, cameraResolutionId, webcamEnabled } from '$/store.svelte';
 	import { downloadFile, generateGIF } from '$/utils/filmstrip';
@@ -59,10 +60,6 @@
 
 		downloadFile(gifBlob, `dither-gif_${generateShortId()}`);
 	}
-
-	function handleEnableWebcamClick() {
-		$webcamEnabled = true;
-	}
 </script>
 
 <div class="cameraPage">
@@ -98,13 +95,9 @@
 		<div class="cameraFeedActual">
 			<StylizedWebcamFeed {width} {height} bind:recordingCanvasElement />
 		</div>
-		{#if !$webcamEnabled}
-			<div class="enableWebcam">
-				<Button onclick={handleEnableWebcamClick}>
-					<em>Click</em> to enable your webcam<em>!</em>
-				</Button>
-			</div>
-		{/if}
+		<div class="enableWebcam">
+			<WebcamPermissionButton />
+		</div>
 	</div>
 	<div class="controls">
 		<Select

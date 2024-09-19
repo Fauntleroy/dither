@@ -4,6 +4,7 @@
 
 	import StylizedWebcamFeed from '$/components/stylized-webcam-feed.svelte';
 	import Button from './button.svelte';
+	import WebcamPermissionButton from './webcam-permission-button.svelte';
 
 	interface Props {
 		onCreateMessage: Function;
@@ -40,10 +41,6 @@
 			handleSubmit(event);
 		}
 	}
-
-	function handleEnableWebcamClick() {
-		$webcamEnabled = true;
-	}
 </script>
 
 <div class="new-message" class:recording>
@@ -66,13 +63,9 @@
 			</span>
 		</div>
 	</form>
-	{#if !$webcamEnabled}
-		<div class="enable-webcam-message__container">
-			<Button onclick={handleEnableWebcamClick}>
-				<em>Click</em> to enable your webcam and chat<em>!</em>
-			</Button>
-		</div>
-	{/if}
+	<div class="enable-webcam-message__container">
+		<WebcamPermissionButton />
+	</div>
 </div>
 
 <style>
@@ -179,14 +172,11 @@
 	}
 
 	.enable-webcam-message__container {
+		width: max-content;
 		position: absolute;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 	}
 
 	@media (max-width: 480px) {
