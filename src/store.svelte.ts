@@ -94,8 +94,12 @@ export const mediaStream: Readable<DerivedMediaStream> = derived<
 
 				const userMediaStream = await getMediaStream($mediaDeviceId);
 
+				if (!userMediaStream) {
+					throw new Error('No media stream returned from getMediaStream');
+				}
+
 				set({
-					status: userMediaStream ? 'active' : 'error',
+					status: 'active',
 					stream: userMediaStream
 				});
 			} catch (error) {
