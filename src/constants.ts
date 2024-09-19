@@ -6,6 +6,7 @@ export const COLOR_PALETTES = {
 	'IBM 5151': ['#25332F', '#01EB61'],
 	'IBM 8503': ['#222329', '#F5EFD8'],
 	'Metal Gear': ['#0f1713', '#74da9e'],
+	CP2077: ['#2C121C', '#7FF3FB'],
 	'Black & White': ['#111111', '#ffffff'],
 	Grayscale: ['#222222', '#DDDDDD']
 } as const;

@@ -94,6 +94,7 @@
 		inset 0 -1vh 25vw 0vw rgba(0, 0, 0, 0.125),
 		inset 0 -1vh 15vw 0vw rgba(0, 0, 0, 0.35);
 	pointer-events: none;
+	mix-blend-mode: overlay;
 }
 
 .crt > * {
