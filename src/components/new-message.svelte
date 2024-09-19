@@ -5,6 +5,7 @@
 	import StylizedWebcamFeed from '$/components/stylized-webcam-feed.svelte';
 	import Button from './button.svelte';
 	import WebcamPermissionButton from './webcam-permission-button.svelte';
+	import SendArrowIcon from '$/icons/send-arrow.svelte';
 
 	interface Props {
 		onCreateMessage: Function;
@@ -59,7 +60,9 @@
 				disabled={!$mediaStream || recording || !$webcamEnabled}
 			></textarea>
 			<span class="fake-input__action">
-				<Button type="submit" disabled={!$mediaStream || recording || !$webcamEnabled}>⏷</Button>
+				<Button type="submit" disabled={!$mediaStream || recording || !$webcamEnabled} tall={true}>
+					<SendArrowIcon />
+				</Button>
 			</span>
 		</div>
 	</form>
@@ -116,7 +119,7 @@
 		display: block;
 		border: none;
 		margin: 0;
-		padding: 0.5em 3em 0.5em 0.5em;
+		padding: 0.5em 2.5em 0.5em 0.5em;
 		font-size: inherit;
 		font-style: italic;
 		width: 100%;
@@ -132,7 +135,7 @@
 		top: 50%;
 		right: 0.5em;
 		transform: translateY(-50%);
-		font-size: 0.75em;
+		font-size: 0.5em;
 	}
 
 	.recording-booth {

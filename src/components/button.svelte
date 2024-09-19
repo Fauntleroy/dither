@@ -6,16 +6,24 @@
 	interface Props extends HTMLButtonAttributes {
 		children: Snippet;
 		variant?: 'normal' | 'inverted';
+		tall?: boolean;
 		// bits-ui
 		builders?: Builder[];
 	}
 
-	const { children, variant = 'normal', builders = [], ...restProps }: Props = $props();
+	const {
+		children,
+		variant = 'normal',
+		tall = false,
+		builders = [],
+		...restProps
+	}: Props = $props();
 </script>
 
 <button
 	{...restProps}
 	class:invert={variant === 'inverted'}
+	class:tall
 	use:builderActions={{ builders }}
 	{...getAttrs(builders)}
 >
@@ -74,5 +82,11 @@
 	.invert {
 		--background-color: var(--black);
 		--foreground-color: var(--white);
+	}
+
+	.tall {
+		.inner {
+			padding: 0.75em 0.5em;
+		}
 	}
 </style>
