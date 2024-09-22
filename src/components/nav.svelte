@@ -18,7 +18,6 @@
 	.nav {
 		padding: 10px 10px;
 		z-index: 5;
-		background: var(--black);
 		font-size: 14px;
 		display: flex;
 		justify-content: space-between;
