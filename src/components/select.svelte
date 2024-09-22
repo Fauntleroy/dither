@@ -20,9 +20,11 @@
 		prefix?: any;
 		onSelectedChange: (value: unknown | undefined) => void;
 		selected: any;
+		disabled: boolean;
 	}
 
-	let { name, options, prefix, onSelectedChange, placeholder, selected }: PropsT = $props();
+	let { name, options, prefix, onSelectedChange, placeholder, selected, disabled }: PropsT =
+		$props();
 
 	let fontSize: string = $state('1em');
 	let selectArrowsElement: HTMLElement; // Reference to the element you want to check
@@ -32,7 +34,7 @@
 	});
 </script>
 
-<Select.Root items={options} portal="#content" {onSelectedChange} {selected}>
+<Select.Root items={options} portal="#content" {onSelectedChange} {selected} {disabled}>
 	<Select.Trigger aria-label={placeholder} asChild let:builder>
 		<Button builders={[builder]}>
 			<div class="trigger">

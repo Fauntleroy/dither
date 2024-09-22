@@ -11,15 +11,14 @@
 	interface Props {
 		width: number;
 		height: number;
-		recordingCanvasElement?: HTMLCanvasElement | undefined;
+		videoElement?: HTMLVideoElement | undefined;
 	}
 
 	let {
 		width = TARGET_WIDTH,
 		height = TARGET_HEIGHT,
-		recordingCanvasElement = $bindable()
+		videoElement = $bindable()
 	}: Props = $props();
-	let videoElement: HTMLVideoElement | undefined;
 	let displayCanvasElement: HTMLCanvasElement | undefined;
 	let processedImageDrawRequestId: number;
 
@@ -50,18 +49,10 @@
 			return;
 		}
 
-		if (!recordingCanvasElement) {
-			console.error('No canvas element to draw from');
-			return;
-		}
-
 		const displayCanvas2dContext = displayCanvasElement.getContext('2d');
-		const recordingCanvas2dContext = recordingCanvasElement.getContext('2d', {
-			willReadFrequently: true
-		});
 
-		if (!displayCanvas2dContext || !recordingCanvas2dContext) {
-			console.error('Canvas contexts could not be initialized');
+		if (!displayCanvas2dContext) {
+			console.error('Canvas context could not be initialized');
 			return;
 		}
 
@@ -84,7 +75,6 @@
 		);
 		const canvasImageData = displayCanvas2dContext.getImageData(0, 0, width, height);
 		const filteredImageData = Dither.atkinson(canvasImageData);
-		recordingCanvas2dContext.putImageData(filteredImageData, 0, 0);
 		displayCanvas2dContext.putImageData(filteredImageData, 0, 0);
 		convertImageData(displayCanvasElement, $colorPalette as unknown as [string, string]);
 	}
@@ -159,13 +149,13 @@
 	<video
 		class="raw-webcam sekrit"
 		bind:this={videoElement}
+		{width}
+		{height}
 		onplaying={handleVideoPlaying}
 		onsuspend={handleVideoSuspend}
 		onwaiting={handleVideoWaiting}
 		playsinline={true}
 	></video>
-	<canvas class="recording-webcam sekrit" {width} {height} bind:this={recordingCanvasElement}
-	></canvas>
 	<canvas
 		class="display-webcam"
 		{width}

@@ -82,8 +82,7 @@ export function generateImage(targetCanvasElement: HTMLCanvasElement): Promise<B
 }
 
 export async function generateGIF(
-	targetElement: HTMLCanvasElement | HTMLImageElement | HTMLVideoElement,
-	sourceType: 'stream' | 'filmstrip' = 'filmstrip',
+	source: HTMLCanvasElement | HTMLImageElement | ImageData,
 	colorPalette: [string, string],
 	width: number = FRAME_WIDTH,
 	height: number = FRAME_HEIGHT
@@ -102,10 +101,12 @@ export async function generateGIF(
 
 	const frames = [];
 
-	if (sourceType === 'filmstrip') {
-		for (let i = 0; i < FRAME_TOTAL; i++) {
+	for (let i = 0; i < FRAME_TOTAL; i++) {
+		if (source instanceof ImageData) {
+			bufferContext.putImageData(source, 0, i * -1 * height);
+		} else {
 			bufferContext.drawImage(
-				targetElement,
+				source,
 				0,
 				i * height,
 				width,
@@ -115,36 +116,11 @@ export async function generateGIF(
 				width,
 				height // destination
 			);
-			convertImageData(bufferCanvasElement, colorPalette);
-			const bufferImageData = bufferContext.getImageData(0, 0, width, height);
-			frames.push({ data: bufferImageData.data, delay: FRAME_DELAY });
 		}
-	} else {
-		async function addFrame() {
-			if (!bufferContext) {
-				throw new Error('buffer context does not exist');
-			}
 
-			bufferContext.drawImage(
-				targetElement,
-				0,
-				0,
-				width,
-				height, // source
-				0,
-				0,
-				width,
-				height // destination
-			);
-			convertImageData(bufferCanvasElement, colorPalette);
-			const bufferImageData = bufferContext.getImageData(0, 0, width, height);
-			frames.push({ data: bufferImageData.data, delay: FRAME_DELAY });
-			if (frames.length < FRAME_TOTAL) {
-				await wait(FRAME_DELAY);
-				return await addFrame();
-			}
-		}
-		await addFrame();
+		convertImageData(bufferCanvasElement, colorPalette);
+		const bufferImageData = bufferContext.getImageData(0, 0, width, height);
+		frames.push({ data: bufferImageData.data, delay: FRAME_DELAY });
 	}
 
 	const output = await encode({

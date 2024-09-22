@@ -1,14 +1,20 @@
 <script lang="ts">
+	import { scale } from 'svelte/transition';
+
 	import StylizedWebcamFeed from '$/components/stylized-webcam-feed.svelte';
 	import Select from '$/components/select.svelte';
 	import Button from '$/components/button.svelte';
 	import WebcamPermissionButton from '$/components/webcam-permission-button.svelte';
+	import Progress from '$/components/progress.svelte';
 
 	import { colorPalette, cameraResolutionId, webcamEnabled } from '$/store.svelte';
 	import { downloadFile, generateGIF } from '$/utils/filmstrip';
 	import { CAMERA_RESOLUTIONS, type CameraResolutionId } from '$/constants';
+	import { generateFilmstripWithCallback } from '$/utils/frames';
 
-	let recordingCanvasElement: HTMLCanvasElement | undefined = $state();
+	const TOTAL_FRAMES = 20;
+
+	let videoElement: HTMLVideoElement | undefined = $state();
 
 	function generateShortId(length: number = 8): string {
 		const timestamp = Date.now().toString(36); // Base36 timestamp for shorter representation
@@ -34,6 +40,9 @@
 	let selectedResolution = $derived(CAMERA_RESOLUTIONS[$cameraResolutionId]);
 	let width = $derived(selectedResolution[0]);
 	let height = $derived(selectedResolution[1]);
+	let currentFrameNumber = $state(0);
+	let progress = $derived((currentFrameNumber / TOTAL_FRAMES) * 100);
+	let isCapturing = $state(false);
 
 	function handleResolutionChange(event: any) {
 		const newCameraResolutionId = event.value as CameraResolutionId;
@@ -41,24 +50,36 @@
 	}
 
 	async function handleGenerateGifClick() {
-		if (!recordingCanvasElement) {
-			console.error('No recording canvas element available to generate from');
-			return;
-		}
-		const gifBlob = await generateGIF(
-			recordingCanvasElement,
-			'stream',
-			$colorPalette as [string, string],
-			width,
-			height
-		);
-
-		if (!gifBlob) {
-			console.error('Could not create GIF from webcam feed');
-			return;
+		if (!videoElement) {
+			throw new Error('No video element to record from');
 		}
 
-		downloadFile(gifBlob, `dither-gif_${generateShortId()}`);
+		try {
+			isCapturing = true;
+			function handleFrame(frameNumber: number) {
+				currentFrameNumber = frameNumber;
+			}
+
+			const filmstripData = await generateFilmstripWithCallback(videoElement, handleFrame);
+			const gifBlob = await generateGIF(
+				filmstripData,
+				$colorPalette as [string, string],
+				width,
+				height
+			);
+
+			if (!gifBlob) {
+				console.error('Could not create GIF from webcam feed');
+				return;
+			}
+
+			downloadFile(gifBlob, `dither-gif_${generateShortId()}`);
+		} catch (error) {
+			console.error('error generating filmstrip', error);
+		} finally {
+			isCapturing = false;
+			currentFrameNumber = 0;
+		}
 	}
 </script>
 
@@ -93,8 +114,13 @@
 			{/each}
 		</div>
 		<div class="cameraFeedActual">
-			<StylizedWebcamFeed {width} {height} bind:recordingCanvasElement />
+			<StylizedWebcamFeed {width} {height} bind:videoElement />
 		</div>
+		{#if isCapturing}
+			<div class="progress" in:scale={{ duration: 100 }} out:scale={{ duration: 200, delay: 500 }}>
+				<Progress {progress} />
+			</div>
+		{/if}
 		<div class="enableWebcam">
 			<WebcamPermissionButton />
 		</div>
@@ -106,8 +132,9 @@
 			options={resolutionOptions}
 			onSelectedChange={handleResolutionChange}
 			selected={{ value: $cameraResolutionId, label: $cameraResolutionId }}
+			disabled={isCapturing}
 		/>
-		<Button onclick={handleGenerateGifClick}>Generate Gif</Button>
+		<Button onclick={handleGenerateGifClick} disabled={isCapturing}>Generate Gif</Button>
 	</div>
 </div>
 
@@ -130,6 +157,16 @@
 
 	.cameraFeedActual {
 		grid-area: main;
+	}
+
+	.progress {
+		grid-area: main;
+		justify-self: center;
+		align-self: end;
+		z-index: 5;
+		margin: 0.5em;
+		width: 100%;
+		max-width: 300px;
 	}
 
 	.enableWebcam {
