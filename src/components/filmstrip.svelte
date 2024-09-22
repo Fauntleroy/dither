@@ -96,11 +96,7 @@
 			return;
 		}
 
-		const gifBlob = await generateGIF(
-			image,
-			'filmstrip',
-			$colorPalette as unknown as [string, string]
-		);
+		const gifBlob = await generateGIF(image, $colorPalette as unknown as [string, string]);
 
 		if (!gifBlob) {
 			console.error('Could not create GIF Blob object');
