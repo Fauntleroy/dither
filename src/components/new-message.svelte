@@ -4,6 +4,7 @@
 
 	import { mediaStream, webcamEnabled } from '$/store.svelte.js';
 	import { generateFilmstripWithCallback } from '$/utils/frames';
+	import { hapticBuzz } from '$/utils/vibration';
 
 	import StylizedWebcamFeed from '$/components/stylized-webcam-feed.svelte';
 	import Button from './button.svelte';
@@ -39,10 +40,12 @@
 				currentFrameNumber = frameNumber;
 			}
 
+			hapticBuzz();
 			const filmstripData = await generateFilmstripWithCallback(videoElement, handleFrame, {
 				width: 200,
 				height: 150
 			});
+			hapticBuzz();
 			const optimizedImageArrayBuffer = uPNG.encode(
 				[filmstripData.data.buffer],
 				filmstripData.width,
