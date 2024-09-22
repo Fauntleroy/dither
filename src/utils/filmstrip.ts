@@ -145,3 +145,28 @@ export function downloadFile(blob: Blob, fileName: string) {
 	link.dispatchEvent(clickEvent);
 	setTimeout(() => window.URL.revokeObjectURL(url), 100);
 }
+
+export async function imageDataToPngBlob(imageData: ImageData): Promise<Blob> {
+	// Create a temporary canvas to hold the image data
+	const canvas = document.createElement('canvas');
+	canvas.width = imageData.width;
+	canvas.height = imageData.height;
+
+	// Get the canvas context and put the image data onto it
+	const ctx = canvas.getContext('2d');
+	if (!ctx) {
+		throw new Error('Canvas context not available.');
+	}
+	ctx.putImageData(imageData, 0, 0);
+
+	// Convert the canvas content to a Blob
+	return new Promise<Blob>((resolve, reject) => {
+		canvas.toBlob((blob) => {
+			if (blob) {
+				resolve(blob);
+			} else {
+				reject(new Error('Failed to create Blob from canvas.'));
+			}
+		}, 'image/png');
+	});
+}

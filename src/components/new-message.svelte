@@ -1,11 +1,14 @@
 <script lang="ts">
+	import uPNG from 'upng-js';
+
 	import { mediaStream, webcamEnabled } from '$/store.svelte.js';
-	import { generateImage } from '$/utils/filmstrip.js';
+	import { generateFilmstripWithCallback } from '$/utils/frames';
 
 	import StylizedWebcamFeed from '$/components/stylized-webcam-feed.svelte';
 	import Button from './button.svelte';
 	import WebcamPermissionButton from './webcam-permission-button.svelte';
 	import SendArrowIcon from '$/icons/send-arrow.svelte';
+	import { imageDataToPngBlob } from '$/utils/filmstrip';
 
 	interface Props {
 		onCreateMessage: Function;
@@ -13,28 +16,51 @@
 
 	let { onCreateMessage }: Props = $props();
 
-	let recordingCanvasElement: HTMLCanvasElement | undefined = $state();
+	let videoElement: HTMLVideoElement | undefined = $state();
 	let inputMessage: string = $state('');
-	let recording: boolean = $state(false);
+	let isCapturing: boolean = $state(false);
+
+	let currentFrameNumber = 0;
 
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
 
-		if (!recordingCanvasElement) {
+		if (!videoElement) {
 			console.error('No camera to record from for message.');
 			return;
 		}
 
-		recording = true;
-		const imageDataBlob = await generateImage(recordingCanvasElement);
-		recording = false;
+		// recording = true;
+		// const imageDataBlob = await generateImage(videoElement);
 
-		onCreateMessage({
-			text: inputMessage,
-			imageDataBlob
-		});
+		try {
+			isCapturing = true;
+			function handleFrame(frameNumber: number) {
+				currentFrameNumber = frameNumber;
+			}
 
-		inputMessage = '';
+			const filmstripData = await generateFilmstripWithCallback(videoElement, handleFrame);
+			// const imageDataBlob = await imageDataToPngBlob(filmstripData);
+			const optimizedImageArrayBuffer = uPNG.encode(
+				[filmstripData.data.buffer],
+				filmstripData.width,
+				filmstripData.height,
+				2 + 1
+			);
+			const imageDataBlob = new Blob([optimizedImageArrayBuffer], { type: 'image/png' });
+
+			onCreateMessage({
+				text: inputMessage,
+				imageDataBlob
+			});
+
+			inputMessage = '';
+		} catch (error) {
+			console.error('error generating filmstrip', error);
+		} finally {
+			isCapturing = false;
+			currentFrameNumber = 0;
+		}
 	}
 
 	function handleInputKeydown(event: KeyboardEvent) {
@@ -44,11 +70,11 @@
 	}
 </script>
 
-<div class="new-message" class:recording>
+<div class="new-message" class:recording={isCapturing}>
 	<form class="form" onsubmit={handleSubmit}>
 		<div class="recording-booth">
-			<StylizedWebcamFeed bind:recordingCanvasElement />
-			{#if recording}<span class="recording-indicator"></span>{/if}
+			<StylizedWebcamFeed bind:videoElement />
+			{#if isCapturing}<span class="recording-indicator"></span>{/if}
 			<div class="recording-progress"></div>
 		</div>
 		<div class="fake-input">
@@ -57,10 +83,14 @@
 				bind:value={inputMessage}
 				onkeydown={handleInputKeydown}
 				placeholder="Press enter to record a clip and send a message"
-				disabled={!$mediaStream || recording || !$webcamEnabled}
+				disabled={!$mediaStream || isCapturing || !$webcamEnabled}
 			></textarea>
 			<span class="fake-input__action">
-				<Button type="submit" disabled={!$mediaStream || recording || !$webcamEnabled} tall={true}>
+				<Button
+					type="submit"
+					disabled={!$mediaStream || isCapturing || !$webcamEnabled}
+					tall={true}
+				>
 					<SendArrowIcon />
 				</Button>
 			</span>
