@@ -45,6 +45,7 @@ export function generateFilmstripWithCallback(
 
 			// iterate through frames
 			if (capturedFrameCount < frameCount) {
+				// sometimes camera aspect does not match desired aspect
 				const { x, y, width: cropWidth, height: cropHeight } = getCrop(video, width / height);
 				context.drawImage(
 					video,
@@ -58,7 +59,6 @@ export function generateFilmstripWithCallback(
 					height // destination (canvas)
 				);
 
-				// context.drawImage(video, 0, capturedFrameCount * video.height, video.width, video.height);
 				capturedFrameCount++;
 				frameCallback(capturedFrameCount);
 
