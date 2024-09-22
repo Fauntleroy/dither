@@ -45,6 +45,11 @@
 	}
 
 	.inner {
+		display: flex;
+		flex-direction: row;
+		gap: 0.5em;
+		align-items: center;
+		justify-content: center;
 		border: var(--foreground-color) 1px solid;
 		padding: 0.25em 0.75em;
 		border-radius: calc(var(--border-radius) - var(--outer-border-width));

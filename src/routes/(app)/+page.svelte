@@ -10,6 +10,8 @@
 	import Button from '$/components/button.svelte';
 	import Message from '$/components/message.svelte';
 	import RoomList from '$/components/room-list/room-list.svelte';
+	import Aperture from '$/icons/aperture.svelte';
+	import ArrowRight from '$/icons/arrow-right.svelte';
 
 	const hasRoomHistory: boolean = Object.entries($roomHistory).length > 0;
 
@@ -44,9 +46,9 @@
 			<Message imageUrl="/home-promo-filmstrip.png" text="Howdy!" interactive={false} />
 		</div>
 		<div class="createNewRoom">
-			<Button onclick={handleNewRoomClick}>Create a GIF Chat Room ➔</Button>
+			<Button onclick={handleNewRoomClick}>Create a GIF Chat Room<ArrowRight /></Button>
 			<div>Prefer going solo? Try out the camera!</div>
-			<Button onclick={handleCameraClick}>Use the Dither Cam 📷</Button>
+			<Button onclick={handleCameraClick}>Use the Dither Cam<Aperture /></Button>
 		</div>
 	</section>
 
