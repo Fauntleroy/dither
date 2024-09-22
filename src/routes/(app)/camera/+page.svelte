@@ -12,6 +12,7 @@
 	import { CAMERA_RESOLUTIONS, type CameraResolutionId } from '$/constants';
 	import { generateFilmstripWithCallback } from '$/utils/frames';
 	import { quartOut } from 'svelte/easing';
+	import { hapticBuzz } from '$/utils/vibration';
 
 	const TOTAL_FRAMES = 20;
 
@@ -61,10 +62,12 @@
 				currentFrameNumber = frameNumber;
 			}
 
+			hapticBuzz();
 			const filmstripData = await generateFilmstripWithCallback(videoElement, handleFrame, {
 				width,
 				height
 			});
+			hapticBuzz();
 			const gifBlob = await generateGIF(
 				filmstripData,
 				$colorPalette as [string, string],
