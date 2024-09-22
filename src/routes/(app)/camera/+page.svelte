@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { scale } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 
 	import StylizedWebcamFeed from '$/components/stylized-webcam-feed.svelte';
 	import Select from '$/components/select.svelte';
@@ -11,6 +11,7 @@
 	import { downloadFile, generateGIF } from '$/utils/filmstrip';
 	import { CAMERA_RESOLUTIONS, type CameraResolutionId } from '$/constants';
 	import { generateFilmstripWithCallback } from '$/utils/frames';
+	import { quartOut } from 'svelte/easing';
 
 	const TOTAL_FRAMES = 20;
 
@@ -117,7 +118,11 @@
 			<StylizedWebcamFeed {width} {height} bind:videoElement />
 		</div>
 		{#if isCapturing}
-			<div class="progress" in:scale={{ duration: 250 }} out:scale={{ duration: 500, delay: 500 }}>
+			<div
+				class="progress"
+				in:slide={{ duration: 250, easing: quartOut }}
+				out:slide={{ duration: 500, easing: quartOut, delay: 500 }}
+			>
 				<Progress {progress} />
 			</div>
 		{/if}
