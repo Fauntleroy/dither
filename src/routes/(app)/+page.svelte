@@ -92,6 +92,7 @@
 
 	.demoMessage {
 		align-self: center;
+		width: min(100%, 400px);
 	}
 
 	.createNewRoom {
