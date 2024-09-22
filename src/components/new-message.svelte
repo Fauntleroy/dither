@@ -91,7 +91,7 @@
 				bind:value={inputMessage}
 				onkeydown={handleInputKeydown}
 				placeholder="Press enter to record a clip and send a message"
-				disabled={!$mediaStream || isCapturing || !$webcamEnabled}
+				disabled={!$mediaStream || !$webcamEnabled}
 			></textarea>
 			<span class="fakeInput__action">
 				<Button
@@ -136,7 +136,7 @@
 		color: var(--black);
 		overflow: hidden;
 		transition: transform 200ms;
-		border: transparent 1px solid;
+		border: transparent 2px solid;
 		border-radius: 0.25em;
 	}
 
