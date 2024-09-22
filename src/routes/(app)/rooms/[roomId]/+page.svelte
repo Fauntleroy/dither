@@ -194,7 +194,7 @@
 		{/if}
 		{#each messages as { id, text, imageUrl }, i (id)}
 			<li class="message-container" animate:flip={{ duration: 500, easing: quintOut }}>
-				<Message {text} {imageUrl} size="large" index={i} />
+				<Message {text} {imageUrl} index={i} />
 			</li>
 		{/each}
 	</ul>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import uPNG from 'upng-js';
+	import { scale } from 'svelte/transition';
 
 	import { mediaStream, webcamEnabled } from '$/store.svelte.js';
 	import { generateFilmstripWithCallback } from '$/utils/frames';
@@ -8,7 +9,9 @@
 	import Button from './button.svelte';
 	import WebcamPermissionButton from './webcam-permission-button.svelte';
 	import SendArrowIcon from '$/icons/send-arrow.svelte';
-	import { imageDataToPngBlob } from '$/utils/filmstrip';
+	import Progress from './progress.svelte';
+
+	const TOTAL_FRAMES = 20;
 
 	interface Props {
 		onCreateMessage: Function;
@@ -19,8 +22,8 @@
 	let videoElement: HTMLVideoElement | undefined = $state();
 	let inputMessage: string = $state('');
 	let isCapturing: boolean = $state(false);
-
-	let currentFrameNumber = 0;
+	let currentFrameNumber = $state(0);
+	let progress = $derived((currentFrameNumber / TOTAL_FRAMES) * 100);
 
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
@@ -30,9 +33,6 @@
 			return;
 		}
 
-		// recording = true;
-		// const imageDataBlob = await generateImage(videoElement);
-
 		try {
 			isCapturing = true;
 			function handleFrame(frameNumber: number) {
@@ -40,7 +40,6 @@
 			}
 
 			const filmstripData = await generateFilmstripWithCallback(videoElement, handleFrame);
-			// const imageDataBlob = await imageDataToPngBlob(filmstripData);
 			const optimizedImageArrayBuffer = uPNG.encode(
 				[filmstripData.data.buffer],
 				filmstripData.width,
@@ -70,14 +69,23 @@
 	}
 </script>
 
-<div class="new-message" class:recording={isCapturing}>
+<div class="newMessage">
 	<form class="form" onsubmit={handleSubmit}>
-		<div class="recording-booth">
-			<StylizedWebcamFeed bind:videoElement />
-			{#if isCapturing}<span class="recording-indicator"></span>{/if}
-			<div class="recording-progress"></div>
+		<div class="recordingBooth">
+			<div class="webcamFeed">
+				<StylizedWebcamFeed bind:videoElement />
+			</div>
+			{#if isCapturing}
+				<div
+					class="progress"
+					in:scale={{ duration: 250 }}
+					out:scale={{ duration: 500, delay: 500 }}
+				>
+					<Progress {progress} />
+				</div>
+			{/if}
 		</div>
-		<div class="fake-input">
+		<div class="fakeInput">
 			<textarea
 				class="input"
 				bind:value={inputMessage}
@@ -85,7 +93,7 @@
 				placeholder="Press enter to record a clip and send a message"
 				disabled={!$mediaStream || isCapturing || !$webcamEnabled}
 			></textarea>
-			<span class="fake-input__action">
+			<span class="fakeInput__action">
 				<Button
 					type="submit"
 					disabled={!$mediaStream || isCapturing || !$webcamEnabled}
@@ -96,22 +104,13 @@
 			</span>
 		</div>
 	</form>
-	<div class="enable-webcam-message__container">
+	<div class="enableWebcamMessage__container">
 		<WebcamPermissionButton />
 	</div>
 </div>
 
 <style>
-	@keyframes indicatorGlow {
-		from {
-			background: rgba(255, 0, 0, 0.5);
-		}
-		to {
-			background: red;
-		}
-	}
-
-	.new-message {
+	.newMessage {
 		position: relative;
 		max-width: 540px;
 		margin: 0 auto;
@@ -129,7 +128,7 @@
 		margin: 0;
 	}
 
-	.fake-input {
+	.fakeInput {
 		display: flex;
 		flex-grow: 1;
 		position: relative;
@@ -141,7 +140,7 @@
 		border-radius: 0.25em;
 	}
 
-	.fake-input:focus-within {
+	.fakeInput:focus-within {
 		border-color: var(--black);
 	}
 
@@ -160,7 +159,7 @@
 		outline: none;
 	}
 
-	.fake-input__action {
+	.fakeInput__action {
 		position: absolute;
 		top: 50%;
 		right: 0.5em;
@@ -168,8 +167,12 @@
 		font-size: 0.5em;
 	}
 
-	.recording-booth {
+	.recordingBooth {
 		position: relative;
+		display: grid;
+		grid-template-rows: minmax(0, 1fr);
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas: 'main';
 		flex-shrink: 0;
 		width: 150px;
 		height: 113px;
@@ -177,34 +180,17 @@
 		border-radius: calc(0.25em - 1px);
 	}
 
-	.recording-indicator {
-		position: absolute;
-		bottom: 10px;
-		left: 10px;
-		display: block;
-		border-radius: 50%;
-		background: red;
-		width: 10px;
-		height: 10px;
-		animation: indicatorGlow 500ms linear alternate infinite;
+	.webcamFeed {
+		grid-area: main;
 	}
 
-	.recording-progress {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 0;
-		height: 3px;
-		background: var(--white);
-		transition: width 200ms;
+	.progress {
+		grid-area: main;
+		align-self: end;
+		z-index: 3;
 	}
 
-	.new-message.recording .recording-progress {
-		width: 100%;
-		transition: width 2000ms linear;
-	}
-
-	.enable-webcam-message__container {
+	.enableWebcamMessage__container {
 		width: max-content;
 		position: absolute;
 		top: 50%;
@@ -213,7 +199,7 @@
 	}
 
 	@media (max-width: 480px) {
-		.recording-booth {
+		.recordingBooth {
 			width: 100px;
 			height: 75px;
 		}

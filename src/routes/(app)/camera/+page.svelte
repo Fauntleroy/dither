@@ -117,7 +117,7 @@
 			<StylizedWebcamFeed {width} {height} bind:videoElement />
 		</div>
 		{#if isCapturing}
-			<div class="progress" in:scale={{ duration: 100 }} out:scale={{ duration: 200, delay: 500 }}>
+			<div class="progress" in:scale={{ duration: 250 }} out:scale={{ duration: 500, delay: 500 }}>
 				<Progress {progress} />
 			</div>
 		{/if}
