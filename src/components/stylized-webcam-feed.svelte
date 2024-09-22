@@ -164,9 +164,6 @@
 		clip-path: circle(100%);
 	}
 
-	.raw-webcam {
-	}
-
 	.display-webcam {
 		display: block;
 	}
