@@ -1,6 +1,6 @@
 <script lang="ts">
 	import uPNG from 'upng-js';
-	import { scale } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 
 	import { mediaStream, webcamEnabled } from '$/store.svelte.js';
 	import { generateFilmstripWithCallback } from '$/utils/frames';
@@ -78,8 +78,8 @@
 			{#if isCapturing}
 				<div
 					class="progress"
-					in:scale={{ duration: 250 }}
-					out:scale={{ duration: 500, delay: 500 }}
+					in:slide={{ duration: 250 }}
+					out:slide={{ duration: 500, delay: 500 }}
 				>
 					<Progress {progress} />
 				</div>
