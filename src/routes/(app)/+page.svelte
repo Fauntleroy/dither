@@ -1,5 +1,4 @@
 <script lang="ts">
-	import store from 'store2';
 	import humanId from 'human-id';
 	import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 	import { goto } from '$app/navigation';
