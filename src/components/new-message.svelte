@@ -39,7 +39,10 @@
 				currentFrameNumber = frameNumber;
 			}
 
-			const filmstripData = await generateFilmstripWithCallback(videoElement, handleFrame);
+			const filmstripData = await generateFilmstripWithCallback(videoElement, handleFrame, {
+				width: 200,
+				height: 150
+			});
 			const optimizedImageArrayBuffer = uPNG.encode(
 				[filmstripData.data.buffer],
 				filmstripData.width,

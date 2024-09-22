@@ -1,13 +1,19 @@
 import Dither from 'canvas-dither';
 
+import { getCrop } from './webcam';
+
 interface FilmstripOptions {
 	frameCount: number;
 	frameRate: number;
+	width: number;
+	height: number;
 }
 
 const defaultFilmstripOptions: FilmstripOptions = {
 	frameCount: 20,
-	frameRate: 10
+	frameRate: 10,
+	width: 200,
+	height: 150
 };
 
 export function generateFilmstripWithCallback(
@@ -15,7 +21,10 @@ export function generateFilmstripWithCallback(
 	frameCallback: (frameNumber: number) => void,
 	filmstripOptions?: Partial<FilmstripOptions> | undefined
 ): Promise<ImageData> {
-	const { frameCount, frameRate } = { ...defaultFilmstripOptions, ...filmstripOptions };
+	const { frameCount, frameRate, width, height } = {
+		...defaultFilmstripOptions,
+		...filmstripOptions
+	};
 
 	return new Promise((resolve, reject) => {
 		let canvas: HTMLCanvasElement = document.createElement('canvas');
@@ -36,7 +45,20 @@ export function generateFilmstripWithCallback(
 
 			// iterate through frames
 			if (capturedFrameCount < frameCount) {
-				context.drawImage(video, 0, capturedFrameCount * video.height, video.width, video.height);
+				const { x, y, width: cropWidth, height: cropHeight } = getCrop(video, width / height);
+				context.drawImage(
+					video,
+					x,
+					y,
+					cropWidth,
+					cropHeight, // source (webcam)
+					0,
+					capturedFrameCount * height,
+					width,
+					height // destination (canvas)
+				);
+
+				// context.drawImage(video, 0, capturedFrameCount * video.height, video.width, video.height);
 				capturedFrameCount++;
 				frameCallback(capturedFrameCount);
 

@@ -61,7 +61,10 @@
 				currentFrameNumber = frameNumber;
 			}
 
-			const filmstripData = await generateFilmstripWithCallback(videoElement, handleFrame);
+			const filmstripData = await generateFilmstripWithCallback(videoElement, handleFrame, {
+				width,
+				height
+			});
 			const gifBlob = await generateGIF(
 				filmstripData,
 				$colorPalette as [string, string],
