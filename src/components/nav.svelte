@@ -16,7 +16,8 @@
 
 <style>
 	.nav {
-		padding: 10px 10px;
+		height: 3.5rem;
+		padding: 0 10px;
 		z-index: 5;
 		font-size: 14px;
 		display: flex;
