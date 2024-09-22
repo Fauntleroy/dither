@@ -150,8 +150,6 @@
 
 <style>
 	.stylized-webcam-feed {
-		--ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
-
 		all: unset;
 		position: relative;
 		cursor: pointer;

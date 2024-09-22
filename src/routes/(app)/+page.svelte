@@ -13,16 +13,24 @@
 	import ArrowRight from '$/icons/arrow-right.svelte';
 
 	const hasRoomHistory: boolean = Object.entries($roomHistory).length > 0;
+	let isCreatingRoom: boolean = $state(false);
 
 	const roomsRef = collection(firestore, 'rooms');
 
 	async function handleNewRoomClick() {
-		const newRoomDoc = await addDoc(roomsRef, {
-			name: humanId(' '),
-			createdAt: serverTimestamp()
-		});
+		try {
+			isCreatingRoom = true;
+			const newRoomDoc = await addDoc(roomsRef, {
+				name: humanId(' '),
+				createdAt: serverTimestamp()
+			});
 
-		goto(`/rooms/${newRoomDoc.id}`);
+			await goto(`/rooms/${newRoomDoc.id}`);
+		} catch (error) {
+			console.error('Error creating room', error);
+		} finally {
+			isCreatingRoom = false;
+		}
 	}
 
 	function handleCameraClick() {
@@ -45,7 +53,9 @@
 			<Message imageUrl="/home-promo-filmstrip.png" text="Howdy!" interactive={false} />
 		</div>
 		<div class="createNewRoom">
-			<Button onclick={handleNewRoomClick}>Create a GIF Chat Room<ArrowRight /></Button>
+			<Button onclick={handleNewRoomClick} loading={isCreatingRoom} disabled={isCreatingRoom}>
+				Create a GIF Chat Room<ArrowRight />
+			</Button>
 			<div>Prefer going solo? Try out the camera!</div>
 			<Button onclick={handleCameraClick}>Use the Dither Cam<Aperture /></Button>
 		</div>
