@@ -2,7 +2,6 @@
 	import { slide } from 'svelte/transition';
 
 	import StylizedWebcamFeed from '$/components/stylized-webcam-feed.svelte';
-	import Select from '$/components/select.svelte';
 	import Button from '$/components/button.svelte';
 	import WebcamPermissionButton from '$/components/webcam-permission-button.svelte';
 	import Progress from '$/components/progress.svelte';
@@ -13,6 +12,7 @@
 	import { generateFilmstripWithCallback } from '$/utils/frames';
 	import { quartOut } from 'svelte/easing';
 	import { hapticBuzz } from '$/utils/vibration';
+	import ResolutionSelector from '$/components/resolution-selector.svelte';
 
 	const TOTAL_FRAMES = 20;
 
@@ -25,31 +25,12 @@
 		return timestamp + randomChars;
 	}
 
-	interface ResolutionOptionT {
-		value: string;
-		label: string;
-	}
-
-	let resolutions = [];
-	let resolutionOptions: ResolutionOptionT[] = [];
-	Object.entries(CAMERA_RESOLUTIONS).forEach(([cameraResolutionId, cameraResolution]) => {
-		resolutions.push(cameraResolution);
-		resolutionOptions.push({
-			value: cameraResolutionId,
-			label: cameraResolutionId
-		});
-	});
 	let selectedResolution = $derived(CAMERA_RESOLUTIONS[$cameraResolutionId]);
 	let width = $derived(selectedResolution[0]);
 	let height = $derived(selectedResolution[1]);
 	let currentFrameNumber = $state(0);
 	let progress = $derived((currentFrameNumber / TOTAL_FRAMES) * 100);
 	let isCapturing = $state(false);
-
-	function handleResolutionChange(event: any) {
-		const newCameraResolutionId = event.value as CameraResolutionId;
-		$cameraResolutionId = newCameraResolutionId;
-	}
 
 	async function handleGenerateGifClick() {
 		if (!videoElement) {
@@ -137,14 +118,7 @@
 		</div>
 	</div>
 	<div class="controls">
-		<Select
-			name="resolution"
-			placeholder="Select a Resolution"
-			options={resolutionOptions}
-			onSelectedChange={handleResolutionChange}
-			selected={{ value: $cameraResolutionId, label: $cameraResolutionId }}
-			disabled={isCapturing}
-		/>
+		<ResolutionSelector disabled={isCapturing} />
 		<Button onclick={handleGenerateGifClick} disabled={isCapturing}>Generate Gif</Button>
 	</div>
 </div>

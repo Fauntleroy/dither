@@ -20,7 +20,7 @@
 		prefix?: any;
 		onSelectedChange: (value: unknown | undefined) => void;
 		selected: any;
-		disabled: boolean;
+		disabled?: boolean;
 	}
 
 	let { name, options, prefix, onSelectedChange, placeholder, selected, disabled }: PropsT =
