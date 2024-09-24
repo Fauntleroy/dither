@@ -152,7 +152,7 @@
 	.stylized-webcam-feed {
 		all: unset;
 		position: relative;
-		cursor: pointer;
+		cursor: var(--cursor-pointer);
 		clip-path: circle(0%);
 		transition: clip-path 1000ms var(--ease-out-quint);
 		display: block;

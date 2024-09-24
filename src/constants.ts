@@ -26,3 +26,7 @@ export const STORE_WEBCAM_ENABLED = 'dither:webcamEnabled';
 export const STORE_COLOR_PALETTE_ID = 'dither:colorPaletteId';
 export const STORE_ROOM_HISTORY = 'dither:roomHistory';
 export const STORE_CAMERA_RESOLUTION_ID = 'dither:resolutionId';
+
+export const CURSOR_URL = '/arrow.png';
+export const CURSOR_POINTER_URL = '/pointer.png';
+export const CURSOR_TEXT_URL = '/text.png';

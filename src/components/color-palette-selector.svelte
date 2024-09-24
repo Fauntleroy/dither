@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { colorPaletteId, colorPalette } from '$/store.svelte.js';
+	import { updateCursorColors } from '$/utils/cursor';
 
 	import { COLOR_PALETTES, type ColorPaletteId } from '$/constants.js';
 
@@ -12,6 +13,8 @@
 	colorPalette.subscribe(([black, white]) => {
 		document.documentElement.style.setProperty('--black', black);
 		document.documentElement.style.setProperty('--white', white);
+
+		updateCursorColors(black, white);
 	});
 
 	const colorPalettesKeys = Object.keys(COLOR_PALETTES) as (keyof typeof COLOR_PALETTES)[];

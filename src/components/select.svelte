@@ -108,7 +108,7 @@
 	}
 
 	:global([data-highlighted]) {
-		cursor: pointer;
+		cursor: var(--cursor-pointer);
 		background: var(--black);
 		color: var(--white);
 	}

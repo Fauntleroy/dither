@@ -9,6 +9,14 @@
 	/* Easings */
 	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 	--ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+
+	/* Cursors */
+	--cursor-default-image: url('/arrow.png');
+	--cursor-default: var(--cursor-default-image) 8 1, auto;
+	--cursor-pointer-image: url('/pointer.png');
+	--cursor-pointer: var(--cursor-pointer-image) 8 1, pointer;
+	--cursor-text-image: url('/text.png');
+	--cursor-text: var(--cursor-text-image) 8 1, text;
 }
 
 ::selection {
@@ -43,10 +51,13 @@ body {
 		rgba(255, 255, 255, 0)
 	);
 	background-attachment: fixed;
+
+	cursor: var(--cursor-default);
 }
 
 a {
 	display: inline-block;
+	cursor: var(--cursor-pointer);
 	color: var(--white);
 	text-decoration: underline;
 	text-underline-offset: 0.25em;
@@ -95,6 +106,11 @@ input[type='range'] {
 	height: 0;
 }
 
+input[type='text'],
+textarea {
+	cursor: var(--cursor-text);
+}
+
 input,
 textarea {
 	background: var(--white);
@@ -117,7 +133,7 @@ a:focus-visible {
 
 button {
 	all: unset;
-	cursor: pointer;
+	cursor: var(--cursor-pointer);
 	padding: 0.25em 0.75em;
 	background: var(--white);
 	color: var(--black);
